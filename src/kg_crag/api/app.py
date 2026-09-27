@@ -3,17 +3,18 @@
 from fastapi import FastAPI
 
 from kg_crag import __version__
+from kg_crag.models import HealthResponse
 from kg_crag.settings import get_settings
 
 app = FastAPI(title="KG-CRAG API", version=__version__)
 
 
-@app.get("/health", tags=["system"])
-async def health() -> dict[str, str]:
+@app.get("/health", tags=["system"], response_model=HealthResponse)
+async def health() -> HealthResponse:
     """提供不依赖外部服务的进程健康检查。"""
 
     settings = get_settings()
-    return {"status": "ok", "version": __version__, "environment": settings.env}
+    return HealthResponse(status="ok", version=__version__, environment=settings.env)
 
 
 def run() -> None:

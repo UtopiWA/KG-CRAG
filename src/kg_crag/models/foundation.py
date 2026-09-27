@@ -1,0 +1,87 @@
+"""跨模块共享的基础运行契约。"""
+
+from __future__ import annotations
+
+import re
+from datetime import datetime
+from enum import StrEnum
+from typing import Literal, TypeAlias
+
+from pydantic import Field, field_validator
+
+from kg_crag.models.domain import StrictModel
+
+ScalarValue: TypeAlias = str | int | float | bool | None
+
+_SENSITIVE_KEY_MARKERS = (
+    "password",
+    "token",
+    "apikey",
+    "authorization",
+    "credential",
+    "secret",
+)
+
+
+def _reject_sensitive_keys(values: dict[str, ScalarValue]) -> dict[str, ScalarValue]:
+    """拒绝可能承载凭据的字段名，避免上下文进入错误或 Trace。"""
+
+    for key in values:
+        normalized = re.sub(r"[^a-z0-9]", "", key.casefold())
+        if any(marker in normalized for marker in _SENSITIVE_KEY_MARKERS):
+            raise ValueError("sensitive context keys are not allowed")
+    return values
+
+
+class ErrorCode(StrEnum):
+    """供调用方稳定分支的错误代码。"""
+
+    VALIDATION = "validation_error"
+    CONFIGURATION = "configuration_error"
+    EXTERNAL_SERVICE = "external_service_error"
+    TIMEOUT = "timeout_error"
+    NOT_FOUND = "not_found"
+    DATA = "data_error"
+    INTERNAL = "internal_error"
+
+
+class ErrorDetail(StrictModel):
+    """可安全序列化的统一错误详情。"""
+
+    code: ErrorCode
+    message: str = Field(min_length=1, max_length=1000)
+    retryable: bool = False
+    context: dict[str, ScalarValue] = Field(default_factory=dict, max_length=32)
+
+    _validate_context = field_validator("context")(_reject_sensitive_keys)
+
+
+class TraceEvent(StrictModel):
+    """工作流 TraceEvent v1 的最小稳定结构。"""
+
+    schema_version: Literal["v1"] = "v1"
+    trace_id: str = Field(min_length=1)
+    sequence: int = Field(ge=0)
+    node: str = Field(min_length=1)
+    event: str = Field(min_length=1)
+    occurred_at: datetime
+    details: dict[str, ScalarValue] = Field(default_factory=dict, max_length=64)
+
+    _validate_details = field_validator("details")(_reject_sensitive_keys)
+
+    @field_validator("occurred_at")
+    @classmethod
+    def occurred_at_is_timezone_aware(cls, value: datetime) -> datetime:
+        """要求调用方提供可重放、无本地时区歧义的时间。"""
+
+        if value.tzinfo is None or value.utcoffset() is None:
+            raise ValueError("occurred_at must include a timezone")
+        return value
+
+
+class HealthResponse(StrictModel):
+    """不探测外部依赖的进程健康响应。"""
+
+    status: Literal["ok"] = "ok"
+    version: str = Field(min_length=1)
+    environment: str = Field(min_length=1)

@@ -3,12 +3,7 @@
 from typing import TypedDict
 
 from kg_crag.models import Evidence, RetrievalEvaluation, RouteDecision
-
-
-class TraceEvent(TypedDict):
-    node: str
-    event: str
-    details: dict[str, str | int | float | bool | None]
+from kg_crag.models import TraceEvent as TraceEvent
 
 
 class AgentState(TypedDict):

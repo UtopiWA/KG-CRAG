@@ -1,0 +1,77 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "chunk_id": {
+      "minLength": 1,
+      "title": "Chunk Id",
+      "type": "string"
+    },
+    "content_hash": {
+      "minLength": 8,
+      "title": "Content Hash",
+      "type": "string"
+    },
+    "page_end": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Page End"
+    },
+    "page_start": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Page Start"
+    },
+    "paper_id": {
+      "minLength": 1,
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "section": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Section"
+    },
+    "text": {
+      "minLength": 1,
+      "title": "Text",
+      "type": "string"
+    },
+    "token_count": {
+      "minimum": 1,
+      "title": "Token Count",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "chunk_id",
+    "paper_id",
+    "text",
+    "token_count",
+    "content_hash"
+  ],
+  "title": "Chunk",
+  "type": "object"
+}

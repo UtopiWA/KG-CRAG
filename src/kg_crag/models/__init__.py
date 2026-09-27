@@ -17,14 +17,18 @@ from kg_crag.models.domain import (
     RetrievalWeights,
     RouteDecision,
 )
+from kg_crag.models.foundation import ErrorCode, ErrorDetail, HealthResponse, TraceEvent
 
 __all__ = [
     "Author",
     "Chunk",
+    "ErrorCode",
+    "ErrorDetail",
     "Evidence",
     "EvidenceLocation",
     "EvidenceScores",
     "EvidenceSourceType",
+    "HealthResponse",
     "Paper",
     "QueryType",
     "RecommendedAction",
@@ -34,4 +38,5 @@ __all__ = [
     "RetrievalStrategy",
     "RetrievalWeights",
     "RouteDecision",
+    "TraceEvent",
 ]

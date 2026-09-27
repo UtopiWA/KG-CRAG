@@ -1,0 +1,93 @@
+{
+  "$defs": {
+    "QueryType": {
+      "enum": [
+        "fact",
+        "semantic",
+        "entity",
+        "relationship",
+        "comparative",
+        "multi_hop",
+        "knowledge_missing"
+      ],
+      "title": "QueryType",
+      "type": "string"
+    },
+    "RetrievalStrategy": {
+      "enum": [
+        "dense",
+        "sparse",
+        "graph",
+        "hybrid",
+        "web"
+      ],
+      "title": "RetrievalStrategy",
+      "type": "string"
+    },
+    "RetrievalWeights": {
+      "additionalProperties": false,
+      "properties": {
+        "dense": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Dense",
+          "type": "number"
+        },
+        "graph": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Graph",
+          "type": "number"
+        },
+        "sparse": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Sparse",
+          "type": "number"
+        }
+      },
+      "title": "RetrievalWeights",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "query_types": {
+      "items": {
+        "$ref": "#/$defs/QueryType"
+      },
+      "minItems": 1,
+      "title": "Query Types",
+      "type": "array"
+    },
+    "reason": {
+      "minLength": 1,
+      "title": "Reason",
+      "type": "string"
+    },
+    "strategy": {
+      "$ref": "#/$defs/RetrievalStrategy"
+    },
+    "subqueries": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Subqueries",
+      "type": "array"
+    },
+    "weights": {
+      "$ref": "#/$defs/RetrievalWeights"
+    }
+  },
+  "required": [
+    "query_types",
+    "strategy",
+    "weights",
+    "reason"
+  ],
+  "title": "RouteDecision",
+  "type": "object"
+}

@@ -1,0 +1,66 @@
+{
+  "$defs": {
+    "ErrorCode": {
+      "description": "供调用方稳定分支的错误代码。",
+      "enum": [
+        "validation_error",
+        "configuration_error",
+        "external_service_error",
+        "timeout_error",
+        "not_found",
+        "data_error",
+        "internal_error"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "可安全序列化的统一错误详情。",
+  "properties": {
+    "code": {
+      "$ref": "#/$defs/ErrorCode"
+    },
+    "context": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "maxProperties": 32,
+      "title": "Context",
+      "type": "object"
+    },
+    "message": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Message",
+      "type": "string"
+    },
+    "retryable": {
+      "default": false,
+      "title": "Retryable",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "code",
+    "message"
+  ],
+  "title": "ErrorDetail",
+  "type": "object"
+}

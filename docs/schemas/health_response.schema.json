@@ -1,0 +1,28 @@
+{
+  "additionalProperties": false,
+  "description": "不探测外部依赖的进程健康响应。",
+  "properties": {
+    "environment": {
+      "minLength": 1,
+      "title": "Environment",
+      "type": "string"
+    },
+    "status": {
+      "const": "ok",
+      "default": "ok",
+      "title": "Status",
+      "type": "string"
+    },
+    "version": {
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "environment"
+  ],
+  "title": "HealthResponse",
+  "type": "object"
+}

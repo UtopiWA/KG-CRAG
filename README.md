@@ -37,6 +37,29 @@ uvicorn kg_crag.api.app:app --reload
 # GET http://127.0.0.1:8000/health
 ```
 
+## 工程基座契约
+
+- `kg_crag.models` 统一导出论文领域模型，以及 `ErrorDetail`、`TraceEvent` 和
+  `HealthResponse` 等基础运行契约；这些 Pydantic 模型拒绝未知顶层字段。
+- `KGCRAGError` 通过稳定 `ErrorCode` 和 `retryable` 表达调用方可处理的失败；错误
+  `context` 与 Trace `details` 只允许有限标量，并拒绝密码、Token、API Key 和认证字段。
+- `MockRetriever`、`MockReranker`、`InMemoryVectorStore` 和 `InMemoryGraphStore` 是确定性、
+  不联网的测试替身。它们遵守公开 Protocol 并记录调用，但不模拟生产检索质量、Qdrant
+  或 Neo4j 的完整语义。
+- `Settings` 要求端口位于 1–65535，Qdrant 使用带主机的 HTTP(S) URL，Neo4j 使用带主机
+  的 `bolt://` 或 `neo4j://` URI；工作流循环次数继续受各字段上限约束。
+- `/health` 只返回 `status`、`version` 和 `environment`，不会探测外部服务或返回密钥。
+
+公共模型 Schema 快照位于 `docs/schemas/`：
+
+```bash
+# 模型有意变化后重建快照
+python scripts/export_model_schemas.py
+
+# CI 或评审时只检查，不修改文件
+python scripts/export_model_schemas.py --check
+```
+
 ## 获取论文语料
 
 脚本只处理 `configs/seed_papers.json` 中的显式 arXiv ID，默认最多 10 篇，串行、限速并记录 SHA-256。它不会进行关键词爬取或无限发现。

@@ -1,0 +1,102 @@
+{
+  "$defs": {
+    "RecommendedAction": {
+      "enum": [
+        "answer",
+        "rewrite",
+        "decompose",
+        "switch_retriever",
+        "web_search"
+      ],
+      "title": "RecommendedAction",
+      "type": "string"
+    },
+    "RetrievalEvaluationScores": {
+      "additionalProperties": false,
+      "properties": {
+        "consistency": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Consistency",
+          "type": "number"
+        },
+        "coverage": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Coverage",
+          "type": "number"
+        },
+        "groundability": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Groundability",
+          "type": "number"
+        },
+        "relevance": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Relevance",
+          "type": "number"
+        },
+        "source_quality": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Source Quality",
+          "type": "number"
+        }
+      },
+      "required": [
+        "relevance",
+        "coverage",
+        "consistency",
+        "groundability"
+      ],
+      "title": "RetrievalEvaluationScores",
+      "type": "object"
+    },
+    "RetrievalLabel": {
+      "enum": [
+        "relevant",
+        "ambiguous",
+        "insufficient",
+        "irrelevant"
+      ],
+      "title": "RetrievalLabel",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "conflicts": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Conflicts",
+      "type": "array"
+    },
+    "label": {
+      "$ref": "#/$defs/RetrievalLabel"
+    },
+    "missing_aspects": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missing Aspects",
+      "type": "array"
+    },
+    "recommended_action": {
+      "$ref": "#/$defs/RecommendedAction"
+    },
+    "scores": {
+      "$ref": "#/$defs/RetrievalEvaluationScores"
+    }
+  },
+  "required": [
+    "label",
+    "scores",
+    "recommended_action"
+  ],
+  "title": "RetrievalEvaluation",
+  "type": "object"
+}
