@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "description": "Curated core papers. Titles and years provide an API-independent acquisition fallback.",
+  "papers": [
+    {"arxiv_id": "2005.11401", "slug": "rag_for_knowledge_intensive_nlp", "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks", "year": 2020, "tags": ["rag", "baseline"]},
+    {"arxiv_id": "2210.03629", "slug": "react", "title": "ReAct: Synergizing Reasoning and Acting in Language Models", "year": 2022, "tags": ["agent", "reasoning", "tool-use"]},
+    {"arxiv_id": "2302.04761", "slug": "toolformer", "title": "Toolformer: Language Models Can Teach Themselves to Use Tools", "year": 2023, "tags": ["agent", "tool-use"]},
+    {"arxiv_id": "2303.11366", "slug": "reflexion", "title": "Reflexion: Language Agents with Verbal Reinforcement Learning", "year": 2023, "tags": ["agent", "reflection"]},
+    {"arxiv_id": "2305.10601", "slug": "tree_of_thoughts", "title": "Tree of Thoughts: Deliberate Problem Solving with Large Language Models", "year": 2023, "tags": ["agent", "reasoning"]},
+    {"arxiv_id": "2308.08155", "slug": "autogen", "title": "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation", "year": 2023, "tags": ["agent", "multi-agent"]},
+    {"arxiv_id": "2310.11511", "slug": "self_rag", "title": "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection", "year": 2023, "tags": ["rag", "reflection", "retrieval"]},
+    {"arxiv_id": "2401.15884", "slug": "corrective_rag", "title": "Corrective Retrieval Augmented Generation", "year": 2024, "tags": ["rag", "corrective-retrieval"]},
+    {"arxiv_id": "2404.16130", "slug": "graphrag_local_to_global", "title": "From Local to Global: A Graph RAG Approach to Query-Focused Summarization", "year": 2024, "tags": ["rag", "knowledge-graph", "graphrag"]},
+    {"arxiv_id": "2303.17760", "slug": "camel", "title": "CAMEL: Communicative Agents for Mind Exploration of Large Language Model Society", "year": 2023, "tags": ["agent", "multi-agent"]},
+    {"arxiv_id": "2303.17580", "slug": "hugginggpt", "title": "HuggingGPT: Solving AI Tasks with ChatGPT and its Friends in Hugging Face", "year": 2023, "tags": ["agent", "tool-use"]},
+    {"arxiv_id": "2304.03442", "slug": "generative_agents", "title": "Generative Agents: Interactive Simulacra of Human Behavior", "year": 2023, "tags": ["agent", "memory", "reflection"]},
+    {"arxiv_id": "2305.16291", "slug": "voyager", "title": "Voyager: An Open-Ended Embodied Agent with Large Language Models", "year": 2023, "tags": ["agent", "embodied-agent", "tool-use"]},
+    {"arxiv_id": "2308.00352", "slug": "metagpt", "title": "MetaGPT: Meta Programming for A Multi-Agent Collaborative Framework", "year": 2023, "tags": ["agent", "multi-agent", "software-engineering"]},
+    {"arxiv_id": "2307.16789", "slug": "toolllm", "title": "ToolLLM: Facilitating Large Language Models to Master 16000+ Real-world APIs", "year": 2023, "tags": ["agent", "tool-use", "retrieval"]},
+    {"arxiv_id": "2308.03688", "slug": "agentbench", "title": "AgentBench: Evaluating LLMs as Agents", "year": 2023, "tags": ["agent", "evaluation"]},
+    {"arxiv_id": "2311.12983", "slug": "gaia", "title": "GAIA: a benchmark for General AI Assistants", "year": 2023, "tags": ["agent", "evaluation", "tool-use"]},
+    {"arxiv_id": "2405.15793", "slug": "swe_agent", "title": "SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering", "year": 2024, "tags": ["agent", "software-engineering", "tool-use"]},
+    {"arxiv_id": "2305.06983", "slug": "flare", "title": "Active Retrieval Augmented Generation", "year": 2023, "tags": ["rag", "adaptive-retrieval"]},
+    {"arxiv_id": "2401.18059", "slug": "raptor", "title": "RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval", "year": 2024, "tags": ["rag", "hierarchical-retrieval"]},
+    {"arxiv_id": "2403.14403", "slug": "adaptive_rag", "title": "Adaptive-RAG: Learning to Adapt Retrieval-Augmented Large Language Models through Question Complexity", "year": 2024, "tags": ["rag", "adaptive-retrieval", "routing"]},
+    {"arxiv_id": "2405.14831", "slug": "hipporag", "title": "HippoRAG: Neurobiologically Inspired Long-Term Memory for Large Language Models", "year": 2024, "tags": ["rag", "knowledge-graph", "multi-hop"]}
+  ]
+}
+

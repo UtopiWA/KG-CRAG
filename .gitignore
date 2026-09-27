@@ -1,0 +1,27 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Corpus artifacts are reproducible and may be large.
+data/raw/papers/*.pdf
+data/raw/metadata/*.json
+data/raw/download_manifest.jsonl
+data/raw/arxiv_candidates.json
+data/raw/collection_report.json
+data/raw/collection_manifest.jsonl
+data/interim/**
+data/processed/**
+data/evaluation/results/**
+!data/**/.gitkeep
+
+# Local service state.
+.docker-data/

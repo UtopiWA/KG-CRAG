@@ -1,0 +1,60 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kg-crag"
+version = "0.1.0"
+description = "Knowledge-graph-enhanced corrective RAG agent for scientific literature QA"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "For course and research use; corpus licenses remain with their sources." }
+dependencies = [
+  "anyio==4.8.0",
+  "fastapi==0.115.8",
+  "pydantic==2.10.6",
+  "pydantic-settings==2.7.1",
+  "pyyaml==6.0.2",
+  "uvicorn[standard]==0.34.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx==0.28.1",
+  "mypy==1.15.0",
+  "pytest==8.3.4",
+  "pytest-asyncio==0.25.3",
+  "pytest-cov==6.0.0",
+  "ruff==0.9.6",
+]
+
+[project.scripts]
+kg-crag-api = "kg_crag.api.app:run"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kg_crag"]
+
+[tool.pytest.ini_options]
+addopts = "-q --strict-markers --disable-warnings"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "scripts", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ANN", "ASYNC", "S", "RUF"]
+ignore = ["S101"]
+allowed-confusables = ["，", "；"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/*.py" = ["T201"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src", "scripts"]
+plugins = ["pydantic.mypy"]

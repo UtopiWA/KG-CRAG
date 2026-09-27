@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "description": "Bounded arXiv discovery plan for the initial Agent/RAG research corpus.",
+  "target_papers": 110,
+  "max_results_per_query": 50,
+  "discovery_pages_per_query": 2,
+  "min_year": 2020,
+  "allowed_categories": ["cs.AI", "cs.CL", "cs.IR", "cs.LG", "cs.MA"],
+  "minimum_relevance_score": 4.0,
+  "relevance_terms": {
+    "agent": 2.0,
+    "agentic": 3.0,
+    "retrieval augmented generation": 3.0,
+    "retrieval-augmented generation": 3.0,
+    "rag": 1.0,
+    "tool use": 2.0,
+    "tool-use": 2.0,
+    "reflection": 2.0,
+    "self-reflective": 3.0,
+    "corrective": 2.0,
+    "knowledge graph": 2.0,
+    "graph retrieval": 2.0,
+    "multi-agent": 2.0,
+    "multi agent": 2.0
+  },
+  "queries": [
+    {
+      "name": "agentic_rag",
+      "search_query": "all:\"retrieval augmented generation\" AND (all:agent OR all:agentic)",
+      "openalex_search": "agentic retrieval augmented generation",
+      "tags": ["rag", "agentic-rag"]
+    },
+    {
+      "name": "adaptive_reflective_rag",
+      "search_query": "all:\"retrieval augmented generation\" AND (all:adaptive OR all:reflective OR all:corrective)",
+      "openalex_search": "adaptive reflective corrective retrieval augmented generation",
+      "tags": ["rag", "corrective-retrieval", "reflection"]
+    },
+    {
+      "name": "llm_agents",
+      "search_query": "all:\"large language model\" AND (all:agent OR all:agents)",
+      "openalex_search": "large language model agents",
+      "tags": ["agent", "llm"]
+    },
+    {
+      "name": "tool_using_agents",
+      "search_query": "all:\"language model\" AND (all:\"tool use\" OR all:\"tool learning\")",
+      "openalex_search": "language model agents tool use tool learning",
+      "tags": ["agent", "tool-use"]
+    },
+    {
+      "name": "knowledge_graph_rag",
+      "search_query": "all:\"knowledge graph\" AND all:\"retrieval augmented generation\"",
+      "openalex_search": "knowledge graph retrieval augmented generation",
+      "tags": ["rag", "knowledge-graph", "graphrag"]
+    },
+    {
+      "name": "multi_agent_llm",
+      "search_query": "(all:\"multi-agent\" OR all:\"multi agent\") AND all:\"language model\"",
+      "openalex_search": "multi agent large language models",
+      "tags": ["agent", "multi-agent"]
+    },
+    {
+      "name": "agent_planning_memory",
+      "search_query": "all:\"language model agent\" AND (all:planning OR all:memory)",
+      "openalex_search": "large language model agent planning memory",
+      "tags": ["agent", "planning", "memory"]
+    },
+    {
+      "name": "agent_reflection_reasoning",
+      "search_query": "all:\"language agent\" AND (all:reflection OR all:reasoning)",
+      "openalex_search": "language agents reflection reasoning",
+      "tags": ["agent", "reflection", "reasoning"]
+    },
+    {
+      "name": "agent_evaluation",
+      "search_query": "all:\"language model agent\" AND (all:evaluation OR all:benchmark)",
+      "openalex_search": "large language model agents evaluation benchmark",
+      "tags": ["agent", "evaluation"]
+    },
+    {
+      "name": "multi_hop_graph_rag",
+      "search_query": "all:\"retrieval augmented generation\" AND (all:\"multi-hop\" OR all:graph)",
+      "openalex_search": "multi hop graph retrieval augmented generation question answering",
+      "tags": ["rag", "knowledge-graph", "multi-hop"]
+    },
+    {
+      "name": "scientific_rag_qa",
+      "search_query": "all:\"retrieval augmented generation\" AND (all:scientific OR all:literature)",
+      "openalex_search": "scientific literature question answering retrieval augmented generation",
+      "tags": ["rag", "scientific-qa"]
+    }
+  ]
+}

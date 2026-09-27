@@ -1,0 +1,36 @@
+schema: spec-driven
+
+context: |
+  KG-CRAG 是面向计算机科学科研文献问答的知识图谱增强自纠错 RAG Agent。
+  项目采用 Python 3.11、FastAPI、Pydantic、Qdrant、Neo4j 与模块化单体架构。
+  稳定项目边界见 ../PROJECT_SPEC.md；迭代规划见 ../guidebooks/。
+  当前规格位于 openspec/specs/，待实施变更位于 openspec/changes/。
+  Dense、Sparse、Graph 和 Web 检索结果必须统一为可溯源 Evidence。
+  默认单元测试使用 Mock，不访问在线模型、搜索服务或真实数据库。
+
+rules:
+  proposal:
+    - 使用中文编写，明确目标、非目标、影响范围、依赖与风险
+    - 关联 ../PROJECT_SPEC.md 中适用的需求编号和对应迭代 guidebook
+    - 一个 change 保持单一主题；范围过大时拆分为依赖 change
+  specs:
+    - 使用可验证的强制性措辞，并为每项需求提供正常和异常场景
+    - 明确数据溯源、循环上限、外部来源标记和失败降级要求
+  design:
+    - 记录公共契约、关键取舍、配置项、兼容性、失败策略和迁移方式
+    - 在线依赖必须说明离线测试替身和集成测试边界
+  tasks:
+    - 按依赖顺序拆分为可独立验证的实现、测试和文档任务
+    - 每个任务应有明确完成条件，避免仅写“完成某模块”
+    - 涉及目录、入口文件或模块职责变化时，加入更新 ../PROJECT_MAP.md 的任务
+
+operations:
+  apply:
+    guidance:
+      - 实施前读取相关公共模型、接口、配置和相邻测试
+      - 只完成当前 change 的明确范围，并同步测试和文档
+      - 结构变化必须同步更新 ../PROJECT_MAP.md
+  archive:
+    guidance:
+      - 归档前确认 tasks、实现、验证记录和最终规格一致
+      - 在归档摘要中记录未验证的在线服务或环境限制

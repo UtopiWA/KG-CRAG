@@ -1,0 +1,21 @@
+dense:
+  top_k: 20
+  deduplicate_by_paper: false
+
+sparse:
+  top_k: 20
+
+graph:
+  top_k: 20
+  max_hops: 3
+  query_timeout_seconds: 10
+
+fusion:
+  method: rrf
+  rrf_k: 60
+  final_top_k: 10
+
+reranker:
+  enabled: true
+  top_k: 8
+

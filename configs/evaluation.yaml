@@ -1,0 +1,24 @@
+retrieval_metrics:
+  - recall_at_k
+  - precision_at_k
+  - mrr
+  - ndcg_at_k
+  - evidence_coverage
+
+answer_metrics:
+  - correctness
+  - faithfulness
+  - answer_relevance
+  - citation_precision
+  - citation_recall
+  - completeness
+  - hallucination_rate
+
+agent_metrics:
+  - task_success_rate
+  - recovery_rate
+  - average_retrieval_rounds
+  - web_fallback_rate
+  - latency
+  - tool_calls
+
