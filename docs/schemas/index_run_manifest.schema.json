@@ -1,0 +1,286 @@
+{
+  "$defs": {
+    "ErrorCode": {
+      "description": "供调用方稳定分支的错误代码。",
+      "enum": [
+        "validation_error",
+        "configuration_error",
+        "external_service_error",
+        "timeout_error",
+        "not_found",
+        "data_error",
+        "internal_error"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "description": "可安全序列化的统一错误详情。",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "context": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 32,
+          "title": "Context",
+          "type": "object"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "IndexItemResult": {
+      "additionalProperties": false,
+      "properties": {
+        "added": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Added",
+          "type": "integer"
+        },
+        "cache_hits": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cache Hits",
+          "type": "integer"
+        },
+        "chunk_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Chunk Count",
+          "type": "integer"
+        },
+        "deleted": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Deleted",
+          "type": "integer"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "latency_ms": {
+          "default": 0.0,
+          "minimum": 0.0,
+          "title": "Latency Ms",
+          "type": "number"
+        },
+        "paper_id": {
+          "minLength": 1,
+          "title": "Paper Id",
+          "type": "string"
+        },
+        "skipped": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Skipped",
+          "type": "integer"
+        },
+        "status": {
+          "$ref": "#/$defs/IndexItemStatus"
+        },
+        "updated": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Updated",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "paper_id",
+        "status"
+      ],
+      "title": "IndexItemResult",
+      "type": "object"
+    },
+    "IndexItemStatus": {
+      "enum": [
+        "succeeded",
+        "skipped",
+        "failed",
+        "planned"
+      ],
+      "title": "IndexItemStatus",
+      "type": "string"
+    },
+    "VectorCollectionIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "collection_name": {
+          "pattern": "^[a-z][a-z0-9_]{1,63}$",
+          "title": "Collection Name",
+          "type": "string"
+        },
+        "collection_version": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Collection Version",
+          "type": "string"
+        },
+        "dimensions": {
+          "minimum": 1,
+          "title": "Dimensions",
+          "type": "integer"
+        },
+        "distance": {
+          "enum": [
+            "cosine",
+            "dot",
+            "euclid"
+          ],
+          "title": "Distance",
+          "type": "string"
+        },
+        "embedding_model": {
+          "minLength": 1,
+          "title": "Embedding Model",
+          "type": "string"
+        },
+        "embedding_provider": {
+          "minLength": 1,
+          "title": "Embedding Provider",
+          "type": "string"
+        },
+        "embedding_revision": {
+          "minLength": 1,
+          "title": "Embedding Revision",
+          "type": "string"
+        },
+        "payload_fields": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Payload Fields",
+          "type": "array"
+        },
+        "schema_version": {
+          "minLength": 1,
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "embedding_provider",
+        "embedding_model",
+        "embedding_revision",
+        "dimensions",
+        "distance",
+        "payload_fields",
+        "collection_version",
+        "collection_name"
+      ],
+      "title": "VectorCollectionIdentity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "collection": {
+      "$ref": "#/$defs/VectorCollectionIdentity"
+    },
+    "config_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Config Hash",
+      "type": "string"
+    },
+    "corpus_snapshot_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Corpus Snapshot Hash",
+      "type": "string"
+    },
+    "dry_run": {
+      "title": "Dry Run",
+      "type": "boolean"
+    },
+    "finished_at": {
+      "format": "date-time",
+      "title": "Finished At",
+      "type": "string"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/IndexItemResult"
+      },
+      "title": "Items",
+      "type": "array"
+    },
+    "manifest_path": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Manifest Path"
+    },
+    "run_id": {
+      "minLength": 1,
+      "title": "Run Id",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "dry_run",
+    "config_hash",
+    "corpus_snapshot_hash",
+    "collection",
+    "started_at",
+    "finished_at",
+    "items"
+  ],
+  "title": "IndexRunManifest",
+  "type": "object"
+}

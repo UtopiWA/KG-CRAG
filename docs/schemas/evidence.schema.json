@@ -47,6 +47,65 @@
       "title": "EvidenceLocation",
       "type": "object"
     },
+    "EvidenceRanks": {
+      "additionalProperties": false,
+      "properties": {
+        "dense": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dense"
+        },
+        "fusion": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fusion"
+        },
+        "rerank": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rerank"
+        },
+        "sparse": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sparse"
+        }
+      },
+      "title": "EvidenceRanks",
+      "type": "object"
+    },
     "EvidenceScores": {
       "additionalProperties": false,
       "properties": {
@@ -136,6 +195,11 @@
       "title": "Evidence Id",
       "type": "string"
     },
+    "external": {
+      "default": false,
+      "title": "External",
+      "type": "boolean"
+    },
     "location": {
       "$ref": "#/$defs/EvidenceLocation"
     },
@@ -173,6 +237,9 @@
       ],
       "default": null,
       "title": "Paper Id"
+    },
+    "ranks": {
+      "$ref": "#/$defs/EvidenceRanks"
     },
     "scores": {
       "$ref": "#/$defs/EvidenceScores"

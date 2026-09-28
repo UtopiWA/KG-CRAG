@@ -1,6 +1,6 @@
 # KG-CRAG
 
-面向科研文献问答的知识图谱增强自纠错 RAG Agent。当前已完成工程基座和论文摄取流水线：可对受控本地 PDF 执行校验、版面解析、可追溯清洗、章节切分、质量门禁及版本化原子发布；检索与 Agent 工作流仍按后续迭代实现。
+面向科研文献问答的知识图谱增强自纠错 RAG Agent。当前已完成工程基座、论文摄取流水线和 Dense Vector RAG 基线：可从受控 PDF 发布稳定 Chunk，构建版本化 Qdrant 索引，执行证据约束问答，并在固定 pilot 上计算检索与引用指标。Sparse、Graph、动态路由和纠错工作流仍属于后续迭代。
 
 ## 环境要求
 
@@ -130,6 +130,21 @@ python scripts/verify_ingestion_outputs.py --all
 `--force` 可原子重建同一处理版本，`--interim-root` 和 `--processed-root` 可覆盖输出位置。退出码 `0` 表示全部成功或合法跳过，`1` 表示参数/配置/预校验失败，`2` 表示批次完成但至少一篇失败。完整目录、版本算法、门禁和故障恢复说明见 `docs/ingestion.md`。
 
 PDF 解析依赖固定为 `pymupdf==1.28.2`。该依赖采用 AGPL v3/商业双许可证；分发或部署前必须阅读 `docs/dependencies.md` 并确认许可方案。
+
+## Dense RAG 基线
+
+先启动 Qdrant，再按“规划、索引、查询、评测”的顺序运行：
+
+```bash
+docker compose up -d qdrant
+python scripts/build_vector_index.py --pilot --dry-run
+python scripts/build_vector_index.py --pilot
+python scripts/query_dense_rag.py "Voyager 的三个核心组件是什么？" --top-k 10
+python scripts/evaluate_dense_rag.py --dry-run
+python scripts/evaluate_dense_rag.py
+```
+
+索引 dry-run 只读取已发布 Chunk 和 Qdrant 点状态，不加载 Embedding 模型、不写缓存或集合；查询 dry-run 只校验配置、Prompt、过滤和上限。默认 `KG_CRAG_LLM_PROVIDER=mock` 便于离线验收；真实运行需显式配置 `openai-compatible` Provider 和本地密钥。首次实际索引会按固定 revision 下载 BGE-M3，具体版本、产物布局、重建/回滚和验收状态见 `docs/dense_rag.md`。
 
 ## 项目结构
 

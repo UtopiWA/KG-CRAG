@@ -1,6 +1,47 @@
+dense_embedding:
+  provider: sentence-transformers
+  model: BAAI/bge-m3
+  revision: 5617a9f61b028005a4858fdac845db406aefb181
+  dimensions: 1024
+  normalization: nfc-strip-v1
+  batch_size: 16
+  max_batch_size: 64
+  normalize: true
+  query_prefix: "Represent this sentence for searching relevant passages: "
+  document_prefix: ""
+  cache_root: data/processed/embedding-cache
+
+vector_collection:
+  prefix: kg_crag_dense
+  schema_version: v1
+  distance: cosine
+  allowed_filters:
+    - paper_id
+    - section
+    - processing_version
+
+indexing:
+  max_papers: 200
+  upsert_batch_size: 64
+  manifest_root: data/processed/index-runs
+
 dense:
   top_k: 20
+  max_top_k: 100
   deduplicate_by_paper: false
+  candidate_multiplier: 3
+  max_candidates: 100
+  min_score: 0.0
+
+generation:
+  prompt_path: prompts/dense-rag-v1.txt
+  max_evidence: 8
+  max_chars_per_evidence: 4000
+  max_context_chars: 20000
+  max_response_chars: 20000
+  min_evidence: 1
+  min_score: 0.0
+  output_root: data/processed/query-runs
 
 sparse:
   top_k: 20
@@ -18,4 +59,3 @@ fusion:
 reranker:
   enabled: true
   top_k: 8
-

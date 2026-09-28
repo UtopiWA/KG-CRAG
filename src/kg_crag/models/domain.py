@@ -75,6 +75,13 @@ class EvidenceScores(StrictModel):
     rerank: float | None = None
 
 
+class EvidenceRanks(StrictModel):
+    dense: int | None = Field(default=None, ge=1)
+    sparse: int | None = Field(default=None, ge=1)
+    fusion: int | None = Field(default=None, ge=1)
+    rerank: int | None = Field(default=None, ge=1)
+
+
 class Evidence(StrictModel):
     evidence_id: str = Field(min_length=1)
     content: str = Field(min_length=1)
@@ -83,6 +90,8 @@ class Evidence(StrictModel):
     paper_id: str | None = None
     location: EvidenceLocation = Field(default_factory=EvidenceLocation)
     scores: EvidenceScores = Field(default_factory=EvidenceScores)
+    ranks: EvidenceRanks = Field(default_factory=EvidenceRanks)
+    external: bool = False
     metadata: dict[str, str | int | float | bool | None] = Field(default_factory=dict)
 
 

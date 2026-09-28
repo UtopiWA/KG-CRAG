@@ -1,0 +1,70 @@
+{
+  "$defs": {
+    "PilotQuestion": {
+      "additionalProperties": false,
+      "properties": {
+        "question": {
+          "minLength": 5,
+          "title": "Question",
+          "type": "string"
+        },
+        "question_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]{2,63}$",
+          "title": "Question Id",
+          "type": "string"
+        },
+        "rationale": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "target_chunk_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Target Chunk Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "question_id",
+        "question",
+        "target_chunk_ids",
+        "rationale"
+      ],
+      "title": "PilotQuestion",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "corpus_snapshot_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Corpus Snapshot Hash",
+      "type": "string"
+    },
+    "questions": {
+      "items": {
+        "$ref": "#/$defs/PilotQuestion"
+      },
+      "maxItems": 200,
+      "minItems": 20,
+      "title": "Questions",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "corpus_snapshot_hash",
+    "questions"
+  ],
+  "title": "PilotQuestionSet",
+  "type": "object"
+}

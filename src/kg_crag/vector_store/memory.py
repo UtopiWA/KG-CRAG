@@ -12,9 +12,11 @@ from kg_crag.models import (
     ErrorDetail,
     Evidence,
     EvidenceLocation,
+    EvidenceRanks,
     EvidenceScores,
     EvidenceSourceType,
 )
+from kg_crag.vector_store.base import VectorRecordState
 
 FilterValue = str | int | bool
 
@@ -74,6 +76,8 @@ def _matches_filters(chunk: Chunk, filters: dict[str, FilterValue]) -> bool:
             actual: str | int | bool | None = chunk.paper_id
         elif key == "section":
             actual = chunk.section
+        elif key == "processing_version":
+            actual = chunk.processing_version
         else:
             return False
         if actual != expected:
@@ -84,10 +88,16 @@ def _matches_filters(chunk: Chunk, filters: dict[str, FilterValue]) -> bool:
 class InMemoryVectorStore:
     """实现 VectorStore Protocol 的轻量测试替身。"""
 
-    def __init__(self) -> None:
+    def __init__(self, *, collection_version: str = "memory-v1") -> None:
         self._records: dict[str, tuple[Chunk, tuple[float, ...]]] = {}
         self._dimension: int | None = None
+        self.collection_version = collection_version
         self.calls: list[VectorStoreCall] = []
+
+    async def ensure_collection(self, *, rebuild: bool = False) -> None:
+        if rebuild:
+            self._records.clear()
+            self._dimension = None
 
     @property
     def dimension(self) -> int | None:
@@ -161,7 +171,10 @@ class InMemoryVectorStore:
             if _matches_filters(chunk, selected_filters)
         ]
         scored.sort(key=lambda item: (-item[1], item[0].chunk_id))
-        return [self._to_evidence(chunk, score) for chunk, score in scored[:top_k]]
+        return [
+            self._to_evidence(chunk, score, rank)
+            for rank, (chunk, score) in enumerate(scored[:top_k], start=1)
+        ]
 
     async def delete_paper(self, paper_id: str) -> None:
         """只删除属于指定论文的记录。"""
@@ -173,15 +186,40 @@ class InMemoryVectorStore:
         for chunk_id in chunk_ids:
             del self._records[chunk_id]
 
-    @staticmethod
-    def _to_evidence(chunk: Chunk, score: float) -> Evidence:
+    async def record_state(self, paper_id: str) -> dict[str, VectorRecordState]:
+        return {
+            chunk_id: VectorRecordState(
+                content_hash=chunk.content_hash,
+                processing_version=chunk.processing_version,
+            )
+            for chunk_id, (chunk, _) in self._records.items()
+            if chunk.paper_id == paper_id
+        }
+
+    async def delete_stale(self, paper_id: str, keep_chunk_ids: set[str]) -> int:
+        stale = [
+            chunk_id
+            for chunk_id, (chunk, _) in self._records.items()
+            if chunk.paper_id == paper_id and chunk_id not in keep_chunk_ids
+        ]
+        for chunk_id in stale:
+            del self._records[chunk_id]
+        return len(stale)
+
+    def _to_evidence(self, chunk: Chunk, score: float, rank: int) -> Evidence:
         return Evidence(
-            evidence_id=f"vector:{chunk.chunk_id}",
+            evidence_id=f"dense:{self.collection_version}:{chunk.chunk_id}",
             content=chunk.text,
             source_type=EvidenceSourceType.CHUNK,
             source_id=chunk.chunk_id,
             paper_id=chunk.paper_id,
             location=EvidenceLocation(section=chunk.section, page=chunk.page_start),
             scores=EvidenceScores(dense=score),
-            metadata={"backend": "memory", "content_hash": chunk.content_hash},
+            ranks=EvidenceRanks(dense=rank),
+            external=False,
+            metadata={
+                "collection_version": self.collection_version,
+                "content_hash": chunk.content_hash,
+                "processing_version": chunk.processing_version,
+            },
         )

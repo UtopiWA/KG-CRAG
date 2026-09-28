@@ -1,3 +1,12 @@
+dense_rag:
+  questions_path: data/evaluation/dense_pilot_questions.json
+  results_root: data/evaluation/results/dense-rag
+  k_values:
+    - 5
+    - 10
+    - 20
+  max_questions: 200
+
 retrieval_metrics:
   - recall_at_k
   - precision_at_k
@@ -21,4 +30,3 @@ agent_metrics:
   - web_fallback_rate
   - latency
   - tool_calls
-

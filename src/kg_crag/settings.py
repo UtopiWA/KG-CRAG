@@ -30,7 +30,14 @@ class Settings(BaseSettings):
     llm_provider: str = Field(default="mock", min_length=1)
     llm_model: str = Field(default="mock-llm-v1", min_length=1)
     llm_api_key: str | None = None
+    llm_base_url: str | None = None
+    llm_timeout_seconds: float = Field(default=60.0, gt=0, le=300)
+    embedding_provider: str = Field(default="sentence-transformers", min_length=1)
     embedding_model: str = Field(default="BAAI/bge-m3", min_length=1)
+    embedding_revision: str = Field(
+        default="5617a9f61b028005a4858fdac845db406aefb181",
+        min_length=1,
+    )
     reranker_model: str = Field(default="BAAI/bge-reranker-v2-m3", min_length=1)
     web_search_provider: str = Field(default="disabled", min_length=1)
     web_search_api_key: str | None = None

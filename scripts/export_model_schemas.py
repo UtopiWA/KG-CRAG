@@ -10,13 +10,17 @@ from pydantic import BaseModel
 
 from kg_crag.models import (
     Chunk,
+    DenseEvaluationReport,
+    DenseRAGResult,
     ErrorDetail,
     Evidence,
     HealthResponse,
+    IndexRunManifest,
     IngestionRunManifest,
     Paper,
     ParsedDocument,
     PilotManifest,
+    PilotQuestionSet,
     QualityReport,
     RetrievalEvaluation,
     RouteDecision,
@@ -28,13 +32,17 @@ DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "docs" / "schemas"
 
 SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "chunk": Chunk,
+    "dense_evaluation_report": DenseEvaluationReport,
+    "dense_rag_result": DenseRAGResult,
     "error_detail": ErrorDetail,
     "evidence": Evidence,
     "health_response": HealthResponse,
     "ingestion_run_manifest": IngestionRunManifest,
+    "index_run_manifest": IndexRunManifest,
     "paper": Paper,
     "parsed_document": ParsedDocument,
     "pilot_manifest": PilotManifest,
+    "pilot_question_set": PilotQuestionSet,
     "quality_report": QualityReport,
     "retrieval_evaluation": RetrievalEvaluation,
     "route_decision": RouteDecision,
@@ -64,6 +72,8 @@ def export_schemas(output_dir: Path, *, check: bool) -> int:
         if check:
             if not destination.is_file() or destination.read_bytes() != expected:
                 mismatches.append(destination)
+            continue
+        if destination.is_file() and destination.read_bytes() == expected:
             continue
         output_dir.mkdir(parents=True, exist_ok=True)
         destination.write_bytes(expected)

@@ -1,0 +1,787 @@
+{
+  "$defs": {
+    "AnswerClaim": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Citation Ids",
+          "type": "array"
+        },
+        "claim_type": {
+          "$ref": "#/$defs/ClaimType"
+        },
+        "text": {
+          "maxLength": 10000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "claim_type"
+      ],
+      "title": "AnswerClaim",
+      "type": "object"
+    },
+    "Citation": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_id": {
+          "pattern": "^E[1-9][0-9]*$",
+          "title": "Citation Id",
+          "type": "string"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "page": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page"
+        },
+        "paper_id": {
+          "minLength": 1,
+          "title": "Paper Id",
+          "type": "string"
+        },
+        "section": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Section"
+        },
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "citation_id",
+        "evidence_id",
+        "source_id",
+        "paper_id"
+      ],
+      "title": "Citation",
+      "type": "object"
+    },
+    "ClaimType": {
+      "enum": [
+        "fact",
+        "synthesis",
+        "inference",
+        "uncertain",
+        "conflict"
+      ],
+      "title": "ClaimType",
+      "type": "string"
+    },
+    "DenseEvaluationItem": {
+      "additionalProperties": false,
+      "properties": {
+        "cited_chunk_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Cited Chunk Ids",
+          "type": "array"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "latency_ms": {
+          "minimum": 0.0,
+          "title": "Latency Ms",
+          "type": "number"
+        },
+        "question_id": {
+          "minLength": 1,
+          "title": "Question Id",
+          "type": "string"
+        },
+        "result": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DenseRAGResult"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "retrieved_chunk_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Retrieved Chunk Ids",
+          "type": "array"
+        },
+        "status": {
+          "$ref": "#/$defs/EvaluationStatus"
+        }
+      },
+      "required": [
+        "question_id",
+        "status",
+        "latency_ms"
+      ],
+      "title": "DenseEvaluationItem",
+      "type": "object"
+    },
+    "DenseEvaluationMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_precision": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Citation Precision",
+          "type": "number"
+        },
+        "citation_recall": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Citation Recall",
+          "type": "number"
+        },
+        "failure_count": {
+          "minimum": 0,
+          "title": "Failure Count",
+          "type": "integer"
+        },
+        "mrr": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Mrr",
+          "type": "number"
+        },
+        "ndcg_at_k": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Ndcg At K",
+          "type": "object"
+        },
+        "recall_at_k": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Recall At K",
+          "type": "object"
+        }
+      },
+      "required": [
+        "mrr",
+        "citation_precision",
+        "citation_recall",
+        "failure_count"
+      ],
+      "title": "DenseEvaluationMetrics",
+      "type": "object"
+    },
+    "DenseRAGResult": {
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "minLength": 1,
+          "title": "Answer",
+          "type": "string"
+        },
+        "citations": {
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "title": "Citations",
+          "type": "array"
+        },
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/AnswerClaim"
+          },
+          "title": "Claims",
+          "type": "array"
+        },
+        "collection_version": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Collection Version",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "config_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Config Hash",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "insufficient_evidence": {
+          "title": "Insufficient Evidence",
+          "type": "boolean"
+        },
+        "prompt_version": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "question": {
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "retrieval_path": {
+          "items": {
+            "const": "dense",
+            "type": "string"
+          },
+          "title": "Retrieval Path",
+          "type": "array"
+        },
+        "run_id": {
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "trace": {
+          "items": {
+            "$ref": "#/$defs/TraceEvent"
+          },
+          "title": "Trace",
+          "type": "array"
+        },
+        "trace_id": {
+          "minLength": 1,
+          "title": "Trace Id",
+          "type": "string"
+        },
+        "used_external": {
+          "const": false,
+          "default": false,
+          "title": "Used External",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "run_id",
+        "trace_id",
+        "question",
+        "answer",
+        "confidence",
+        "insufficient_evidence",
+        "config_hash",
+        "prompt_version",
+        "collection_version"
+      ],
+      "title": "DenseRAGResult",
+      "type": "object"
+    },
+    "ErrorCode": {
+      "description": "供调用方稳定分支的错误代码。",
+      "enum": [
+        "validation_error",
+        "configuration_error",
+        "external_service_error",
+        "timeout_error",
+        "not_found",
+        "data_error",
+        "internal_error"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "description": "可安全序列化的统一错误详情。",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "context": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 32,
+          "title": "Context",
+          "type": "object"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "EvaluationStatus": {
+      "enum": [
+        "succeeded",
+        "failed"
+      ],
+      "title": "EvaluationStatus",
+      "type": "string"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "minLength": 1,
+          "title": "Content",
+          "type": "string"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "external": {
+          "default": false,
+          "title": "External",
+          "type": "boolean"
+        },
+        "location": {
+          "$ref": "#/$defs/EvidenceLocation"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Metadata",
+          "type": "object"
+        },
+        "paper_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Paper Id"
+        },
+        "ranks": {
+          "$ref": "#/$defs/EvidenceRanks"
+        },
+        "scores": {
+          "$ref": "#/$defs/EvidenceScores"
+        },
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_type": {
+          "$ref": "#/$defs/EvidenceSourceType"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "content",
+        "source_type",
+        "source_id"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "EvidenceLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "page": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page"
+        },
+        "section": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Section"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "title": "EvidenceLocation",
+      "type": "object"
+    },
+    "EvidenceRanks": {
+      "additionalProperties": false,
+      "properties": {
+        "dense": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dense"
+        },
+        "fusion": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fusion"
+        },
+        "rerank": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rerank"
+        },
+        "sparse": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sparse"
+        }
+      },
+      "title": "EvidenceRanks",
+      "type": "object"
+    },
+    "EvidenceScores": {
+      "additionalProperties": false,
+      "properties": {
+        "dense": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dense"
+        },
+        "fusion": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fusion"
+        },
+        "graph": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph"
+        },
+        "rerank": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rerank"
+        },
+        "sparse": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sparse"
+        }
+      },
+      "title": "EvidenceScores",
+      "type": "object"
+    },
+    "EvidenceSourceType": {
+      "enum": [
+        "chunk",
+        "graph",
+        "web"
+      ],
+      "title": "EvidenceSourceType",
+      "type": "string"
+    },
+    "TraceEvent": {
+      "additionalProperties": false,
+      "description": "工作流 TraceEvent v1 的最小稳定结构。",
+      "properties": {
+        "details": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 64,
+          "title": "Details",
+          "type": "object"
+        },
+        "event": {
+          "minLength": 1,
+          "title": "Event",
+          "type": "string"
+        },
+        "node": {
+          "minLength": 1,
+          "title": "Node",
+          "type": "string"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "v1",
+          "default": "v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "trace_id": {
+          "minLength": 1,
+          "title": "Trace Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "trace_id",
+        "sequence",
+        "node",
+        "event",
+        "occurred_at"
+      ],
+      "title": "TraceEvent",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "baseline_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Baseline Id",
+      "type": "string"
+    },
+    "collection_version": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Collection Version",
+      "type": "string"
+    },
+    "config_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Config Hash",
+      "type": "string"
+    },
+    "corpus_snapshot_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Corpus Snapshot Hash",
+      "type": "string"
+    },
+    "finished_at": {
+      "format": "date-time",
+      "title": "Finished At",
+      "type": "string"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/DenseEvaluationItem"
+      },
+      "title": "Items",
+      "type": "array"
+    },
+    "metrics": {
+      "$ref": "#/$defs/DenseEvaluationMetrics"
+    },
+    "prompt_version": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Prompt Version",
+      "type": "string"
+    },
+    "run_id": {
+      "minLength": 1,
+      "title": "Run Id",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "baseline_id",
+    "run_id",
+    "corpus_snapshot_hash",
+    "config_hash",
+    "prompt_version",
+    "collection_version",
+    "started_at",
+    "finished_at",
+    "metrics",
+    "items"
+  ],
+  "title": "DenseEvaluationReport",
+  "type": "object"
+}
