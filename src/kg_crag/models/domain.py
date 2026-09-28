@@ -43,6 +43,8 @@ class Chunk(StrictModel):
     text: str = Field(min_length=1)
     token_count: int = Field(ge=1)
     content_hash: str = Field(min_length=8)
+    ordinal: int = Field(default=0, ge=0)
+    processing_version: str = Field(default="v1", min_length=1)
 
     @model_validator(mode="after")
     def page_range_is_ordered(self) -> Chunk:

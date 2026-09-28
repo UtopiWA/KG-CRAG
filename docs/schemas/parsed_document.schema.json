@@ -1,0 +1,356 @@
+{
+  "$defs": {
+    "BlockKind": {
+      "enum": [
+        "text",
+        "title",
+        "table",
+        "formula",
+        "image",
+        "unknown"
+      ],
+      "title": "BlockKind",
+      "type": "string"
+    },
+    "BoundingBox": {
+      "additionalProperties": false,
+      "properties": {
+        "x0": {
+          "minimum": 0.0,
+          "title": "X0",
+          "type": "number"
+        },
+        "x1": {
+          "minimum": 0.0,
+          "title": "X1",
+          "type": "number"
+        },
+        "y0": {
+          "minimum": 0.0,
+          "title": "Y0",
+          "type": "number"
+        },
+        "y1": {
+          "minimum": 0.0,
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "BoundingBox",
+      "type": "object"
+    },
+    "DocumentBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "bbox": {
+          "$ref": "#/$defs/BoundingBox"
+        },
+        "block_id": {
+          "minLength": 1,
+          "title": "Block Id",
+          "type": "string"
+        },
+        "bold": {
+          "default": false,
+          "title": "Bold",
+          "type": "boolean"
+        },
+        "font_size": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Font Size"
+        },
+        "kind": {
+          "$ref": "#/$defs/BlockKind",
+          "default": "text"
+        },
+        "order": {
+          "minimum": 0,
+          "title": "Order",
+          "type": "integer"
+        },
+        "page_number": {
+          "minimum": 1,
+          "title": "Page Number",
+          "type": "integer"
+        },
+        "source_block_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Block Ids",
+          "type": "array"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "block_id",
+        "page_number",
+        "order",
+        "bbox",
+        "text"
+      ],
+      "title": "DocumentBlock",
+      "type": "object"
+    },
+    "DocumentPage": {
+      "additionalProperties": false,
+      "properties": {
+        "blocks": {
+          "items": {
+            "$ref": "#/$defs/DocumentBlock"
+          },
+          "title": "Blocks",
+          "type": "array"
+        },
+        "height": {
+          "exclusiveMinimum": 0.0,
+          "title": "Height",
+          "type": "number"
+        },
+        "page_number": {
+          "minimum": 1,
+          "title": "Page Number",
+          "type": "integer"
+        },
+        "width": {
+          "exclusiveMinimum": 0.0,
+          "title": "Width",
+          "type": "number"
+        }
+      },
+      "required": [
+        "page_number",
+        "width",
+        "height"
+      ],
+      "title": "DocumentPage",
+      "type": "object"
+    },
+    "DocumentSection": {
+      "additionalProperties": false,
+      "properties": {
+        "block_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Block Ids",
+          "type": "array"
+        },
+        "page_end": {
+          "minimum": 1,
+          "title": "Page End",
+          "type": "integer"
+        },
+        "page_start": {
+          "minimum": 1,
+          "title": "Page Start",
+          "type": "integer"
+        },
+        "section_id": {
+          "minLength": 1,
+          "title": "Section Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "section_id",
+        "title",
+        "page_start",
+        "page_end",
+        "block_ids"
+      ],
+      "title": "DocumentSection",
+      "type": "object"
+    },
+    "ParseWarning": {
+      "additionalProperties": false,
+      "properties": {
+        "block_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Block Id"
+        },
+        "code": {
+          "$ref": "#/$defs/ParseWarningCode"
+        },
+        "details": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 32,
+          "title": "Details",
+          "type": "object"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "page_number": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Number"
+        },
+        "severity": {
+          "$ref": "#/$defs/WarningSeverity"
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "message"
+      ],
+      "title": "ParseWarning",
+      "type": "object"
+    },
+    "ParseWarningCode": {
+      "enum": [
+        "multi_column",
+        "complex_layout",
+        "table_detected",
+        "formula_detected",
+        "image_skipped",
+        "low_text",
+        "oversized_block",
+        "heading_fallback",
+        "header_footer_removed",
+        "adjacent_duplicate_removed"
+      ],
+      "title": "ParseWarningCode",
+      "type": "string"
+    },
+    "WarningSeverity": {
+      "enum": [
+        "info",
+        "warning",
+        "error"
+      ],
+      "title": "WarningSeverity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "input_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Input Sha256",
+      "type": "string"
+    },
+    "page_count": {
+      "minimum": 1,
+      "title": "Page Count",
+      "type": "integer"
+    },
+    "pages": {
+      "items": {
+        "$ref": "#/$defs/DocumentPage"
+      },
+      "minItems": 1,
+      "title": "Pages",
+      "type": "array"
+    },
+    "paper_id": {
+      "minLength": 1,
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "parser_name": {
+      "minLength": 1,
+      "title": "Parser Name",
+      "type": "string"
+    },
+    "parser_version": {
+      "minLength": 1,
+      "title": "Parser Version",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sections": {
+      "items": {
+        "$ref": "#/$defs/DocumentSection"
+      },
+      "minItems": 1,
+      "title": "Sections",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "$ref": "#/$defs/ParseWarning"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "paper_id",
+    "input_sha256",
+    "parser_name",
+    "parser_version",
+    "page_count",
+    "pages",
+    "sections"
+  ],
+  "title": "ParsedDocument",
+  "type": "object"
+}

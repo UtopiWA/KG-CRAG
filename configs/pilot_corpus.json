@@ -1,0 +1,110 @@
+{
+  "schema_version": "v1",
+  "papers": [
+    {
+      "paper_id": "arxiv:2303.17760",
+      "arxiv_id": "2303.17760",
+      "input_sha256": "926c73c2ae9f9abc7612ab58373e428476f4de55db78646ed59de09810db7777",
+      "layout_labels": ["two_column", "table", "formula", "full_width_element"],
+      "selection_reason": "人工查看第 1/3/5/7 页：双栏正文、跨栏标题、公式和表格同时存在。"
+    },
+    {
+      "paper_id": "arxiv:2304.03442",
+      "arxiv_id": "2304.03442",
+      "input_sha256": "1b31e77fb24d25d7598f2c49e955d12a28b95a6dabad34acdac40f44bfb7a139",
+      "layout_labels": ["two_column", "full_width_element", "anomalous_layout"],
+      "selection_reason": "人工查看第 1/3/5/7 页：双栏正文中穿插大幅彩色地图和多面板图。"
+    },
+    {
+      "paper_id": "arxiv:2305.10601",
+      "arxiv_id": "2305.10601",
+      "input_sha256": "79c5237e3f63953a73f2b0d6894327702ee1f7e981450c251bb1b5cb4f8d7b8f",
+      "layout_labels": ["two_column", "table", "formula"],
+      "selection_reason": "人工查看第 1/3/5/7 页：双栏、数学表达式、表格和流程图密集。"
+    },
+    {
+      "paper_id": "arxiv:2305.16291",
+      "arxiv_id": "2305.16291",
+      "input_sha256": "769a4e33ddeeb73870849232eece49afe882c2d146362e33917ccb432ba0efb8",
+      "layout_labels": ["two_column", "table", "full_width_element", "anomalous_layout"],
+      "selection_reason": "人工查看第 1/3/5/7 页：包含彩色图、代码块、宽图与结果表。"
+    },
+    {
+      "paper_id": "arxiv:2307.16789",
+      "arxiv_id": "2307.16789",
+      "input_sha256": "295299721d67b250661fb6598bee86a2e9fe766241fdc08dd7cf389e984b4d1a",
+      "layout_labels": ["two_column", "table", "formula", "full_width_element"],
+      "selection_reason": "人工查看第 1/3/5/7 页：双栏正文、跨栏流程图、公式和多张表格。"
+    },
+    {
+      "paper_id": "arxiv:2308.00352",
+      "arxiv_id": "2308.00352",
+      "input_sha256": "17582e47647fac8eaa3681feade41c8408310c4133acc5c6823565fbe880e1ac",
+      "layout_labels": ["two_column", "full_width_element"],
+      "selection_reason": "人工查看第 1/3/5/7 页：双栏正文中含跨栏软件截图与柱状图。"
+    },
+    {
+      "paper_id": "arxiv:2308.03688",
+      "arxiv_id": "2308.03688",
+      "input_sha256": "9c780e35fc0b2de6c2e21e0572f6aaaadcf7ecdd56d63cfaae2b415bc0dc83c3",
+      "layout_labels": ["two_column", "table", "full_width_element"],
+      "selection_reason": "人工查看第 1/3/5/7 页：双栏论文包含超宽密集基准结果表。"
+    },
+    {
+      "paper_id": "arxiv:2310.04406",
+      "arxiv_id": "2310.04406",
+      "input_sha256": "04c1e9cb00f384052739c53bcecb75626bf1f58f66c379cc289ea60ffc988635",
+      "layout_labels": ["two_column", "table", "formula", "full_width_element"],
+      "selection_reason": "人工查看第 1/3/5/7 页：双栏、公式、比较表和跨栏树搜索图并存。"
+    },
+    {
+      "paper_id": "arxiv:2311.12983",
+      "arxiv_id": "2311.12983",
+      "input_sha256": "5bf6f968d4f5cd20acdfca6e81e3c9f5277bb66061fad7a02e35442dff812ba0",
+      "layout_labels": ["plain_text", "full_width_element", "anomalous_layout"],
+      "selection_reason": "人工查看第 1/3/5/7 页：宽单栏正文与大幅提示词/代码示例框形成非典型版面。"
+    },
+    {
+      "paper_id": "arxiv:2312.07559",
+      "arxiv_id": "2312.07559",
+      "input_sha256": "6b31783222422e0e5d1338df97dc0d833ed1dc8a998af2867eecfe009146689b",
+      "layout_labels": ["two_column", "table", "full_width_element"],
+      "selection_reason": "人工查看第 1/3/5/7 页：双栏正文包含工作流图、代码框和结果表。"
+    },
+    {
+      "paper_id": "arxiv:2404.16130",
+      "arxiv_id": "2404.16130",
+      "input_sha256": "730f1a9f38d16689900969a3eeeb1b31e45eda1dcc1f37a043afa90aff76c867",
+      "layout_labels": ["two_column", "table", "plain_text"],
+      "selection_reason": "人工查看第 1/3/5/7 页：标准双栏正文与算法、表格区域清晰可辨。"
+    },
+    {
+      "paper_id": "arxiv:2405.14831",
+      "arxiv_id": "2405.14831",
+      "input_sha256": "14671c78fc7de99d83bb9e52e2d5b335d4756066925e67df1a25c0e272133aad",
+      "layout_labels": ["two_column", "table", "formula"],
+      "selection_reason": "人工查看第 1/3/5/7 页：标准双栏中有行内公式和多张密集结果表。"
+    },
+    {
+      "paper_id": "arxiv:2408.04187",
+      "arxiv_id": "2408.04187",
+      "input_sha256": "c1f7caa804e849a941fa106272f0fbc3ee0c1ba49fb5b4c45e9ca1d3f1c8a113",
+      "layout_labels": ["two_column", "table", "formula", "anomalous_layout"],
+      "selection_reason": "人工查看第 1/3/5/7 页：不规则双栏宽度、复杂流程图、公式与超密表格。"
+    },
+    {
+      "paper_id": "arxiv:2410.05779",
+      "arxiv_id": "2410.05779",
+      "input_sha256": "bd72eebf611df1366b251c16ce4eac7aac699e519783c586feb2c5c43899347a",
+      "layout_labels": ["plain_text", "table", "formula", "full_width_element"],
+      "selection_reason": "人工查看第 1/3/5/7 页：宽单栏正文含全宽架构图、公式和结果表。"
+    },
+    {
+      "paper_id": "arxiv:2501.09136",
+      "arxiv_id": "2501.09136",
+      "input_sha256": "e1041580a2fecec215b203f5232d558cd6e2802af3d4f5f04fe8bff5080460f8",
+      "layout_labels": ["plain_text", "full_width_element", "anomalous_layout"],
+      "selection_reason": "人工查看第 1/3/5/7 页：宽单栏综述包含大幅分类图和稀疏文本页。"
+    }
+  ]
+}

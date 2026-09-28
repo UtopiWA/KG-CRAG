@@ -1,6 +1,6 @@
 # KG-CRAG
 
-面向科研文献问答的知识图谱增强自纠错 RAG Agent。当前仓库处于阶段 0：提供可演进的工程骨架、核心数据契约、外部服务接口、Mock 实现、基础 API、基础设施配置，以及可审计的公开论文语料获取工具。
+面向科研文献问答的知识图谱增强自纠错 RAG Agent。当前已完成工程基座和论文摄取流水线：可对受控本地 PDF 执行校验、版面解析、可追溯清洗、章节切分、质量门禁及版本化原子发布；检索与 Agent 工作流仍按后续迭代实现。
 
 ## 环境要求
 
@@ -106,6 +106,30 @@ python scripts/collect_arxiv_corpus.py --refresh-discovery --discovery-source bo
 - `data/raw/download_manifest.jsonl`：逐次获取/跳过/失败记录
 
 下载前应确认使用场景符合对应论文的授权条件。原始 PDF 和运行时元数据默认被 Git 忽略。
+
+## 摄取本地论文
+
+摄取只读取 `data/raw`，默认安全选择 15 篇已人工核验版面的 pilot。先 dry-run，再实际执行并重读产物：
+
+```bash
+# 默认等价于 --pilot，不创建任何输出
+python scripts/ingest_corpus.py --dry-run
+
+# 生成 pilot 产物；相同哈希与处理版本会校验后跳过
+python scripts/ingest_corpus.py --pilot
+python scripts/verify_ingestion_outputs.py --pilot
+
+# 单篇调试
+python scripts/ingest_corpus.py --paper-id arxiv:2312.07559
+
+# 仅当 pilot 自动质量与 configs/pilot_review.json 人工门禁都有效时可运行
+python scripts/ingest_corpus.py --all --limit 110
+python scripts/verify_ingestion_outputs.py --all
+```
+
+`--force` 可原子重建同一处理版本，`--interim-root` 和 `--processed-root` 可覆盖输出位置。退出码 `0` 表示全部成功或合法跳过，`1` 表示参数/配置/预校验失败，`2` 表示批次完成但至少一篇失败。完整目录、版本算法、门禁和故障恢复说明见 `docs/ingestion.md`。
+
+PDF 解析依赖固定为 `pymupdf==1.28.2`。该依赖采用 AGPL v3/商业双许可证；分发或部署前必须阅读 `docs/dependencies.md` 并确认许可方案。
 
 ## 项目结构
 

@@ -1,0 +1,82 @@
+{
+  "$defs": {
+    "LayoutLabel": {
+      "description": "试点语料人工确认的版面特征。",
+      "enum": [
+        "plain_text",
+        "two_column",
+        "table",
+        "formula",
+        "full_width_element",
+        "anomalous_layout"
+      ],
+      "title": "LayoutLabel",
+      "type": "string"
+    },
+    "PilotPaper": {
+      "additionalProperties": false,
+      "properties": {
+        "arxiv_id": {
+          "minLength": 1,
+          "title": "Arxiv Id",
+          "type": "string"
+        },
+        "input_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Input Sha256",
+          "type": "string"
+        },
+        "layout_labels": {
+          "items": {
+            "$ref": "#/$defs/LayoutLabel"
+          },
+          "minItems": 1,
+          "title": "Layout Labels",
+          "type": "array"
+        },
+        "paper_id": {
+          "minLength": 1,
+          "title": "Paper Id",
+          "type": "string"
+        },
+        "selection_reason": {
+          "minLength": 1,
+          "title": "Selection Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "paper_id",
+        "arxiv_id",
+        "input_sha256",
+        "layout_labels",
+        "selection_reason"
+      ],
+      "title": "PilotPaper",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "papers": {
+      "items": {
+        "$ref": "#/$defs/PilotPaper"
+      },
+      "maxItems": 20,
+      "minItems": 10,
+      "title": "Papers",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "papers"
+  ],
+  "title": "PilotManifest",
+  "type": "object"
+}

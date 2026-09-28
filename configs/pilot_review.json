@@ -1,0 +1,32 @@
+{
+  "schema_version": "v1",
+  "manifest_hash": "6bf1c2ec087a2f8257e5ac92f06fec91dbe150985cad0027d44e2960ff0b1654",
+  "status": "passed",
+  "processing_versions": {
+    "arxiv:2303.17760": "75c245a3b5fe89aaccbda770d0d3eb137c1e89003442e54b4c0ed09e4f3b2b4c",
+    "arxiv:2304.03442": "ca70115a340eadde469ad30ff849b86b4db7eb5fd9b981e790c176cb2f78210e",
+    "arxiv:2305.10601": "34dcc3599de4a67af66d2a6ded4209e8824f60aa748b0d30fbe14591b604458d",
+    "arxiv:2305.16291": "e3d8edc671f91f8b2a5aad48237c8d505c30050edbec22be6413300c13f06258",
+    "arxiv:2307.16789": "9b5599a8989a8700d73804213c1ea62585ffe1a46ce5f9629c362011a98e6962",
+    "arxiv:2308.00352": "b9906f38e6d150ae000ef6af2efc6450d3a0b9a26dccc22e821ba1602572a051",
+    "arxiv:2308.03688": "33b4dc2bde13fc838ac81c8fdb91752d3d7e385378b3d92d03d311fc48097e58",
+    "arxiv:2310.04406": "840ed5cbacaded089ad3af567e5196b8b2f87f3018da1f8077a7d0df085cd0f2",
+    "arxiv:2311.12983": "f151695e98ee9d8efdeae23caaab3f22e2dbec00c19b641b67db78d6a0163521",
+    "arxiv:2312.07559": "725a9463ab31e99753f99c36f23cd2002777024f08518f6d95a8afabcd5a7d97",
+    "arxiv:2404.16130": "06bf822bc0578c1fc5ff4f45ecd117d005d24c711ed729ea7c3a699bc95e23de",
+    "arxiv:2405.14831": "3a3415f6432072b1a3009ae21e2ef8bebb636b48c920439bdb2712c20036a560",
+    "arxiv:2408.04187": "19bf26473ea7e1bdad1c05ca1c4bed230de26d82a9172e0ec6f42166bcdf2668",
+    "arxiv:2410.05779": "dae78d2e512cfcc193cb9e58d4099ba304f1e287bb8c668ae1875eadb4f5feed",
+    "arxiv:2501.09136": "9bbe0b32ffc7041ecd7b481b63ed6a62fea704512a963f0e44c1f6b5e7bb9629"
+  },
+  "reviewed_labels": [
+    "plain_text",
+    "two_column",
+    "table",
+    "formula",
+    "full_width_element",
+    "anomalous_layout"
+  ],
+  "reviewed_at": "2026-09-28T00:16:00Z",
+  "notes": "已抽检普通单栏、双栏、跨栏元素、表格、公式和异常版面。修复空格 span 丢失后重跑，15 篇均通过结构、哈希、页码覆盖和幂等复用检查，未发现系统性正文缺失或跨栏错序。"
+}

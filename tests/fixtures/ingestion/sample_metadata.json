@@ -1,0 +1,9 @@
+{
+  "paper_id": "arxiv:2401.00001",
+  "title": "Offline parser fixture",
+  "authors": [{"author_id": null, "name": "Fixture Author"}],
+  "arxiv_id": "2401.00001",
+  "source_url": "https://arxiv.org/abs/2401.00001",
+  "pdf_path": "data/raw/papers/sample.pdf",
+  "ingestion_version": "v1"
+}

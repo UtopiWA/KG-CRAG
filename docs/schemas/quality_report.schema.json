@@ -1,0 +1,122 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Artifact Hashes",
+      "type": "object"
+    },
+    "average_chunk_tokens": {
+      "default": 0,
+      "minimum": 0.0,
+      "title": "Average Chunk Tokens",
+      "type": "number"
+    },
+    "block_count": {
+      "minimum": 0,
+      "title": "Block Count",
+      "type": "integer"
+    },
+    "character_count": {
+      "minimum": 0,
+      "title": "Character Count",
+      "type": "integer"
+    },
+    "chunk_count": {
+      "minimum": 0,
+      "title": "Chunk Count",
+      "type": "integer"
+    },
+    "empty_text_pages": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Empty Text Pages",
+      "type": "array"
+    },
+    "failures": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Failures",
+      "type": "array"
+    },
+    "max_chunk_tokens": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Max Chunk Tokens",
+      "type": "integer"
+    },
+    "min_chunk_tokens": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Min Chunk Tokens",
+      "type": "integer"
+    },
+    "page_count": {
+      "minimum": 1,
+      "title": "Page Count",
+      "type": "integer"
+    },
+    "page_coverage_ratio": {
+      "default": 0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Page Coverage Ratio",
+      "type": "number"
+    },
+    "pages_with_chunks": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Pages With Chunks",
+      "type": "array"
+    },
+    "paper_id": {
+      "minLength": 1,
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "passed": {
+      "default": false,
+      "title": "Passed",
+      "type": "boolean"
+    },
+    "processing_version": {
+      "minLength": 1,
+      "title": "Processing Version",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "section_count": {
+      "minimum": 1,
+      "title": "Section Count",
+      "type": "integer"
+    },
+    "warning_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Warning Counts",
+      "type": "object"
+    }
+  },
+  "required": [
+    "paper_id",
+    "processing_version",
+    "page_count",
+    "block_count",
+    "section_count",
+    "chunk_count",
+    "character_count"
+  ],
+  "title": "QualityReport",
+  "type": "object"
+}

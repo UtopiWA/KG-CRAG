@@ -11,6 +11,12 @@
       "title": "Content Hash",
       "type": "string"
     },
+    "ordinal": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Ordinal",
+      "type": "integer"
+    },
     "page_end": {
       "anyOf": [
         {
@@ -40,6 +46,12 @@
     "paper_id": {
       "minLength": 1,
       "title": "Paper Id",
+      "type": "string"
+    },
+    "processing_version": {
+      "default": "v1",
+      "minLength": 1,
+      "title": "Processing Version",
       "type": "string"
     },
     "section": {

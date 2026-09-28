@@ -14,8 +14,35 @@ workflow:
   enable_web_fallback: false
 
 chunking:
+  tokenizer: regex-v1
   target_tokens: 500
   min_tokens: 300
   max_tokens: 700
   overlap_tokens: 75
 
+ingestion:
+  limits:
+    max_papers: 200
+    max_pdf_bytes: 104857600
+    max_pages: 500
+    min_page_chars: 20
+    min_document_chars: 200
+  paths:
+    raw_root: data/raw
+    pilot_manifest: configs/pilot_corpus.json
+    pilot_review: configs/pilot_review.json
+    interim_root: data/interim
+    processed_root: data/processed
+
+parsing:
+  full_width_ratio: 0.72
+  column_gap_ratio: 0.08
+  heading_font_ratio: 1.15
+  heading_max_chars: 160
+
+cleaning:
+  version: clean-v1
+  margin_ratio: 0.10
+  repeated_margin_min_pages: 3
+  repeated_margin_coverage: 0.60
+  remove_adjacent_duplicates: true
