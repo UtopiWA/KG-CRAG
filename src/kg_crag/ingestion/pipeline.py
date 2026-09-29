@@ -51,6 +51,7 @@ class IngestionPipeline:
 
     def process(self, raw: RawPaperInput, *, force: bool = False) -> IngestionItemResult:
         version = self.version_for(raw)
+        # 处理版本同时绑定原始文件、解析器和配置；只有哈希复验通过才可复用产物。
         if (
             not force
             and (hashes := self.store.validate_existing(raw.paper_id, version)) is not None
@@ -62,6 +63,7 @@ class IngestionPipeline:
                 artifacts=hashes,
                 reason="matching verified artifacts already exist",
             )
+        # 在各阶段重复核对论文和输入哈希，避免元数据、PDF 与派生产物串篇。
         paper = normalize_paper(raw.metadata, processing_version=version)
         if paper.paper_id != raw.paper_id:
             raise ValueError("normalized paper ID conflicts with the validated raw input")
@@ -90,6 +92,7 @@ class IngestionPipeline:
             chunking,
             processing_version=version,
         )
+        # 质量门禁位于发布之前，未通过的中间结果不会成为可复用的正式产物。
         if not quality.passed:
             raise KGCRAGError(
                 ErrorDetail(

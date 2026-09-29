@@ -67,6 +67,7 @@ def compute_metrics(
         targets = set(question.target_chunk_ids)
         target_total += len(targets)
         if item is None or item.status is EvaluationStatus.FAILED:
+            # 失败题保留在统一分母中，避免只统计成功请求而夸大指标。
             failures += 1
             continue
         retrieved = list(dict.fromkeys(item.retrieved_chunk_ids))
@@ -134,6 +135,7 @@ class DenseEvaluationRunner:
         for question in questions:
             item_started = time.perf_counter()
             try:
+                # 单题是最小故障隔离单元；异常会记录到该题，但不会中断整批评测。
                 result = await self.query(question.question)
                 items.append(
                     DenseEvaluationItem(
@@ -170,6 +172,7 @@ class DenseEvaluationRunner:
         return report
 
     def _baseline_id(self, corpus_snapshot_hash: str) -> str:
+        # 基线标识绑定数据、配置、Prompt、集合和指标口径，任一变化都会产生新版本。
         payload = "\n".join(
             [
                 corpus_snapshot_hash,

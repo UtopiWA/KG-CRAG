@@ -120,6 +120,7 @@ def _sort_blocks(
     full = [
         block for block in blocks if block.bbox[2] - block.bbox[0] >= page_width * full_width_ratio
     ]
+    # 标题等全宽块把页面切成多个垂直区间，避免左右栏内容跨区间交错。
     narrow = [block for block in blocks if block not in full]
     full.sort(key=lambda item: (item.bbox[1], item.bbox[0], item.index))
     ordered: list[_RawBlock] = []
@@ -179,6 +180,7 @@ def _identify_sections(
     headings: set[str] = set()
     for block in blocks:
         text = " ".join(block.text.split())
+        # 编号/常见标题词提供语义信号，字号与粗体提供版面信号；任一可靠即可入选。
         numbered = bool(_NUMBERED_HEADING.match(text) or _KNOWN_HEADING.match(text))
         emphasized = bool(
             block.font_size

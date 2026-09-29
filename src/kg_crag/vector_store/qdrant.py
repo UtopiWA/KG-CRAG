@@ -96,6 +96,7 @@ class QdrantVectorStore:
                         field_name=field,
                         field_schema=qm.PayloadSchemaType.KEYWORD,
                     )
+                # 身份哨兵把模型、维度和 payload 契约写进集合，复用前可做严格兼容检查。
                 await self._client.upsert(
                     self.collection_name,
                     points=[
@@ -213,6 +214,7 @@ class QdrantVectorStore:
             if not await self._client.collection_exists(self.collection_name):
                 return {}
             while True:
+                # 分页读取论文级状态，避免大集合一次性加载全部 payload。
                 records, offset = await self._client.scroll(
                     self.collection_name,
                     scroll_filter=self._paper_filter(paper_id),
@@ -247,6 +249,7 @@ class QdrantVectorStore:
         if not stale:
             return 0
         try:
+            # 只按已计算出的稳定点 ID 删除，避免使用宽泛过滤器误伤其他论文。
             await self._client.delete(
                 self.collection_name,
                 points_selector=qm.PointIdsList(points=[point_id(item) for item in stale]),
@@ -318,6 +321,7 @@ class QdrantVectorStore:
         )
 
     def _translate(self, error: Exception, message: str) -> KGCRAGError:
+        # 只保留异常类型推导出的重试语义和状态码，不传播可能含请求正文的原始消息。
         name = type(error).__name__.casefold()
         status = getattr(error, "status_code", None)
         retryable = bool(

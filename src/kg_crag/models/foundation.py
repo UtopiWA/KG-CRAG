@@ -27,6 +27,7 @@ def _reject_sensitive_keys(values: dict[str, ScalarValue]) -> dict[str, ScalarVa
     """拒绝可能承载凭据的字段名，避免上下文进入错误或 Trace。"""
 
     for key in values:
+        # 去掉大小写和分隔符差异，防止 api_key、API-Key 等变体绕过检查。
         normalized = re.sub(r"[^a-z0-9]", "", key.casefold())
         if any(marker in normalized for marker in _SENSITIVE_KEY_MARKERS):
             raise ValueError("sensitive context keys are not allowed")

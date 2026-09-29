@@ -51,6 +51,7 @@ class DenseIndexPipeline:
         chunks = [chunk for paper in papers for chunk in paper.chunks]
         items: list[IndexItemResult] = []
         for paper in papers:
+            # 规划阶段只比较远端状态与本地稳定字段，不加载模型也不写入集合。
             existing = {} if rebuild else await self.store.record_state(paper.paper_id)
             target = {chunk.chunk_id: chunk for chunk in paper.chunks}
             added = sum(chunk_id not in existing for chunk_id in target)
@@ -98,6 +99,7 @@ class DenseIndexPipeline:
         if dry_run:
             return self._manifest(started, plan, plan.items, dry_run=True, path=None)
 
+        # dry-run 已提前返回，因此集合创建、重建和后续写入只发生在实际运行路径。
         await self.store.ensure_collection(rebuild=rebuild)
         results: list[IndexItemResult] = []
         for paper, item_plan in zip(papers, plan.items, strict=True):
@@ -118,6 +120,7 @@ class DenseIndexPipeline:
                     or existing[chunk.chunk_id].content_hash != chunk.content_hash
                     or existing[chunk.chunk_id].processing_version != chunk.processing_version
                 ]
+                # 先完整向量化本篇所有变更 Chunk；失败时不会留下半篇新向量。
                 embedded = await self.embedding.embed(
                     [chunk.text for chunk in changed], input_type="document"
                 )
@@ -127,6 +130,7 @@ class DenseIndexPipeline:
                         offset : offset + self.config.indexing.upsert_batch_size
                     ]
                     await self.store.upsert(list(zip(batch_chunks, batch_vectors, strict=True)))
+                # 新记录写入成功后才删除陈旧点，保证失败时旧索引仍可服务。
                 deleted = await self.store.delete_stale(
                     paper.paper_id, {chunk.chunk_id for chunk in paper.chunks}
                 )

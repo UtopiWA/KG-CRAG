@@ -67,6 +67,7 @@ class Settings(BaseSettings):
         return value
 
 
+# 配置在进程内只解析一次，避免同一请求链中重复读取环境变量和 .env。
 @lru_cache
 def get_settings() -> Settings:
     """为每个进程返回一个通过校验的配置对象。"""

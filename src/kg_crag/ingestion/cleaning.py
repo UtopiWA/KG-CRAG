@@ -27,6 +27,7 @@ _MANY_NEWLINES = re.compile(r"\n{3,}")
 
 def _normalized_signature(text: str) -> str:
     value = unicodedata.normalize("NFC", text).casefold()
+    # 页眉页脚中的页码通常逐页变化，用占位符归一后才能识别为同一模板。
     value = re.sub(r"\d+", "#", value)
     return " ".join(value.split())
 
@@ -78,6 +79,7 @@ def _repeated_margin_ids(document: ParsedDocument, config: CleaningConfig) -> se
         config.repeated_margin_min_pages,
         math.ceil(document.page_count * config.repeated_margin_coverage),
     )
+    # 同时满足最少页数和覆盖率，可避免把偶然出现在页边的正文误删。
     return {
         block_id
         for signature, pages in by_signature.items()
@@ -143,6 +145,7 @@ def clean_document(
             )
         )
     sections: list[DocumentSection] = []
+    # 清洗会删除 Block，因此章节必须只保留仍存在的引用并重新计算页码范围。
     for section in document.sections:
         ids = [block_id for block_id in section.block_ids if block_id in retained_ids]
         if not ids:

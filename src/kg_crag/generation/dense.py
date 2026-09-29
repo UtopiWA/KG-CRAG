@@ -59,6 +59,7 @@ def build_evidence_context(
         remaining = config.generation.max_context_chars - used - len(header)
         if remaining <= 0:
             break
+        # 先为引用头保留空间，再截断正文，保证每个进入 Prompt 的片段仍可定位。
         content = content[:remaining]
         block = header + content
         blocks.append(block)
@@ -81,6 +82,7 @@ def parse_generated_answer(
         payload = _GeneratedPayload.model_validate(json.loads(raw))
     except (json.JSONDecodeError, ValidationError, ValueError) as error:
         raise _generation_error("LLM response is not valid structured output") from error
+    # 只允许模型引用本次上下文分配的 E1、E2…，禁止凭空构造来源。
     by_id = {item.citation_id: item.evidence for item in context}
     used_ids: list[str] = []
     for claim in payload.claims:
@@ -177,6 +179,7 @@ class DenseRAGService:
             and item.scores.dense >= self.config.generation.min_score
         ][: self.config.generation.max_evidence]
         if len(selected) < self.config.generation.min_evidence:
+            # 证据门槛在调用 LLM 前判断，证据不足时返回固定结果且不消耗 Token。
             self._trace(trace, trace_id, "generation", "skipped", {"reason": "insufficient"})
             result = DenseRAGResult(
                 run_id=run_id,
@@ -254,6 +257,7 @@ class DenseRAGService:
         temporary = root / f".{result.run_id}.tmp-{uuid.uuid4().hex}"
         root.mkdir(parents=True, exist_ok=True)
         try:
+            # 在临时目录写入并用公共模型回读，验证成功后才原子发布整个运行目录。
             temporary.mkdir(exist_ok=False)
             data = stable_json_bytes(result)
             path = temporary / "result.json"

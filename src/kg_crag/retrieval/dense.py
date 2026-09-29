@@ -55,6 +55,7 @@ class DenseRetriever:
         )
         candidate_count = top_k
         if deduplicate:
+            # 去重需要一次性适度超取候选，但仍受 max_candidates 硬上限约束，不循环补查。
             candidate_count = min(
                 top_k * self.config.dense.candidate_multiplier,
                 self.config.dense.max_candidates,
@@ -65,6 +66,7 @@ class DenseRetriever:
             top_k=candidate_count,
             filters=selected_filters,
         )
+        # 后端同分顺序可能不同，这里用 source_id 固定次级排序以支持重放。
         candidates.sort(
             key=lambda item: (
                 -(item.scores.dense if item.scores.dense is not None else float("-inf")),

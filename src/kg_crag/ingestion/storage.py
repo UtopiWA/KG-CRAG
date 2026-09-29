@@ -81,6 +81,7 @@ class ArtifactStore:
         _, processed = self.version_directories(paper_id, version)
         quality_path = processed / "quality_report.json"
         try:
+            # 质量报告是复用入口，只有身份、门禁和全部产物哈希一致才算缓存命中。
             quality = QualityReport.model_validate_json(quality_path.read_text(encoding="utf-8"))
             if (
                 quality.paper_id != paper_id
@@ -147,6 +148,7 @@ class ArtifactStore:
         try:
             interim_final.parent.mkdir(parents=True, exist_ok=True)
             processed_final.parent.mkdir(parents=True, exist_ok=True)
+            # 两层产物先在隐藏目录完整写入并回读，正式目录始终保持可读状态。
             self._write_staged(interim_tmp, interim_files)
             self._write_staged(processed_tmp, processed_files)
             if self.before_publish is not None:
@@ -156,6 +158,7 @@ class ArtifactStore:
                     backup = final.parent / f".{version}.bak-{token}-{len(backups)}"
                     os.replace(final, backup)
                     backups.append((final, backup))
+            # 目录替换失败时，except 会删除本次发布并按相反顺序恢复旧版本。
             os.replace(interim_tmp, interim_final)
             published.append(interim_final)
             os.replace(processed_tmp, processed_final)

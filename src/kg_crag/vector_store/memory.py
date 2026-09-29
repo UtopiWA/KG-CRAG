@@ -117,6 +117,7 @@ class InMemoryVectorStore:
         expected_dimension = self._dimension or len(records[0][1])
         if expected_dimension <= 0:
             raise _invalid_parameter("vectors must not be empty")
+        # 先验证整个批次，再修改内存状态，保持与真实后端一致的原子失败语义。
         for _, vector in records:
             if len(vector) != expected_dimension:
                 raise _invalid_parameter(

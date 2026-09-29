@@ -70,6 +70,7 @@ class EmbeddingService:
             "query_prefix": config.query_prefix,
             "document_prefix": config.document_prefix,
         }
+        # 命名空间绑定所有会改变向量语义的配置，防止不同模型或前缀误用同一缓存。
         encoded = json.dumps(namespace_payload, sort_keys=True, separators=(",", ":")).encode()
         self.namespace = hashlib.sha256(encoded).hexdigest()
 
@@ -84,6 +85,7 @@ class EmbeddingService:
             return EmbeddingBatchResult(vectors=[], cache_hits=0, cache_misses=0)
         normalized = [normalize_embedding_text(value) for value in texts]
         keys = [self._key(value, input_type) for value in normalized]
+        # 以原始位置作为缺失队列，批量请求后仍能恢复调用方输入顺序。
         vectors: list[list[float] | None] = [None] * len(texts)
         missing: list[int] = []
         for index, key in enumerate(keys):
@@ -183,6 +185,7 @@ class EmbeddingService:
                         continue
                     destination.unlink()
                 try:
+                    # 硬链接只会原子创建新目标；并发写入同一键时可检测内容冲突。
                     os.link(temporary, destination)
                     created.append(destination)
                 except FileExistsError:

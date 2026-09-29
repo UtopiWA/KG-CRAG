@@ -39,6 +39,7 @@ def _window_ranges(total: int, config: ChunkingConfig) -> list[tuple[int, int]]:
         end = min(start + config.target_tokens, total)
         remainder = total - end
         if 0 < remainder < config.min_tokens:
+            # 优先前移当前窗口边界，避免末尾产生过短且语义不完整的孤立 Chunk。
             candidate = total - config.min_tokens
             if candidate > start and candidate - start >= config.min_tokens:
                 end = candidate
@@ -91,6 +92,7 @@ def chunk_document(
     ordinal = 0
     for section in document.sections:
         tokens: list[str] = []
+        # pages 与 tokens 保持同索引，切窗后可直接恢复每个 Chunk 的原始页码范围。
         pages: list[int] = []
         for block_id in section.block_ids:
             block = by_id.get(block_id)
