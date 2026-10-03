@@ -1,0 +1,273 @@
+{
+  "$defs": {
+    "ErrorCode": {
+      "description": "供调用方稳定分支的错误代码。",
+      "enum": [
+        "validation_error",
+        "configuration_error",
+        "external_service_error",
+        "timeout_error",
+        "not_found",
+        "data_error",
+        "internal_error"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "description": "可安全序列化的统一错误详情。",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "context": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 32,
+          "title": "Context",
+          "type": "object"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "IndexItemStatus": {
+      "enum": [
+        "succeeded",
+        "skipped",
+        "failed",
+        "planned"
+      ],
+      "title": "IndexItemStatus",
+      "type": "string"
+    },
+    "SparseIndexIdentity": {
+      "additionalProperties": false,
+      "description": "绑定实现环境、分词规则、语料快照和索引内容的稳定身份。",
+      "properties": {
+        "bm25_version": {
+          "minLength": 1,
+          "title": "Bm25 Version",
+          "type": "string"
+        },
+        "corpus_snapshot_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Corpus Snapshot Hash",
+          "type": "string"
+        },
+        "fts5_enabled": {
+          "title": "Fts5 Enabled",
+          "type": "boolean"
+        },
+        "fts5_version": {
+          "minLength": 1,
+          "title": "Fts5 Version",
+          "type": "string"
+        },
+        "index_version": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Index Version",
+          "type": "string"
+        },
+        "python_version": {
+          "minLength": 1,
+          "title": "Python Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "minLength": 1,
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sqlite_version": {
+          "minLength": 1,
+          "title": "Sqlite Version",
+          "type": "string"
+        },
+        "tokenizer": {
+          "minLength": 1,
+          "title": "Tokenizer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "tokenizer",
+        "bm25_version",
+        "python_version",
+        "sqlite_version",
+        "fts5_enabled",
+        "fts5_version",
+        "corpus_snapshot_hash",
+        "index_version"
+      ],
+      "title": "SparseIndexIdentity",
+      "type": "object"
+    },
+    "SparseIndexItemResult": {
+      "additionalProperties": false,
+      "properties": {
+        "added": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Added",
+          "type": "integer"
+        },
+        "chunk_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Chunk Count",
+          "type": "integer"
+        },
+        "deleted": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Deleted",
+          "type": "integer"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "latency_ms": {
+          "default": 0.0,
+          "minimum": 0.0,
+          "title": "Latency Ms",
+          "type": "number"
+        },
+        "paper_id": {
+          "minLength": 1,
+          "title": "Paper Id",
+          "type": "string"
+        },
+        "skipped": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Skipped",
+          "type": "integer"
+        },
+        "status": {
+          "$ref": "#/$defs/IndexItemStatus"
+        },
+        "updated": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Updated",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "paper_id",
+        "status"
+      ],
+      "title": "SparseIndexItemResult",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "config_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Config Hash",
+      "type": "string"
+    },
+    "corpus_snapshot_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Corpus Snapshot Hash",
+      "type": "string"
+    },
+    "dry_run": {
+      "title": "Dry Run",
+      "type": "boolean"
+    },
+    "finished_at": {
+      "format": "date-time",
+      "title": "Finished At",
+      "type": "string"
+    },
+    "index": {
+      "$ref": "#/$defs/SparseIndexIdentity"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/SparseIndexItemResult"
+      },
+      "title": "Items",
+      "type": "array"
+    },
+    "manifest_path": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Manifest Path"
+    },
+    "run_id": {
+      "minLength": 1,
+      "title": "Run Id",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "dry_run",
+    "config_hash",
+    "corpus_snapshot_hash",
+    "index",
+    "started_at",
+    "finished_at",
+    "items"
+  ],
+  "title": "SparseIndexRunManifest",
+  "type": "object"
+}

@@ -38,7 +38,10 @@ class Settings(BaseSettings):
         default="5617a9f61b028005a4858fdac845db406aefb181",
         min_length=1,
     )
-    reranker_model: str = Field(default="BAAI/bge-reranker-v2-m3", min_length=1)
+    reranker_model: str = Field(default="BAAI/bge-reranker-base", min_length=1)
+    reranker_revision: str = Field(default="2cfc18c9415c912f9d8155881c133215df768a70", min_length=1)
+    reranker_device: str = Field(default="cpu", pattern=r"^(cpu|cuda(?::[0-9]+)?)$")
+    model_cache_root: str = Field(default="data/processed/model-cache", min_length=1)
     web_search_provider: str = Field(default="disabled", min_length=1)
     web_search_api_key: str | None = None
     enable_web_fallback: bool = False

@@ -1,6 +1,6 @@
 # KG-CRAG
 
-面向科研文献问答的知识图谱增强自纠错 RAG Agent。当前已完成工程基座、论文摄取流水线和 Dense Vector RAG 基线：可从受控 PDF 发布稳定 Chunk，构建版本化 Qdrant 索引，执行证据约束问答，并在固定 pilot 上计算检索与引用指标。Sparse、Graph、动态路由和纠错工作流仍属于后续迭代。
+面向科研文献问答的证据自适应检索 Agent。当前已完成工程基座、论文摄取、Dense Vector RAG 与 Hybrid 检索：可从受控 PDF 发布稳定 Chunk，构建版本化 Qdrant/SQLite FTS5 索引，以 RRF 或加权方式融合 Dense/Sparse Evidence，并在有界本地 Cross-Encoder 重排后执行可选的证据约束回答。Graph、动态路由和纠错工作流仍属于后续迭代。
 
 ## 环境要求
 
@@ -145,6 +145,22 @@ python scripts/evaluate_dense_rag.py
 ```
 
 索引 dry-run 只读取已发布 Chunk 和 Qdrant 点状态，不加载 Embedding 模型、不写缓存或集合；查询 dry-run 只校验配置、Prompt、过滤和上限。默认 `KG_CRAG_LLM_PROVIDER=mock` 便于离线验收；真实运行需显式配置 `openai-compatible` Provider 和本地密钥。首次实际索引会按固定 revision 下载 BGE-M3，具体版本、产物布局、重建/回滚和验收状态见 `docs/dense_rag.md`。
+
+## Hybrid 检索
+
+Hybrid 默认并发调用 Dense 与 Sparse 各一次，以统一 `Evidence` 融合，且不会调用 LLM。先构建轻量 Sparse 索引，再查询或评测：
+
+```bash
+python scripts/build_sparse_index.py --pilot --dry-run
+python scripts/build_sparse_index.py --pilot
+python scripts/query_hybrid_retrieval.py "CAMEL 如何组织角色扮演智能体？" \
+  --sparse-index-version <dry-run 中的 index_version>
+python scripts/evaluate_hybrid_retrieval.py --smoke --dry-run
+python scripts/evaluate_hybrid_retrieval.py --smoke \
+  --sparse-index-version <index_version>
+```
+
+评测矩阵比较 Dense、Sparse、RRF、Weighted 与 Fusion+Rerank，默认零 LLM。只有显式提供 `--with-answer --selected-strategy fusion_rerank --answer-budget <题数>` 才会对唯一入选配置逐题生成一次回答。完整公式、降级语义、重建/回滚、产物和资源上限见 `docs/hybrid_retrieval.md`。
 
 ## 项目结构
 

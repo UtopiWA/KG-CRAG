@@ -1,0 +1,321 @@
+{
+  "$defs": {
+    "ErrorCode": {
+      "description": "供调用方稳定分支的错误代码。",
+      "enum": [
+        "validation_error",
+        "configuration_error",
+        "external_service_error",
+        "timeout_error",
+        "not_found",
+        "data_error",
+        "internal_error"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "description": "可安全序列化的统一错误详情。",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "context": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 32,
+          "title": "Context",
+          "type": "object"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "EvaluationStatus": {
+      "enum": [
+        "succeeded",
+        "failed"
+      ],
+      "title": "EvaluationStatus",
+      "type": "string"
+    },
+    "HybridEvaluationItem": {
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "latency_ms": {
+          "minimum": 0.0,
+          "title": "Latency Ms",
+          "type": "number"
+        },
+        "question_id": {
+          "minLength": 1,
+          "title": "Question Id",
+          "type": "string"
+        },
+        "retrieved_chunk_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Retrieved Chunk Ids",
+          "type": "array"
+        },
+        "stage_call_counts": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Stage Call Counts",
+          "type": "object"
+        },
+        "stage_latency_ms": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Stage Latency Ms",
+          "type": "object"
+        },
+        "status": {
+          "$ref": "#/$defs/EvaluationStatus"
+        },
+        "strategy": {
+          "enum": [
+            "dense",
+            "sparse",
+            "rrf",
+            "weighted",
+            "fusion_rerank"
+          ],
+          "title": "Strategy",
+          "type": "string"
+        },
+        "target_chunk_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Target Chunk Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "question_id",
+        "strategy",
+        "status",
+        "latency_ms"
+      ],
+      "title": "HybridEvaluationItem",
+      "type": "object"
+    },
+    "HybridEvaluationMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_coverage": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Evidence Coverage",
+          "type": "number"
+        },
+        "failure_count": {
+          "minimum": 0,
+          "title": "Failure Count",
+          "type": "integer"
+        },
+        "mean_latency_ms": {
+          "minimum": 0.0,
+          "title": "Mean Latency Ms",
+          "type": "number"
+        },
+        "mean_stage_latency_ms": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Mean Stage Latency Ms",
+          "type": "object"
+        },
+        "mrr": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Mrr",
+          "type": "number"
+        },
+        "ndcg_at_k": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Ndcg At K",
+          "type": "object"
+        },
+        "recall_at_k": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Recall At K",
+          "type": "object"
+        }
+      },
+      "required": [
+        "mrr",
+        "evidence_coverage",
+        "failure_count",
+        "mean_latency_ms"
+      ],
+      "title": "HybridEvaluationMetrics",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "answer_validation_enabled": {
+      "default": false,
+      "title": "Answer Validation Enabled",
+      "type": "boolean"
+    },
+    "collection_version": {
+      "minLength": 1,
+      "title": "Collection Version",
+      "type": "string"
+    },
+    "config_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Config Hash",
+      "type": "string"
+    },
+    "corpus_snapshot_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Corpus Snapshot Hash",
+      "type": "string"
+    },
+    "evaluation_version": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Evaluation Version",
+      "type": "string"
+    },
+    "finished_at": {
+      "format": "date-time",
+      "title": "Finished At",
+      "type": "string"
+    },
+    "fusion_versions": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "propertyNames": {
+        "enum": [
+          "dense",
+          "sparse",
+          "rrf",
+          "weighted",
+          "fusion_rerank"
+        ]
+      },
+      "title": "Fusion Versions",
+      "type": "object"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/HybridEvaluationItem"
+      },
+      "title": "Items",
+      "type": "array"
+    },
+    "metrics": {
+      "additionalProperties": {
+        "$ref": "#/$defs/HybridEvaluationMetrics"
+      },
+      "propertyNames": {
+        "enum": [
+          "dense",
+          "sparse",
+          "rrf",
+          "weighted",
+          "fusion_rerank"
+        ]
+      },
+      "title": "Metrics",
+      "type": "object"
+    },
+    "reranker_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reranker Version"
+    },
+    "run_id": {
+      "minLength": 1,
+      "title": "Run Id",
+      "type": "string"
+    },
+    "sparse_index_version": {
+      "minLength": 1,
+      "title": "Sparse Index Version",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "evaluation_version",
+    "corpus_snapshot_hash",
+    "config_hash",
+    "collection_version",
+    "sparse_index_version",
+    "started_at",
+    "finished_at",
+    "metrics",
+    "items"
+  ],
+  "title": "HybridEvaluationReport",
+  "type": "object"
+}

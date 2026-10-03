@@ -7,6 +7,25 @@ dense_rag:
     - 20
   max_questions: 200
 
+hybrid_retrieval:
+  questions_path: data/evaluation/hybrid_dev_questions.json
+  results_root: data/evaluation/results/hybrid-retrieval
+  strategies:
+    - dense
+    - sparse
+    - rrf
+    - weighted
+    - fusion_rerank
+  k_values:
+    - 5
+    - 8
+    - 10
+    - 20
+  max_questions: 40
+  smoke_questions: 5
+  answer_validation_max_configs: 1
+  answer_validation_calls_per_question: 1
+
 retrieval_metrics:
   - recall_at_k
   - precision_at_k

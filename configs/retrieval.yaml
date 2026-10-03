@@ -44,7 +44,20 @@ generation:
   output_root: data/processed/query-runs
 
 sparse:
+  schema_version: v1
+  tokenizer: scientific-unicode-v1
+  bm25_version: sqlite-fts5-bm25-v1
+  index_root: data/processed/sparse-index
+  manifest_root: data/processed/sparse-index-runs
   top_k: 20
+  max_top_k: 100
+  max_candidates: 100
+  max_query_chars: 2000
+  max_query_tokens: 64
+  allowed_filters:
+    - paper_id
+    - section
+    - processing_version
 
 graph:
   top_k: 20
@@ -53,9 +66,26 @@ graph:
 
 fusion:
   method: rrf
+  normalization: min-max-v1
   rrf_k: 60
+  dense_weight: 0.5
+  sparse_weight: 0.5
   final_top_k: 10
 
 reranker:
   enabled: true
+  model: BAAI/bge-reranker-base
+  revision: 2cfc18c9415c912f9d8155881c133215df768a70
+  device: cpu
+  cache_root: data/processed/model-cache
+  batch_size: 8
+  max_batch_size: 16
+  max_candidates: 20
   top_k: 8
+
+hybrid:
+  allow_partial: true
+  allow_rerank_fallback: true
+  deduplicate_by_paper: false
+  max_output: 8
+  output_root: data/processed/hybrid-query-runs

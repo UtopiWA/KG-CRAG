@@ -1,0 +1,30 @@
+{
+  "schema_version": "v1",
+  "corpus_snapshot_hash": "ed1d9059abf3bc785b60d0d71d497316ca1ff8f349caaf9d6af63905c9c614ef",
+  "questions": [
+    {"question_id":"camel-purpose","question":"CAMEL 研究试图通过什么方式减少复杂任务求解中对人工输入的依赖？","target_chunk_ids":["chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"],"rationale":"CAMEL 摘要直接说明研究动机与可扩展的智能体协作方案。"},
+    {"question_id":"camel-roleplay","question":"CAMEL 如何利用角色扮演和交流式智能体完成任务？","target_chunk_ids":["chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"],"rationale":"摘要概括了 CAMEL 的交流式智能体和角色扮演框架。"},
+    {"question_id":"generative-agents-definition","question":"Generative Agents 论文如何定义生成式智能体及其目标？","target_chunk_ids":["chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"],"rationale":"论文摘要给出生成式智能体的定义和可信行为模拟目标。"},
+    {"question_id":"generative-agents-applications","question":"生成式智能体的可信人类行为代理可以支持哪些类型的交互应用？","target_chunk_ids":["chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"],"rationale":"摘要列举了沉浸环境、沟通排练和原型设计等用途。"},
+    {"question_id":"tree-of-thoughts-motivation","question":"Tree of Thoughts 主要解决语言模型逐 token 左到右决策的什么局限？","target_chunk_ids":["chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"],"rationale":"摘要明确描述逐 token 推理在探索与策略前瞻任务上的不足。"},
+    {"question_id":"tree-of-thoughts-search","question":"Tree of Thoughts 为什么要在多个推理思路之间进行探索？","target_chunk_ids":["chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"],"rationale":"摘要介绍了以思路为中间单位的搜索式审慎推理。"},
+    {"question_id":"voyager-components","question":"Voyager 在 Minecraft 中持续学习所依赖的三个核心组件是什么？","target_chunk_ids":["chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"],"rationale":"Voyager 摘要集中列出了自动课程、技能库和迭代提示机制。"},
+    {"question_id":"voyager-lifelong-learning","question":"Voyager 为什么被称为具身终身学习智能体？","target_chunk_ids":["chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"],"rationale":"摘要描述其无人工干预的持续探索、技能获取和新发现。"},
+    {"question_id":"toolllm-problem","question":"ToolLLM 针对开源大语言模型的哪项工具使用缺陷提出方案？","target_chunk_ids":["chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"],"rationale":"摘要说明开源模型难以调用真实 API 完成用户指令的问题。"},
+    {"question_id":"metagpt-sop","question":"MetaGPT 为什么在多智能体协作中引入标准作业程序 SOP？","target_chunk_ids":["chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"],"rationale":"摘要介绍复杂任务的协作困难及 MetaGPT 的 SOP 组织方式。"},
+    {"question_id":"agentbench-scope","question":"AgentBench 用什么类型的环境对 LLM 智能体进行多维评测？","target_chunk_ids":["chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"],"rationale":"摘要概括了交互环境、多维基准及其评测目的。"},
+    {"question_id":"lats-capabilities","question":"Language Agent Tree Search 统一了语言智能体的哪些关键能力？","target_chunk_ids":["chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"],"rationale":"LATS 摘要直接陈述其对推理、行动与规划能力的协同。"},
+    {"question_id":"gaia-abilities","question":"GAIA 基准的问题要求通用 AI 助手具备哪些基础能力？","target_chunk_ids":["chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"],"rationale":"引言列出推理、多模态、网页浏览和工具使用等能力。"},
+    {"question_id":"paperqa-motivation","question":"PaperQA 为什么需要用检索增强方法回答科学研究问题？","target_chunk_ids":["chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"],"rationale":"摘要说明幻觉、不可解释性以及缺少真实答案带来的问题。"},
+    {"question_id":"graphrag-global-questions","question":"传统 RAG 为什么难以回答面向整个文档集合的全局问题？","target_chunk_ids":["chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"],"rationale":"GraphRAG 摘要对局部检索在全局问题上的失败给出动机。"},
+    {"question_id":"graphrag-goal","question":"GraphRAG 的图方法旨在怎样改进面向语料库的摘要回答？","target_chunk_ids":["chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"],"rationale":"摘要描述从局部检索转向支持全局、查询聚焦摘要的目标。"},
+    {"question_id":"hipporag-memory","question":"HippoRAG 从哺乳动物长期记忆中借鉴了什么核心能力？","target_chunk_ids":["chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"],"rationale":"摘要讨论大量知识存储、持续整合新信息和避免灾难性遗忘。"},
+    {"question_id":"medgraphrag-safety","question":"MedGraphRAG 如何定位其在医疗问答安全性方面的作用？","target_chunk_ids":["chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"],"rationale":"摘要说明以图检索支持基于证据的医疗回答和可靠性。"},
+    {"question_id":"lightrag-limitations","question":"LightRAG 认为已有 RAG 系统存在哪些结构或效率局限？","target_chunk_ids":["chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"],"rationale":"摘要概括传统平面数据表示及相关效率问题。"},
+    {"question_id":"agentic-rag-motivation","question":"Agentic RAG 综述认为静态训练数据给大语言模型带来什么限制？","target_chunk_ids":["chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"],"rationale":"综述摘要说明静态知识对动态实时查询及可靠回答的限制。"},
+    {"question_id":"camel-acronym-exact","question":"缩写 CAMEL 对应的智能体协作方法具有什么核心设计？","target_chunk_ids":["chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"],"rationale":"用大写缩写检验 Sparse 对精确科研标识符的召回。"},
+    {"question_id":"tree-of-thoughts-hyphenated","question":"Tree-of-Thoughts 式搜索如何弥补逐 token 推理的局限？","target_chunk_ids":["chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"],"rationale":"用连字符模型名检验规范化分词和精确召回。"},
+    {"question_id":"agentbench-dataset-name","question":"数据集名 AgentBench 的评测环境覆盖重点是什么？","target_chunk_ids":["chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"],"rationale":"用基准数据集名检验 Sparse 与 Dense 的互补性。"},
+    {"question_id":"hipporag-rare-entity","question":"低频实体 HippoRAG 如何借鉴长期记忆机制？","target_chunk_ids":["chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"],"rationale":"用低频论文实体检验词法命中和融合质量。"}
+  ]
+}

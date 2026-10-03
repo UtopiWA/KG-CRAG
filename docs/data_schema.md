@@ -1,6 +1,6 @@
 # 数据模式
 
-公共领域契约位于 `src/kg_crag/models/domain.py`，摄取阶段契约位于 `models/ingestion.py`；两者都拒绝未知字段。可评审 JSON Schema 快照位于 `docs/schemas/`。
+公共领域契约位于 `src/kg_crag/models/domain.py`，摄取阶段契约位于 `models/ingestion.py`，Sparse/Hybrid 运行契约位于 `models/retrieval.py`；这些模型都拒绝未知字段。可评审 JSON Schema 快照位于 `docs/schemas/`。
 
 ## 数据分层
 
@@ -28,3 +28,13 @@ Block ID 绑定输入哈希、页码、顺序、坐标和原文哈希；Chunk ID
 - `PilotQuestionSet` 绑定语料快照与实际 Chunk 目标；`DenseEvaluationReport` 保存逐题状态及汇总指标。
 
 对应快照位于 `docs/schemas/`。运行产物只保存工作区相对路径，错误详情不得包含 Chunk 正文、Prompt、密钥或绝对路径。
+
+## Sparse 与 Hybrid 契约
+
+- `SparseIndexIdentity` 绑定 schema、分词器、BM25、Python/SQLite/FTS5、语料快照与索引版本。
+- `SparseIndexRunManifest` 保存逐篇新增、更新、跳过、删除、失败状态及检查点对应身份。
+- Sparse 命中仍使用公共 `Evidence`，记录 `scores.sparse`、`ranks.sparse` 和可回溯 Chunk payload，不泄漏 SQLite 行对象。
+- 融合结果以稳定 Chunk ID 合并来源，在 `Evidence` 中同时保留 Dense、Sparse、Fusion 和 Rerank 分数/排名。
+- `HybridRetrievalResult` 保存各阶段状态、候选数、时延、调用次数、降级路径及语料/集合/索引/融合/重排版本。
+- `HybridQueryResult` 包含嵌套检索结果、实际 Dense/Sparse 路径及可选回答；`with_answer=false` 时回答字段为空且 `llm_calls=0`。
+- `HybridEvaluationReport` 绑定评测版本，保留逐题失败、策略指标和阶段平均时延；同版本逐题检查点可安全复用。

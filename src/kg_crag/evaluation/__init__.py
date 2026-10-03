@@ -5,5 +5,17 @@ from kg_crag.evaluation.dense import (
     compute_metrics,
     load_question_set,
 )
+from kg_crag.evaluation.hybrid import (
+    HybridEvaluationRunner,
+    HybridStrategyOutput,
+    compute_hybrid_metrics,
+)
 
-__all__ = ["DenseEvaluationRunner", "compute_metrics", "load_question_set"]
+__all__ = [
+    "DenseEvaluationRunner",
+    "HybridEvaluationRunner",
+    "HybridStrategyOutput",
+    "compute_hybrid_metrics",
+    "compute_metrics",
+    "load_question_set",
+]

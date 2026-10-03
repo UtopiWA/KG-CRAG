@@ -15,6 +15,9 @@ from kg_crag.models import (
     ErrorDetail,
     Evidence,
     HealthResponse,
+    HybridEvaluationReport,
+    HybridQueryResult,
+    HybridRetrievalResult,
     IndexRunManifest,
     IngestionRunManifest,
     Paper,
@@ -24,6 +27,7 @@ from kg_crag.models import (
     QualityReport,
     RetrievalEvaluation,
     RouteDecision,
+    SparseIndexRunManifest,
     TraceEvent,
 )
 
@@ -37,6 +41,9 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "error_detail": ErrorDetail,
     "evidence": Evidence,
     "health_response": HealthResponse,
+    "hybrid_evaluation_report": HybridEvaluationReport,
+    "hybrid_query_result": HybridQueryResult,
+    "hybrid_retrieval_result": HybridRetrievalResult,
     "ingestion_run_manifest": IngestionRunManifest,
     "index_run_manifest": IndexRunManifest,
     "paper": Paper,
@@ -46,6 +53,7 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "quality_report": QualityReport,
     "retrieval_evaluation": RetrievalEvaluation,
     "route_decision": RouteDecision,
+    "sparse_index_run_manifest": SparseIndexRunManifest,
     "trace_event": TraceEvent,
 }
 
