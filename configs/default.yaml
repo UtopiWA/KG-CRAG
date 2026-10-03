@@ -13,6 +13,56 @@ workflow:
   max_reflection_rounds: 1
   enable_web_fallback: false
 
+corrective_workflow:
+  schema_version: v1
+  policy_version: policy-v1
+  initial_strategy: facet_corrective
+  facets:
+    version: facet-rules-v1
+    prompt_version: facet-prompt-v1
+    prompt_path: prompts/facet-requirements-v1.txt
+    confidence_threshold: 0.75
+    max_facets: 12
+    max_description_chars: 300
+    allow_llm: false
+  coverage:
+    version: coverage-v3
+    min_support: 0.45
+    min_sources: 1
+    max_selected_evidence: 8
+    max_evidence_chars: 4000
+  actions:
+    catalog_version: actions-v1
+    enabled: [dense, sparse, hybrid, graph, rewrite, decompose, adjust]
+    default_top_k: 8
+    max_top_k: 20
+    max_candidates_per_action: 20
+    max_subquestions: 3
+    max_graph_hops: 3
+  costs:
+    version: cost-v1
+    retrieval: 0.08
+    model: 0.15
+    token: 0.00002
+    latency: 0.00001
+    repeat: 1.0
+    minimum_utility: 0.01
+  budget:
+    retrieval_rounds: 2
+    subquestions: 3
+    llm_calls: 4
+    input_tokens: 16000
+    output_tokens: 4000
+    candidates: 100
+    context_chars: 20000
+    latency_ms: 30000
+  artifacts:
+    cache_root: data/processed/corrective-cache
+    run_root: data/processed/corrective-runs
+    evaluation_root: data/evaluation/results/corrective-workflow
+  max_total_evidence: 100
+  max_trace_events: 100
+
 chunking:
   tokenizer: regex-v1
   target_tokens: 500

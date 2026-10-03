@@ -19,3 +19,10 @@ __all__ = [
     "compute_metrics",
     "load_question_set",
 ]
+from kg_crag.evaluation.corrective import (
+    aggregate_metrics,
+    evaluate_offline_matrix,
+    load_corrective_questions,
+)
+
+__all__ = ["aggregate_metrics", "evaluate_offline_matrix", "load_corrective_questions"]

@@ -10,6 +10,10 @@ from pydantic import BaseModel
 
 from kg_crag.models import (
     Chunk,
+    CorrectionRunResult,
+    CorrectionState,
+    CorrectiveEvaluationQuestionSet,
+    CorrectiveEvaluationReport,
     DenseEvaluationReport,
     DenseRAGResult,
     ErrorDetail,
@@ -40,6 +44,10 @@ DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "docs" / "schemas"
 
 SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "chunk": Chunk,
+    "correction_run_result": CorrectionRunResult,
+    "correction_state": CorrectionState,
+    "corrective_evaluation_question_set": CorrectiveEvaluationQuestionSet,
+    "corrective_evaluation_report": CorrectiveEvaluationReport,
     "dense_evaluation_report": DenseEvaluationReport,
     "dense_rag_result": DenseRAGResult,
     "error_detail": ErrorDetail,

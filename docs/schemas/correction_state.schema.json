@@ -1,0 +1,1656 @@
+{
+  "$defs": {
+    "ActionEstimate": {
+      "additionalProperties": false,
+      "properties": {
+        "candidates": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Candidates",
+          "type": "integer"
+        },
+        "context_chars": {
+          "default": 0,
+          "maximum": 1000000,
+          "minimum": 0,
+          "title": "Context Chars",
+          "type": "integer"
+        },
+        "expected_required_facet_gain": {
+          "default": 0.0,
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "title": "Expected Required Facet Gain",
+          "type": "number"
+        },
+        "input_tokens": {
+          "default": 0,
+          "maximum": 20000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 0,
+          "maximum": 3600000,
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "llm_calls": {
+          "default": 0,
+          "maximum": 4,
+          "minimum": 0,
+          "title": "Llm Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "maximum": 20000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "retrieval_rounds": {
+          "default": 0,
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Retrieval Rounds",
+          "type": "integer"
+        },
+        "subquestions": {
+          "default": 0,
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Subquestions",
+          "type": "integer"
+        }
+      },
+      "title": "ActionEstimate",
+      "type": "object"
+    },
+    "ActionRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/CorrectionAction"
+        },
+        "action_id": {
+          "pattern": "^action-[a-f0-9]{16}$",
+          "title": "Action Id",
+          "type": "string"
+        },
+        "filters": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "maxProperties": 10,
+          "title": "Filters",
+          "type": "object"
+        },
+        "max_candidates": {
+          "default": 20,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Max Candidates",
+          "type": "integer"
+        },
+        "max_hops": {
+          "default": 1,
+          "maximum": 3,
+          "minimum": 1,
+          "title": "Max Hops",
+          "type": "integer"
+        },
+        "query": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Query",
+          "type": "string"
+        },
+        "subqueries": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 3,
+          "title": "Subqueries",
+          "type": "array"
+        },
+        "target_facet_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Target Facet Ids",
+          "type": "array"
+        },
+        "top_k": {
+          "default": 10,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "action_id",
+        "action",
+        "target_facet_ids",
+        "query"
+      ],
+      "title": "ActionRequest",
+      "type": "object"
+    },
+    "ActionResult": {
+      "additionalProperties": false,
+      "properties": {
+        "actual_usage": {
+          "$ref": "#/$defs/BudgetUsage"
+        },
+        "diagnostics": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Diagnostics",
+          "type": "object"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "estimated_usage": {
+          "$ref": "#/$defs/ActionEstimate"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "maxItems": 100,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "request": {
+          "$ref": "#/$defs/ActionRequest"
+        },
+        "status": {
+          "$ref": "#/$defs/ActionStatus"
+        }
+      },
+      "required": [
+        "request",
+        "status",
+        "estimated_usage",
+        "actual_usage"
+      ],
+      "title": "ActionResult",
+      "type": "object"
+    },
+    "ActionStatus": {
+      "enum": [
+        "succeeded",
+        "empty",
+        "failed",
+        "cache_hit"
+      ],
+      "title": "ActionStatus",
+      "type": "string"
+    },
+    "BudgetLedger": {
+      "additionalProperties": false,
+      "properties": {
+        "limit": {
+          "$ref": "#/$defs/BudgetLimit"
+        },
+        "reserved": {
+          "$ref": "#/$defs/BudgetUsage"
+        },
+        "used": {
+          "$ref": "#/$defs/BudgetUsage"
+        }
+      },
+      "title": "BudgetLedger",
+      "type": "object"
+    },
+    "BudgetLimit": {
+      "additionalProperties": false,
+      "properties": {
+        "candidates": {
+          "default": 100,
+          "maximum": 10000,
+          "minimum": 1,
+          "title": "Candidates",
+          "type": "integer"
+        },
+        "context_chars": {
+          "default": 20000,
+          "maximum": 1000000,
+          "minimum": 1,
+          "title": "Context Chars",
+          "type": "integer"
+        },
+        "input_tokens": {
+          "default": 16000,
+          "maximum": 20000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 30000,
+          "maximum": 3600000,
+          "minimum": 1,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "llm_calls": {
+          "default": 4,
+          "maximum": 4,
+          "minimum": 0,
+          "title": "Llm Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 4000,
+          "maximum": 20000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "retrieval_rounds": {
+          "default": 2,
+          "maximum": 2,
+          "minimum": 1,
+          "title": "Retrieval Rounds",
+          "type": "integer"
+        },
+        "subquestions": {
+          "default": 3,
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Subquestions",
+          "type": "integer"
+        }
+      },
+      "title": "BudgetLimit",
+      "type": "object"
+    },
+    "BudgetUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "candidates": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Candidates",
+          "type": "integer"
+        },
+        "context_chars": {
+          "default": 0,
+          "maximum": 1000000,
+          "minimum": 0,
+          "title": "Context Chars",
+          "type": "integer"
+        },
+        "input_tokens": {
+          "default": 0,
+          "maximum": 20000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 0,
+          "maximum": 3600000,
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "llm_calls": {
+          "default": 0,
+          "maximum": 4,
+          "minimum": 0,
+          "title": "Llm Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "maximum": 20000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "retrieval_rounds": {
+          "default": 0,
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Retrieval Rounds",
+          "type": "integer"
+        },
+        "subquestions": {
+          "default": 0,
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Subquestions",
+          "type": "integer"
+        }
+      },
+      "title": "BudgetUsage",
+      "type": "object"
+    },
+    "ConditionKind": {
+      "enum": [
+        "terms",
+        "entity",
+        "paper",
+        "evidence_type",
+        "graph_path",
+        "numeric"
+      ],
+      "title": "ConditionKind",
+      "type": "string"
+    },
+    "ConflictKind": {
+      "enum": [
+        "discrete",
+        "numeric",
+        "negation",
+        "unknown_unit"
+      ],
+      "title": "ConflictKind",
+      "type": "string"
+    },
+    "CorrectionAction": {
+      "enum": [
+        "dense",
+        "sparse",
+        "hybrid",
+        "graph",
+        "rewrite",
+        "decompose",
+        "adjust"
+      ],
+      "title": "CorrectionAction",
+      "type": "string"
+    },
+    "CorrectionDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_action_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Candidate Action Ids",
+          "type": "array"
+        },
+        "decision_id": {
+          "pattern": "^decision-[a-f0-9]{16}$",
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "estimate": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ActionEstimate"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reason_code": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Reason Code",
+          "type": "string"
+        },
+        "rejected_reasons": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "maxProperties": 20,
+          "title": "Rejected Reasons",
+          "type": "object"
+        },
+        "selected": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ActionRequest"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "stop_reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StopReason"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "utility": {
+          "title": "Utility",
+          "type": "number"
+        }
+      },
+      "required": [
+        "decision_id",
+        "utility",
+        "reason_code"
+      ],
+      "title": "CorrectionDecision",
+      "type": "object"
+    },
+    "CoverageMatrix": {
+      "additionalProperties": false,
+      "properties": {
+        "entries": {
+          "items": {
+            "$ref": "#/$defs/FacetCoverage"
+          },
+          "title": "Entries",
+          "type": "array"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "facet_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Facet Ids",
+          "type": "array"
+        },
+        "matrix_id": {
+          "pattern": "^matrix-[a-f0-9]{16}$",
+          "title": "Matrix Id",
+          "type": "string"
+        },
+        "rule_version": {
+          "minLength": 1,
+          "title": "Rule Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "matrix_id",
+        "rule_version",
+        "facet_ids",
+        "evidence_ids",
+        "entries"
+      ],
+      "title": "CoverageMatrix",
+      "type": "object"
+    },
+    "CoverageStatus": {
+      "enum": [
+        "matched",
+        "not_matched",
+        "invalid_source",
+        "external_excluded",
+        "review_required"
+      ],
+      "title": "CoverageStatus",
+      "type": "string"
+    },
+    "ErrorCode": {
+      "description": "供调用方稳定分支的错误代码。",
+      "enum": [
+        "validation_error",
+        "configuration_error",
+        "external_service_error",
+        "timeout_error",
+        "not_found",
+        "data_error",
+        "internal_error"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "description": "可安全序列化的统一错误详情。",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "context": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 32,
+          "title": "Context",
+          "type": "object"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "minLength": 1,
+          "title": "Content",
+          "type": "string"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "external": {
+          "default": false,
+          "title": "External",
+          "type": "boolean"
+        },
+        "location": {
+          "$ref": "#/$defs/EvidenceLocation"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Metadata",
+          "type": "object"
+        },
+        "paper_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Paper Id"
+        },
+        "ranks": {
+          "$ref": "#/$defs/EvidenceRanks"
+        },
+        "scores": {
+          "$ref": "#/$defs/EvidenceScores"
+        },
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_type": {
+          "$ref": "#/$defs/EvidenceSourceType"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "content",
+        "source_type",
+        "source_id"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "EvidenceConflict": {
+      "additionalProperties": false,
+      "properties": {
+        "blocking": {
+          "default": true,
+          "title": "Blocking",
+          "type": "boolean"
+        },
+        "conflict_id": {
+          "pattern": "^conflict-[a-f0-9]{16}$",
+          "title": "Conflict Id",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 2,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "facet_id": {
+          "pattern": "^facet-[a-f0-9]{16}$",
+          "title": "Facet Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ConflictKind"
+        },
+        "reason": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "review_required": {
+          "default": false,
+          "title": "Review Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "conflict_id",
+        "facet_id",
+        "kind",
+        "evidence_ids",
+        "reason"
+      ],
+      "title": "EvidenceConflict",
+      "type": "object"
+    },
+    "EvidenceLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "page": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page"
+        },
+        "section": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Section"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "title": "EvidenceLocation",
+      "type": "object"
+    },
+    "EvidenceRanks": {
+      "additionalProperties": false,
+      "properties": {
+        "dense": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dense"
+        },
+        "fusion": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fusion"
+        },
+        "rerank": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rerank"
+        },
+        "sparse": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sparse"
+        }
+      },
+      "title": "EvidenceRanks",
+      "type": "object"
+    },
+    "EvidenceRequirement": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "$ref": "#/$defs/SatisfactionCondition"
+        },
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "description": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "expected_evidence_types": {
+          "items": {
+            "$ref": "#/$defs/EvidenceSourceType"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Expected Evidence Types",
+          "type": "array"
+        },
+        "facet_id": {
+          "pattern": "^facet-[a-f0-9]{16}$",
+          "title": "Facet Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/FacetKind"
+        },
+        "question_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Question Id",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "source": {
+          "$ref": "#/$defs/RequirementSource",
+          "default": "rule"
+        },
+        "target_entity": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Entity"
+        }
+      },
+      "required": [
+        "facet_id",
+        "question_id",
+        "kind",
+        "description",
+        "expected_evidence_types",
+        "condition"
+      ],
+      "title": "EvidenceRequirement",
+      "type": "object"
+    },
+    "EvidenceScores": {
+      "additionalProperties": false,
+      "properties": {
+        "dense": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dense"
+        },
+        "fusion": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fusion"
+        },
+        "graph": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph"
+        },
+        "rerank": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rerank"
+        },
+        "sparse": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sparse"
+        }
+      },
+      "title": "EvidenceScores",
+      "type": "object"
+    },
+    "EvidenceSourceType": {
+      "enum": [
+        "chunk",
+        "graph",
+        "web"
+      ],
+      "title": "EvidenceSourceType",
+      "type": "string"
+    },
+    "FacetAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "facet_id": {
+          "pattern": "^facet-[a-f0-9]{16}$",
+          "title": "Facet Id",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        },
+        "satisfied": {
+          "title": "Satisfied",
+          "type": "boolean"
+        },
+        "support_strength": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Support Strength",
+          "type": "number"
+        }
+      },
+      "required": [
+        "facet_id",
+        "required",
+        "satisfied",
+        "reason"
+      ],
+      "title": "FacetAssessment",
+      "type": "object"
+    },
+    "FacetCoverage": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Basis",
+          "type": "array"
+        },
+        "conflict": {
+          "default": false,
+          "title": "Conflict",
+          "type": "boolean"
+        },
+        "coverage_id": {
+          "pattern": "^coverage-[a-f0-9]{16}$",
+          "title": "Coverage Id",
+          "type": "string"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "facet_id": {
+          "pattern": "^facet-[a-f0-9]{16}$",
+          "title": "Facet Id",
+          "type": "string"
+        },
+        "matched": {
+          "title": "Matched",
+          "type": "boolean"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "maxLength": 300,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "source_quality": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Source Quality",
+          "type": "number"
+        },
+        "status": {
+          "$ref": "#/$defs/CoverageStatus"
+        },
+        "support_strength": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Support Strength"
+        }
+      },
+      "required": [
+        "coverage_id",
+        "facet_id",
+        "evidence_id",
+        "status",
+        "matched"
+      ],
+      "title": "FacetCoverage",
+      "type": "object"
+    },
+    "FacetKind": {
+      "enum": [
+        "content",
+        "entity",
+        "relationship",
+        "comparison",
+        "metric",
+        "multi_hop"
+      ],
+      "title": "FacetKind",
+      "type": "string"
+    },
+    "RequirementSource": {
+      "enum": [
+        "rule",
+        "llm"
+      ],
+      "title": "RequirementSource",
+      "type": "string"
+    },
+    "RunIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "config_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Config Hash",
+          "type": "string"
+        },
+        "corpus_snapshot": {
+          "minLength": 1,
+          "title": "Corpus Snapshot",
+          "type": "string"
+        },
+        "coverage_version": {
+          "minLength": 1,
+          "title": "Coverage Version",
+          "type": "string"
+        },
+        "dense_version": {
+          "minLength": 1,
+          "title": "Dense Version",
+          "type": "string"
+        },
+        "evidence_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Evidence Hash",
+          "type": "string"
+        },
+        "facets_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Facets Hash",
+          "type": "string"
+        },
+        "graph_version": {
+          "minLength": 1,
+          "title": "Graph Version",
+          "type": "string"
+        },
+        "model_revision": {
+          "minLength": 1,
+          "title": "Model Revision",
+          "type": "string"
+        },
+        "policy_version": {
+          "minLength": 1,
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "prompt_version": {
+          "minLength": 1,
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "question_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Question Hash",
+          "type": "string"
+        },
+        "rules_version": {
+          "minLength": 1,
+          "title": "Rules Version",
+          "type": "string"
+        },
+        "run_id": {
+          "pattern": "^run-[a-f0-9]{32}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "sparse_version": {
+          "minLength": 1,
+          "title": "Sparse Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "question_hash",
+        "facets_hash",
+        "evidence_hash",
+        "config_hash",
+        "prompt_version",
+        "model_revision",
+        "corpus_snapshot",
+        "dense_version",
+        "sparse_version",
+        "graph_version",
+        "rules_version",
+        "coverage_version",
+        "policy_version"
+      ],
+      "title": "RunIdentity",
+      "type": "object"
+    },
+    "SatisfactionCondition": {
+      "additionalProperties": false,
+      "description": "仅包含可由 Evidence 字段验证的满足条件。",
+      "properties": {
+        "entity_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Entity Ids",
+          "type": "array"
+        },
+        "evidence_types": {
+          "items": {
+            "$ref": "#/$defs/EvidenceSourceType"
+          },
+          "maxItems": 3,
+          "title": "Evidence Types",
+          "type": "array"
+        },
+        "kind": {
+          "$ref": "#/$defs/ConditionKind"
+        },
+        "max_hops": {
+          "anyOf": [
+            {
+              "maximum": 3,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Hops"
+        },
+        "min_term_matches": {
+          "default": 1,
+          "maximum": 20,
+          "minimum": 1,
+          "title": "Min Term Matches",
+          "type": "integer"
+        },
+        "paper_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Paper Ids",
+          "type": "array"
+        },
+        "terms": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Terms",
+          "type": "array"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 32,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "SatisfactionCondition",
+      "type": "object"
+    },
+    "StopReason": {
+      "enum": [
+        "sufficient",
+        "no_positive_gain",
+        "budget_exhausted",
+        "internal_knowledge_missing",
+        "execution_failed",
+        "invalid_input"
+      ],
+      "title": "StopReason",
+      "type": "string"
+    },
+    "StopResult": {
+      "additionalProperties": false,
+      "properties": {
+        "budget": {
+          "$ref": "#/$defs/BudgetLedger"
+        },
+        "message": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "missing_facet_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Facet Ids",
+          "type": "array"
+        },
+        "reason": {
+          "$ref": "#/$defs/StopReason"
+        },
+        "selected_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Selected Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "reason",
+        "message",
+        "budget"
+      ],
+      "title": "StopResult",
+      "type": "object"
+    },
+    "SufficiencyAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "assessment_id": {
+          "pattern": "^assessment-[a-f0-9]{16}$",
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/EvidenceConflict"
+          },
+          "title": "Conflicts",
+          "type": "array"
+        },
+        "covered_facet_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Covered Facet Ids",
+          "type": "array"
+        },
+        "facets": {
+          "items": {
+            "$ref": "#/$defs/FacetAssessment"
+          },
+          "title": "Facets",
+          "type": "array"
+        },
+        "missing_required_facet_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Required Facet Ids",
+          "type": "array"
+        },
+        "optional_facet_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Optional Facet Ids",
+          "type": "array"
+        },
+        "selected_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Selected Evidence Ids",
+          "type": "array"
+        },
+        "sufficient": {
+          "title": "Sufficient",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "assessment_id",
+        "sufficient",
+        "facets",
+        "confidence"
+      ],
+      "title": "SufficiencyAssessment",
+      "type": "object"
+    },
+    "TraceEvent": {
+      "additionalProperties": false,
+      "description": "工作流 TraceEvent v1 的最小稳定结构。",
+      "properties": {
+        "details": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 64,
+          "title": "Details",
+          "type": "object"
+        },
+        "event": {
+          "minLength": 1,
+          "title": "Event",
+          "type": "string"
+        },
+        "node": {
+          "minLength": 1,
+          "title": "Node",
+          "type": "string"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "v1",
+          "default": "v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "trace_id": {
+          "minLength": 1,
+          "title": "Trace Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "trace_id",
+        "sequence",
+        "node",
+        "event",
+        "occurred_at"
+      ],
+      "title": "TraceEvent",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action_history": {
+      "items": {
+        "$ref": "#/$defs/ActionResult"
+      },
+      "maxItems": 2,
+      "title": "Action History",
+      "type": "array"
+    },
+    "budget": {
+      "$ref": "#/$defs/BudgetLedger"
+    },
+    "candidate_actions": {
+      "items": {
+        "$ref": "#/$defs/ActionRequest"
+      },
+      "maxItems": 20,
+      "title": "Candidate Actions",
+      "type": "array"
+    },
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "maxItems": 100,
+      "title": "Candidates",
+      "type": "array"
+    },
+    "coverage_matrix": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CoverageMatrix"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "decision": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CorrectionDecision"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "errors": {
+      "items": {
+        "$ref": "#/$defs/ErrorDetail"
+      },
+      "maxItems": 20,
+      "title": "Errors",
+      "type": "array"
+    },
+    "facets": {
+      "items": {
+        "$ref": "#/$defs/EvidenceRequirement"
+      },
+      "maxItems": 20,
+      "title": "Facets",
+      "type": "array"
+    },
+    "identity": {
+      "$ref": "#/$defs/RunIdentity"
+    },
+    "question": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Question",
+      "type": "string"
+    },
+    "question_id": {
+      "minLength": 1,
+      "title": "Question Id",
+      "type": "string"
+    },
+    "retrieval_round": {
+      "default": 0,
+      "maximum": 2,
+      "minimum": 0,
+      "title": "Retrieval Round",
+      "type": "integer"
+    },
+    "selected_evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "maxItems": 20,
+      "title": "Selected Evidence",
+      "type": "array"
+    },
+    "state_fingerprint": {
+      "anyOf": [
+        {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "State Fingerprint"
+    },
+    "stop": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/StopResult"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "sufficiency": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SufficiencyAssessment"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "trace": {
+      "items": {
+        "$ref": "#/$defs/TraceEvent"
+      },
+      "maxItems": 200,
+      "title": "Trace",
+      "type": "array"
+    }
+  },
+  "required": [
+    "identity",
+    "question_id",
+    "question"
+  ],
+  "title": "CorrectionState",
+  "type": "object"
+}

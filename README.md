@@ -1,6 +1,6 @@
 # KG-CRAG
 
-面向科研文献问答的证据自适应检索 Agent。当前已完成工程基座、论文摄取、Dense Vector RAG、Hybrid 检索与可溯源 Graph Retriever：可从受控 PDF 发布稳定 Chunk，构建版本化 Qdrant/SQLite/Neo4j 索引，将 Dense、Sparse 与 Graph 命中统一为 Evidence，并对关系和有界多跳检索执行零 LLM 评测。动态路由和纠错工作流仍属于后续迭代。
+面向科研文献问答的证据自适应检索 Agent。当前已完成工程基座、论文摄取、Dense Vector RAG、Hybrid/Graph 检索，以及证据 facet 充分性诊断与有界纠错工作流。系统可把 Dense、Sparse、Graph 命中统一为 Evidence，定位首次检索的具体证据缺口，在两轮内部检索和统一预算内选择白名单动作，并给出可审计停止原因。
 
 ## 环境要求
 
@@ -184,6 +184,23 @@ python scripts/extract_graph_facts.py --online --confirm-budget --backend neo4j
 ```
 
 默认硬上限为 15 篇、每篇 3–5 个代表 Chunk、100 次请求、160,000 输入 Token 和 40,000 输出 Token。抽取缓存、清单和评测结果均为可再生产物并被 Git 忽略；真实 Neo4j 测试仅在 `KG_CRAG_RUN_NEO4J_TESTS=1` 时运行。图身份、Schema、复核、回滚及验收记录见 `docs/graph_retrieval.md`。
+
+## 证据充分性与有界纠错
+
+纠错工作流默认完全离线：规则生成 facet，以冻结 Evidence fixture 比较 fixed Hybrid、问题类型路由和 facet 缺口纠错，不访问模型、网络、Qdrant 或 Neo4j。
+
+```bash
+python scripts/run_corrective_workflow.py --question-id q01 --dry-run
+python scripts/run_corrective_workflow.py --question-id q01
+python scripts/evaluate_corrective_workflow.py --smoke
+python scripts/evaluate_corrective_workflow.py
+
+# 真实 LLM 只在显式开关和预算确认后启用
+python scripts/run_corrective_workflow.py --question-id q07 --online --confirm-budget
+python scripts/evaluate_corrective_workflow.py --online --confirm-budget --limit 3
+```
+
+单题硬上限为 2 轮内部检索、3 个子问题、4 次 LLM 调用和 20,000 输入输出 Token。动作目录不包含 Web、回答生成或动态工具名。缓存、检查点和评测结果分别位于 `data/processed/corrective-*` 与 `data/evaluation/results/corrective-workflow/`，均由 Git 忽略。完整语义、恢复和回滚说明见 `docs/corrective_workflow.md`。
 
 ## 项目结构
 

@@ -1,0 +1,426 @@
+{
+  "$defs": {
+    "CorrectionAction": {
+      "enum": [
+        "dense",
+        "sparse",
+        "hybrid",
+        "graph",
+        "rewrite",
+        "decompose",
+        "adjust"
+      ],
+      "title": "CorrectionAction",
+      "type": "string"
+    },
+    "CorrectiveEvaluationQuestion": {
+      "additionalProperties": false,
+      "properties": {
+        "action_evidence": {
+          "additionalProperties": {
+            "items": {
+              "$ref": "#/$defs/Evidence"
+            },
+            "type": "array"
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/CorrectionAction"
+          },
+          "title": "Action Evidence",
+          "type": "object"
+        },
+        "allowed_actions": {
+          "items": {
+            "$ref": "#/$defs/CorrectionAction"
+          },
+          "title": "Allowed Actions",
+          "type": "array"
+        },
+        "category": {
+          "$ref": "#/$defs/GapType"
+        },
+        "corpus_snapshot": {
+          "minLength": 1,
+          "title": "Corpus Snapshot",
+          "type": "string"
+        },
+        "dense_version": {
+          "minLength": 1,
+          "title": "Dense Version",
+          "type": "string"
+        },
+        "expected_facet_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Expected Facet Ids",
+          "type": "array"
+        },
+        "expected_stop": {
+          "$ref": "#/$defs/StopReason"
+        },
+        "graph_version": {
+          "minLength": 1,
+          "title": "Graph Version",
+          "type": "string"
+        },
+        "initial_evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "maxItems": 100,
+          "title": "Initial Evidence",
+          "type": "array"
+        },
+        "question": {
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "question_id": {
+          "minLength": 1,
+          "title": "Question Id",
+          "type": "string"
+        },
+        "sparse_version": {
+          "minLength": 1,
+          "title": "Sparse Version",
+          "type": "string"
+        },
+        "target_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Target Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "question_id",
+        "question",
+        "category",
+        "corpus_snapshot",
+        "dense_version",
+        "sparse_version",
+        "graph_version",
+        "expected_facet_ids",
+        "expected_stop"
+      ],
+      "title": "CorrectiveEvaluationQuestion",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "minLength": 1,
+          "title": "Content",
+          "type": "string"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "external": {
+          "default": false,
+          "title": "External",
+          "type": "boolean"
+        },
+        "location": {
+          "$ref": "#/$defs/EvidenceLocation"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Metadata",
+          "type": "object"
+        },
+        "paper_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Paper Id"
+        },
+        "ranks": {
+          "$ref": "#/$defs/EvidenceRanks"
+        },
+        "scores": {
+          "$ref": "#/$defs/EvidenceScores"
+        },
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_type": {
+          "$ref": "#/$defs/EvidenceSourceType"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "content",
+        "source_type",
+        "source_id"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "EvidenceLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "page": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page"
+        },
+        "section": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Section"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "title": "EvidenceLocation",
+      "type": "object"
+    },
+    "EvidenceRanks": {
+      "additionalProperties": false,
+      "properties": {
+        "dense": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dense"
+        },
+        "fusion": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fusion"
+        },
+        "rerank": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rerank"
+        },
+        "sparse": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sparse"
+        }
+      },
+      "title": "EvidenceRanks",
+      "type": "object"
+    },
+    "EvidenceScores": {
+      "additionalProperties": false,
+      "properties": {
+        "dense": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dense"
+        },
+        "fusion": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fusion"
+        },
+        "graph": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph"
+        },
+        "rerank": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rerank"
+        },
+        "sparse": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sparse"
+        }
+      },
+      "title": "EvidenceScores",
+      "type": "object"
+    },
+    "EvidenceSourceType": {
+      "enum": [
+        "chunk",
+        "graph",
+        "web"
+      ],
+      "title": "EvidenceSourceType",
+      "type": "string"
+    },
+    "GapType": {
+      "enum": [
+        "terminology_mismatch",
+        "entity_alias",
+        "comparison_side",
+        "multi_hop_gap",
+        "metric_missing",
+        "conflict",
+        "internal_missing"
+      ],
+      "title": "GapType",
+      "type": "string"
+    },
+    "StopReason": {
+      "enum": [
+        "sufficient",
+        "no_positive_gain",
+        "budget_exhausted",
+        "internal_knowledge_missing",
+        "execution_failed",
+        "invalid_input"
+      ],
+      "title": "StopReason",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "questions": {
+      "items": {
+        "$ref": "#/$defs/CorrectiveEvaluationQuestion"
+      },
+      "maxItems": 40,
+      "minItems": 20,
+      "title": "Questions",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "questions"
+  ],
+  "title": "CorrectiveEvaluationQuestionSet",
+  "type": "object"
+}

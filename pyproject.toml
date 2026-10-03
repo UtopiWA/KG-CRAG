@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11,<3.13"
 license = { text = "For course and research use; corpus licenses remain with their sources." }
 dependencies = [
-  "anyio==4.8.0",
+  "anyio==4.10.0",
   "fastapi==0.115.8",
   "pydantic==2.10.6",
   "pydantic-settings==2.7.1",
@@ -19,6 +19,7 @@ dependencies = [
   "openai==1.63.2",
   "neo4j==5.28.1",
   "qdrant-client==1.13.2",
+  "langgraph==0.2.74",
   "sentence-transformers==3.4.1",
   "uvicorn[standard]==0.34.0",
 ]

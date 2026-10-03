@@ -1,0 +1,359 @@
+{
+  "$defs": {
+    "CorrectiveEvaluationItem": {
+      "additionalProperties": false,
+      "properties": {
+        "correction_triggered": {
+          "default": false,
+          "title": "Correction Triggered",
+          "type": "boolean"
+        },
+        "covered_required_facets": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Covered Required Facets",
+          "type": "integer"
+        },
+        "diagnosis_correct": {
+          "default": false,
+          "title": "Diagnosis Correct",
+          "type": "boolean"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "first_sufficient": {
+          "default": false,
+          "title": "First Sufficient",
+          "type": "boolean"
+        },
+        "input_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "llm_calls": {
+          "default": 0,
+          "maximum": 4,
+          "minimum": 0,
+          "title": "Llm Calls",
+          "type": "integer"
+        },
+        "meaningless_actions": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Meaningless Actions",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "question_id": {
+          "title": "Question Id",
+          "type": "string"
+        },
+        "recovered": {
+          "default": false,
+          "title": "Recovered",
+          "type": "boolean"
+        },
+        "required_facets": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Required Facets",
+          "type": "integer"
+        },
+        "retrieval_rounds": {
+          "default": 0,
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Retrieval Rounds",
+          "type": "integer"
+        },
+        "stop_reason": {
+          "$ref": "#/$defs/StopReason"
+        },
+        "strategy": {
+          "$ref": "#/$defs/CorrectiveStrategy"
+        },
+        "tool_calls": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Tool Calls",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "question_id",
+        "strategy",
+        "stop_reason"
+      ],
+      "title": "CorrectiveEvaluationItem",
+      "type": "object"
+    },
+    "CorrectiveEvaluationMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "average_retrieval_rounds": {
+          "maximum": 2.0,
+          "minimum": 0.0,
+          "title": "Average Retrieval Rounds",
+          "type": "number"
+        },
+        "correction_trigger_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Correction Trigger Rate",
+          "type": "number"
+        },
+        "diagnosis_accuracy": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Diagnosis Accuracy",
+          "type": "number"
+        },
+        "failures": {
+          "minimum": 0,
+          "title": "Failures",
+          "type": "integer"
+        },
+        "first_sufficiency_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "First Sufficiency Rate",
+          "type": "number"
+        },
+        "input_tokens": {
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "llm_calls": {
+          "minimum": 0,
+          "title": "Llm Calls",
+          "type": "integer"
+        },
+        "meaningless_action_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Meaningless Action Rate",
+          "type": "number"
+        },
+        "output_tokens": {
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "recovery_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Recovery Rate",
+          "type": "number"
+        },
+        "required_coverage_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Required Coverage Rate",
+          "type": "number"
+        },
+        "stop_reasons": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/StopReason"
+          },
+          "title": "Stop Reasons",
+          "type": "object"
+        },
+        "tool_calls": {
+          "minimum": 0,
+          "title": "Tool Calls",
+          "type": "integer"
+        },
+        "total": {
+          "minimum": 1,
+          "title": "Total",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "total",
+        "failures",
+        "first_sufficiency_rate",
+        "diagnosis_accuracy",
+        "required_coverage_rate",
+        "recovery_rate",
+        "correction_trigger_rate",
+        "meaningless_action_rate",
+        "average_retrieval_rounds",
+        "tool_calls",
+        "llm_calls",
+        "input_tokens",
+        "output_tokens",
+        "latency_ms",
+        "stop_reasons"
+      ],
+      "title": "CorrectiveEvaluationMetrics",
+      "type": "object"
+    },
+    "CorrectiveStrategy": {
+      "enum": [
+        "fixed_hybrid",
+        "type_router",
+        "facet_corrective"
+      ],
+      "title": "CorrectiveStrategy",
+      "type": "string"
+    },
+    "ErrorCode": {
+      "description": "供调用方稳定分支的错误代码。",
+      "enum": [
+        "validation_error",
+        "configuration_error",
+        "external_service_error",
+        "timeout_error",
+        "not_found",
+        "data_error",
+        "internal_error"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "description": "可安全序列化的统一错误详情。",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "context": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 32,
+          "title": "Context",
+          "type": "object"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "StopReason": {
+      "enum": [
+        "sufficient",
+        "no_positive_gain",
+        "budget_exhausted",
+        "internal_knowledge_missing",
+        "execution_failed",
+        "invalid_input"
+      ],
+      "title": "StopReason",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "evaluation_id": {
+      "pattern": "^eval-[a-f0-9]{32}$",
+      "title": "Evaluation Id",
+      "type": "string"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/CorrectiveEvaluationItem"
+      },
+      "minItems": 1,
+      "title": "Items",
+      "type": "array"
+    },
+    "metrics": {
+      "additionalProperties": {
+        "$ref": "#/$defs/CorrectiveEvaluationMetrics"
+      },
+      "propertyNames": {
+        "$ref": "#/$defs/CorrectiveStrategy"
+      },
+      "title": "Metrics",
+      "type": "object"
+    },
+    "offline": {
+      "title": "Offline",
+      "type": "boolean"
+    },
+    "question_set_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Question Set Hash",
+      "type": "string"
+    }
+  },
+  "required": [
+    "evaluation_id",
+    "offline",
+    "question_set_hash",
+    "items",
+    "metrics",
+    "created_at"
+  ],
+  "title": "CorrectiveEvaluationReport",
+  "type": "object"
+}

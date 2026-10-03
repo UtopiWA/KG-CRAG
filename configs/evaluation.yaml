@@ -49,3 +49,12 @@ agent_metrics:
   - web_fallback_rate
   - latency
   - tool_calls
+
+corrective_workflow:
+  questions_path: data/evaluation/corrective_dev_questions.json
+  results_root: data/evaluation/results/corrective-workflow
+  strategies: [fixed_hybrid, type_router, facet_corrective]
+  max_questions: 40
+  smoke_questions: 5
+  online_smoke_questions: 3
+  online_max_questions: 20

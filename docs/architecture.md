@@ -50,3 +50,15 @@ published Paper/Chunk -> 无 LLM 基础图 ─┐
 ```
 
 所有事实先通过公共模型和白名单端点校验，再以论文级事务同步。Neo4j 只接收固定参数化只读模板；默认测试使用版本化内存后端。Graph Retriever 不自动调用 Dense、Sparse、Web 或生成器，来源哈希漂移时拒绝整条路径。本切片仍不包含动态路由、纠错循环、Web、反思、API 或 UI。
+
+## 当前证据充分性纠错切片
+
+迭代 05 使用固定 LangGraph 拓扑编排严格 `CorrectionState`：
+
+```text
+requirements -> initial_retrieve -> assess -> decide
+                                      | sufficient/stop -> finalize
+                                      + execute -> reassess -> finalize
+```
+
+`correction/` 保存规则 facet、覆盖矩阵、充分性、动作目录、预算和净效用策略；`workflow/nodes/` 与 `workflow/edges/` 只读取结构化字段，框架编译仅在显式 runner 中发生。初始检索加一次纠错构成最多两轮内部检索。状态、缓存和 Trace 绑定问题、Evidence 内容、配置、Prompt、模型、语料和三类索引版本；外部 Evidence、Web、回答生成和反思不进入本切片。

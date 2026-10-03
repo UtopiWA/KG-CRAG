@@ -17,3 +17,11 @@ Every run must record the dataset split, random seed, configuration hash, prompt
 矩阵默认零 LLM。配置、语料快照、Dense 集合、Sparse 索引、融合版本、Reranker 版本、策略和 K 值共同形成 `evaluation_version`；逐题检查点只有身份严格匹配时才复用。回答验证与检索报告分开保存，必须显式选择唯一 `fusion_rerank` 配置并给出与题数完全一致的调用预算。
 
 2026-10-03 验收记录：pilot Sparse dry-run、970 Chunk 首次构建、全量幂等跳过、精确版本重建和带论文过滤查询均通过；真实五策略 smoke 因本机 Docker/Qdrant 守护进程未响应而未完成，未生成或伪造质量指标。SQLite + Mock Dense/Reranker 的零网络集成矩阵已覆盖建索引、重跑、单路降级、重排回退、报告和断点复用。
+
+## Corrective Workflow v1 压力矩阵
+
+`data/evaluation/corrective_dev_questions.json` 冻结 20 题，覆盖术语错配、实体别名、比较缺侧、多跳断链、关键指标缺失、冲突和内部知识缺失。默认矩阵在相同初始 Evidence 上比较 fixed Hybrid、type router 与 facet corrective，报告首次充分率、facet 诊断准确率、必需覆盖率、恢复率、纠错触发/无意义动作率、平均轮次、调用、Token、时延、失败和停止原因。失败题始终留在分母与逐题报告中。
+
+该矩阵不生成回答，开发集可以调整规则与成本，最终测试集和回答质量不得用于本迭代调参。在线模式先展示最坏预算并要求确认：smoke 最多 3 题，扩大验证最多 20 题；离线与在线报告使用不同身份。
+
+2026-10-04 验收记录：20 题 × 3 策略离线矩阵完成且零失败；facet 纠错的必需覆盖率为 0.8276、恢复率为 0.75、无意义动作率为 0.25，20 次纠错触发共计 40 轮内部检索。相同身份重复运行在约 1.7 秒内从逐题检查点重放。随后以 `glm-5.3-flash` 对 q07 执行一次在线 smoke：Provider 返回未通过严格结构校验，系统没有重试或切换 Provider，按规则整批回退并保守记录 1 次调用、4000 输入 Token、2000 输出 Token 和 5000 ms；最终工作流仍以 `sufficient` 停止。相同身份约 2.3 秒重放最终检查点，未再次调用模型。真实 LLM 成功生成结构化 facet 的路径仍标记为未验证，不据此扩大在线题数。
