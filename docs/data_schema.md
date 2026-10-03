@@ -1,6 +1,6 @@
 # 数据模式
 
-公共领域契约位于 `src/kg_crag/models/domain.py`，摄取阶段契约位于 `models/ingestion.py`，Sparse/Hybrid 运行契约位于 `models/retrieval.py`；这些模型都拒绝未知字段。可评审 JSON Schema 快照位于 `docs/schemas/`。
+公共领域契约位于 `src/kg_crag/models/domain.py`，摄取阶段契约位于 `models/ingestion.py`，Sparse/Hybrid 运行契约位于 `models/retrieval.py`，图契约位于 `models/graph.py`；这些模型都拒绝未知字段。可评审 JSON Schema 快照位于 `docs/schemas/`。
 
 ## 数据分层
 
@@ -14,7 +14,7 @@
 
 新 Paper ID 的优先级为 DOI、无版本 arXiv ID、其他受支持外部 ID、规范化标题 SHA-256；现有合法 `arxiv:<id>` 标识保持兼容。Paper 目录使用 Windows 安全的 `paper-<sha256(paper_id)[:16]>`。
 
-Block ID 绑定输入哈希、页码、顺序、坐标和原文哈希；Chunk ID 绑定 Paper ID、processing-version、Section 键、ordinal、页码范围和内容哈希。每个 Chunk 含 Paper ID、章节、起止页码、Token 数、内容 SHA-256 与处理版本。图谱功能实现后，每条图事实仍必须关联来源 Chunk、抽取器版本、置信度与创建时间。
+Block ID 绑定输入哈希、页码、顺序、坐标和原文哈希；Chunk ID 绑定 Paper ID、processing-version、Section 键、ordinal、页码范围和内容哈希。每个 Chunk 含 Paper ID、章节、起止页码、Token 数、内容 SHA-256 与处理版本。正文图事实必须关联现存 Chunk、内容哈希、抽取器/Prompt 版本、置信度与带时区创建时间；元数据图事实关联 Paper 和 `paper.json` 哈希。
 
 `Evidence` 是 Dense、Sparse、Graph 和 Web 检索的统一下游边界。Dense 命中记录稳定 `source_id`、分数、排名、集合版本、内容哈希及 `external=false`，不暴露 Qdrant 私有对象。摄取流水线不创建索引，也不把解析器私有对象写入公共契约。
 
@@ -38,3 +38,12 @@ Block ID 绑定输入哈希、页码、顺序、坐标和原文哈希；Chunk ID
 - `HybridRetrievalResult` 保存各阶段状态、候选数、时延、调用次数、降级路径及语料/集合/索引/融合/重排版本。
 - `HybridQueryResult` 包含嵌套检索结果、实际 Dense/Sparse 路径及可选回答；`with_answer=false` 时回答字段为空且 `llm_calls=0`。
 - `HybridEvaluationReport` 绑定评测版本，保留逐题失败、策略指标和阶段平均时延；同版本逐题检查点可安全复用。
+
+## Graph 契约
+
+- `GraphIdentity` 绑定 schema、语料快照、基础构建器、Chunk 选择器、抽取器、Prompt/模型修订、规范化和查询模板版本。
+- `GraphEntity` 和 `GraphFact` 只允许固定节点、关系及端点组合；事实 ID 同时绑定关系端点和来源身份。
+- `GraphBundle` 是单篇论文的后端无关完整目标状态，写库前检查重复端点、悬空事实、来源 Paper 与图身份。
+- `GraphQueryRequest` 仅允许四种枚举模板及有界参数，不存在 raw Cypher 字段；`GraphPathHit` 不暴露 Driver、Session 或数据库节点。
+- Graph Evidence 使用 `source_type=graph`、`external=false`，在 metadata 标量中保留 graph/template/path/fact/hop 版本信息；正文路径必须回读当前 Chunk，元数据路径不得伪造章节或页码。
+- `GraphEvaluationQuestionSet` 绑定唯一语料快照和图版本，逐题目标可包含事实、路径和来源，重复问题 ID 或版本混用会被拒绝。

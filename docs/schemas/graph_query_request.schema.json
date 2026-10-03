@@ -1,0 +1,140 @@
+{
+  "$defs": {
+    "GraphNodeType": {
+      "enum": [
+        "Paper",
+        "Author",
+        "Institution",
+        "Method",
+        "Model",
+        "Dataset",
+        "Task",
+        "Metric",
+        "Result",
+        "Chunk"
+      ],
+      "title": "GraphNodeType",
+      "type": "string"
+    },
+    "GraphQueryTemplate": {
+      "enum": [
+        "entity_neighbors",
+        "relation_lookup",
+        "bounded_path",
+        "method_evidence"
+      ],
+      "title": "GraphQueryTemplate",
+      "type": "string"
+    },
+    "GraphRelationType": {
+      "enum": [
+        "AUTHORED_BY",
+        "AFFILIATED_WITH",
+        "CITES",
+        "CONTAINS",
+        "HAS_METHOD",
+        "USES_MODEL",
+        "EVALUATED_ON",
+        "ADDRESSES_TASK",
+        "REPORTS_RESULT",
+        "USES_METRIC",
+        "ON_DATASET",
+        "FOR_TASK"
+      ],
+      "title": "GraphRelationType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "entity_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 20,
+      "title": "Entity Ids",
+      "type": "array"
+    },
+    "entity_names": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 20,
+      "title": "Entity Names",
+      "type": "array"
+    },
+    "graph_version": {
+      "minLength": 1,
+      "title": "Graph Version",
+      "type": "string"
+    },
+    "max_candidates": {
+      "default": 100,
+      "maximum": 500,
+      "minimum": 1,
+      "title": "Max Candidates",
+      "type": "integer"
+    },
+    "max_hops": {
+      "default": 1,
+      "maximum": 3,
+      "minimum": 1,
+      "title": "Max Hops",
+      "type": "integer"
+    },
+    "min_confidence": {
+      "default": 0.0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Min Confidence",
+      "type": "number"
+    },
+    "node_types": {
+      "items": {
+        "$ref": "#/$defs/GraphNodeType"
+      },
+      "maxItems": 10,
+      "title": "Node Types",
+      "type": "array"
+    },
+    "paper_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Paper Ids",
+      "type": "array"
+    },
+    "relation_types": {
+      "items": {
+        "$ref": "#/$defs/GraphRelationType"
+      },
+      "maxItems": 12,
+      "title": "Relation Types",
+      "type": "array"
+    },
+    "template": {
+      "$ref": "#/$defs/GraphQueryTemplate"
+    },
+    "timeout_seconds": {
+      "default": 10.0,
+      "exclusiveMinimum": 0.0,
+      "maximum": 30.0,
+      "title": "Timeout Seconds",
+      "type": "number"
+    },
+    "top_k": {
+      "default": 20,
+      "maximum": 100,
+      "minimum": 1,
+      "title": "Top K",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "graph_version",
+    "template"
+  ],
+  "title": "GraphQueryRequest",
+  "type": "object"
+}

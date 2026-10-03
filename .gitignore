@@ -10,6 +10,7 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+tmp/
 
 # Corpus artifacts are reproducible and may be large.
 data/raw/papers/*.pdf

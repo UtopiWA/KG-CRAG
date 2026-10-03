@@ -1,0 +1,243 @@
+{
+  "$defs": {
+    "GraphEvaluationQuestion": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "enum": [
+            "relationship",
+            "ambiguity",
+            "single_hop",
+            "multi_hop",
+            "no_path",
+            "bad_source"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "corpus_snapshot": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Corpus Snapshot",
+          "type": "string"
+        },
+        "graph_version": {
+          "minLength": 1,
+          "title": "Graph Version",
+          "type": "string"
+        },
+        "k": {
+          "default": 10,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "K",
+          "type": "integer"
+        },
+        "question": {
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "question_id": {
+          "minLength": 1,
+          "title": "Question Id",
+          "type": "string"
+        },
+        "relevant_chunk_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Relevant Chunk Ids",
+          "type": "array"
+        },
+        "relevant_fact_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Relevant Fact Ids",
+          "type": "array"
+        },
+        "relevant_path_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Relevant Path Ids",
+          "type": "array"
+        },
+        "request": {
+          "$ref": "#/$defs/GraphQueryRequest"
+        }
+      },
+      "required": [
+        "question_id",
+        "question",
+        "category",
+        "corpus_snapshot",
+        "graph_version",
+        "request"
+      ],
+      "title": "GraphEvaluationQuestion",
+      "type": "object"
+    },
+    "GraphNodeType": {
+      "enum": [
+        "Paper",
+        "Author",
+        "Institution",
+        "Method",
+        "Model",
+        "Dataset",
+        "Task",
+        "Metric",
+        "Result",
+        "Chunk"
+      ],
+      "title": "GraphNodeType",
+      "type": "string"
+    },
+    "GraphQueryRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "entity_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Entity Ids",
+          "type": "array"
+        },
+        "entity_names": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Entity Names",
+          "type": "array"
+        },
+        "graph_version": {
+          "minLength": 1,
+          "title": "Graph Version",
+          "type": "string"
+        },
+        "max_candidates": {
+          "default": 100,
+          "maximum": 500,
+          "minimum": 1,
+          "title": "Max Candidates",
+          "type": "integer"
+        },
+        "max_hops": {
+          "default": 1,
+          "maximum": 3,
+          "minimum": 1,
+          "title": "Max Hops",
+          "type": "integer"
+        },
+        "min_confidence": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Min Confidence",
+          "type": "number"
+        },
+        "node_types": {
+          "items": {
+            "$ref": "#/$defs/GraphNodeType"
+          },
+          "maxItems": 10,
+          "title": "Node Types",
+          "type": "array"
+        },
+        "paper_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Paper Ids",
+          "type": "array"
+        },
+        "relation_types": {
+          "items": {
+            "$ref": "#/$defs/GraphRelationType"
+          },
+          "maxItems": 12,
+          "title": "Relation Types",
+          "type": "array"
+        },
+        "template": {
+          "$ref": "#/$defs/GraphQueryTemplate"
+        },
+        "timeout_seconds": {
+          "default": 10.0,
+          "exclusiveMinimum": 0.0,
+          "maximum": 30.0,
+          "title": "Timeout Seconds",
+          "type": "number"
+        },
+        "top_k": {
+          "default": 20,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "graph_version",
+        "template"
+      ],
+      "title": "GraphQueryRequest",
+      "type": "object"
+    },
+    "GraphQueryTemplate": {
+      "enum": [
+        "entity_neighbors",
+        "relation_lookup",
+        "bounded_path",
+        "method_evidence"
+      ],
+      "title": "GraphQueryTemplate",
+      "type": "string"
+    },
+    "GraphRelationType": {
+      "enum": [
+        "AUTHORED_BY",
+        "AFFILIATED_WITH",
+        "CITES",
+        "CONTAINS",
+        "HAS_METHOD",
+        "USES_MODEL",
+        "EVALUATED_ON",
+        "ADDRESSES_TASK",
+        "REPORTS_RESULT",
+        "USES_METRIC",
+        "ON_DATASET",
+        "FOR_TASK"
+      ],
+      "title": "GraphRelationType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "questions": {
+      "items": {
+        "$ref": "#/$defs/GraphEvaluationQuestion"
+      },
+      "maxItems": 20,
+      "minItems": 1,
+      "title": "Questions",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "questions"
+  ],
+  "title": "GraphEvaluationQuestionSet",
+  "type": "object"
+}

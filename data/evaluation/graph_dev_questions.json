@@ -1,0 +1,119 @@
+{
+  "schema_version": "v1",
+  "questions": [
+    {
+      "question_id": "graph-01",
+      "question": "Which graph facts belong to CAMEL?",
+      "category": "relationship",
+      "corpus_snapshot": "9f200922e5587f53b181eccbff3f516197b86a91fc47f6a0bbf32c324f23621c",
+      "graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c",
+      "request": {"graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c", "template": "relation_lookup", "entity_ids": ["paper:f0e1ea08409ae184d3aca78a4f14571b2ba0762772b008339cc3628191020a53"], "relation_types": ["CONTAINS"]},
+      "relevant_fact_ids": ["fact:0341c4d2236be44aae63886ffd5ca3ae13f088a4f36d96eff84c0dfc64cace2a"],
+      "relevant_chunk_ids": ["arxiv:2303.17760"]
+    },
+    {
+      "question_id": "graph-02",
+      "question": "Which graph facts belong to Generative Agents?",
+      "category": "single_hop",
+      "corpus_snapshot": "9f200922e5587f53b181eccbff3f516197b86a91fc47f6a0bbf32c324f23621c",
+      "graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c",
+      "request": {"graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c", "template": "relation_lookup", "entity_ids": ["paper:ebf3e8deec4d2f92d3ce6dd6ab9c5d73dba14aeb2f8d90d57cb75668becde764"], "relation_types": ["CONTAINS"]},
+      "relevant_fact_ids": ["fact:01de68a59e6376ac3cb66a0d23965ab1e617e9898e5f09921696aa60f91ae2a8"],
+      "relevant_chunk_ids": ["arxiv:2304.03442"]
+    },
+    {
+      "question_id": "graph-03",
+      "question": "Which graph facts belong to Tree of Thoughts?",
+      "category": "relationship",
+      "corpus_snapshot": "9f200922e5587f53b181eccbff3f516197b86a91fc47f6a0bbf32c324f23621c",
+      "graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c",
+      "request": {"graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c", "template": "relation_lookup", "entity_ids": ["paper:cc7bfc2fc024e41f0027fbd2f4042207c99c14a71ebe0ca7fbb8a1cbc822e364"], "relation_types": ["CONTAINS"]},
+      "relevant_fact_ids": ["fact:01c6543d5e379c131c10f9852e46611315f6e1ad16caee664fb148fae1378e79"],
+      "relevant_chunk_ids": ["arxiv:2305.10601"]
+    },
+    {
+      "question_id": "graph-04",
+      "question": "Which graph facts belong to Voyager?",
+      "category": "single_hop",
+      "corpus_snapshot": "9f200922e5587f53b181eccbff3f516197b86a91fc47f6a0bbf32c324f23621c",
+      "graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c",
+      "request": {"graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c", "template": "relation_lookup", "entity_ids": ["paper:0f49a865528ef58531004f2ea0620f59bc30597ae1dff736a10e397e1ba8218b"], "relation_types": ["CONTAINS"]},
+      "relevant_fact_ids": ["fact:04c4490b562ecf3abbff18ac047d961ba38d2b08fc2907d8f49e5b8205f82510"],
+      "relevant_chunk_ids": ["arxiv:2305.16291"]
+    },
+    {
+      "question_id": "graph-05",
+      "question": "Which graph facts belong to ToolLLM?",
+      "category": "relationship",
+      "corpus_snapshot": "9f200922e5587f53b181eccbff3f516197b86a91fc47f6a0bbf32c324f23621c",
+      "graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c",
+      "request": {"graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c", "template": "relation_lookup", "entity_ids": ["paper:a4e2a4ed6802575c77353dd7374be08726603f6bddb18a0a7a14ff2505d03e8c"], "relation_types": ["CONTAINS"]},
+      "relevant_fact_ids": ["fact:00715079ce0af0b2b43c5ae4abbf48546622c05d8b27d42564ee4648ac6c11c1"],
+      "relevant_chunk_ids": ["arxiv:2307.16789"]
+    },
+    {
+      "question_id": "graph-06",
+      "question": "Which graph facts belong to MetaGPT?",
+      "category": "single_hop",
+      "corpus_snapshot": "9f200922e5587f53b181eccbff3f516197b86a91fc47f6a0bbf32c324f23621c",
+      "graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c",
+      "request": {"graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c", "template": "relation_lookup", "entity_ids": ["paper:bde4a3388a5cddb3e27fee60fa2fa523b770a3bb73d6b79bc2e5a28601bb8552"], "relation_types": ["CONTAINS"]},
+      "relevant_fact_ids": ["fact:084386a9cd7d6b76cff38dd8fecfe6240abc748345423ea7120b8ba1c40d4149"],
+      "relevant_chunk_ids": ["arxiv:2308.00352"]
+    },
+    {
+      "question_id": "graph-07",
+      "question": "Which graph facts belong to AgentBench?",
+      "category": "relationship",
+      "corpus_snapshot": "9f200922e5587f53b181eccbff3f516197b86a91fc47f6a0bbf32c324f23621c",
+      "graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c",
+      "request": {"graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c", "template": "relation_lookup", "entity_ids": ["paper:408fd09fb63808af70d655b8c4c040dd62ce24b8c1296d10ad2c0c34ad080067"], "relation_types": ["CONTAINS"]},
+      "relevant_fact_ids": ["fact:0022e6a51a4b997a6102011bedc371c84c95f7f0b78c10c183c4dda311f5d3fd"],
+      "relevant_chunk_ids": ["arxiv:2308.03688"]
+    },
+    {
+      "question_id": "graph-08",
+      "question": "Which graph facts belong to Language Agent Tree Search?",
+      "category": "ambiguity",
+      "corpus_snapshot": "9f200922e5587f53b181eccbff3f516197b86a91fc47f6a0bbf32c324f23621c",
+      "graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c",
+      "request": {"graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c", "template": "relation_lookup", "entity_ids": ["paper:27caaaa2a82c4a85c1bc4c441d465cf8cb3f45165854486349d8ae92bafe8a79"], "relation_types": ["CONTAINS"]},
+      "relevant_fact_ids": ["fact:00306f8aaa30b2a68684c550f007bbc82d90c930453dd57fba5692c515dccbac"],
+      "relevant_chunk_ids": ["arxiv:2310.04406"]
+    },
+    {
+      "question_id": "graph-09",
+      "question": "Which papers share the same explicitly identified author?",
+      "category": "multi_hop",
+      "corpus_snapshot": "9f200922e5587f53b181eccbff3f516197b86a91fc47f6a0bbf32c324f23621c",
+      "graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c",
+      "request": {"graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c", "template": "bounded_path", "entity_ids": ["paper:27caaaa2a82c4a85c1bc4c441d465cf8cb3f45165854486349d8ae92bafe8a79"], "relation_types": ["AUTHORED_BY"], "max_hops": 2},
+      "relevant_fact_ids": ["fact:1db68df68ef5446a63e61ae8015484468c2258e240050607825be217c80f9e99", "fact:62daf6497d0c543231037cac7cda7255b88bd425091b34be0769cf2934a8bbe9"],
+      "relevant_chunk_ids": ["arxiv:2310.04406", "arxiv:2312.07559"]
+    },
+    {
+      "question_id": "graph-10",
+      "question": "Find graph evidence for an unknown entity.",
+      "category": "no_path",
+      "corpus_snapshot": "9f200922e5587f53b181eccbff3f516197b86a91fc47f6a0bbf32c324f23621c",
+      "graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c",
+      "request": {"graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c", "template": "entity_neighbors", "entity_names": ["Unknown Entity 000"]}
+    },
+    {
+      "question_id": "graph-11",
+      "question": "Reject a graph result whose source is unavailable.",
+      "category": "bad_source",
+      "corpus_snapshot": "9f200922e5587f53b181eccbff3f516197b86a91fc47f6a0bbf32c324f23621c",
+      "graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c",
+      "request": {"graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c", "template": "entity_neighbors", "entity_names": ["Drifted Source 000"]}
+    },
+    {
+      "question_id": "graph-12",
+      "question": "Keep an unresolved ambiguous entity separate.",
+      "category": "ambiguity",
+      "corpus_snapshot": "9f200922e5587f53b181eccbff3f516197b86a91fc47f6a0bbf32c324f23621c",
+      "graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c",
+      "request": {"graph_version": "80b39a5b53d03a601437dd340567bbd88fe62c711f827718d9b583bb0444c63c", "template": "entity_neighbors", "entity_names": ["Ambiguous Entity 000"]}
+    }
+  ]
+}

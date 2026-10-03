@@ -1,0 +1,176 @@
+{
+  "$defs": {
+    "GraphProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "created_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Created At"
+        },
+        "evidence_quote": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Quote"
+        },
+        "extractor_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extractor Version"
+        },
+        "paper_id": {
+          "minLength": 1,
+          "title": "Paper Id",
+          "type": "string"
+        },
+        "prompt_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prompt Version"
+        },
+        "source_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Hash",
+          "type": "string"
+        },
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "metadata",
+            "chunk"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_kind",
+        "paper_id",
+        "source_id",
+        "source_hash"
+      ],
+      "title": "GraphProvenance",
+      "type": "object"
+    },
+    "GraphQueryTemplate": {
+      "enum": [
+        "entity_neighbors",
+        "relation_lookup",
+        "bounded_path",
+        "method_evidence"
+      ],
+      "title": "GraphQueryTemplate",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "entity_ids": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 2,
+      "title": "Entity Ids",
+      "type": "array"
+    },
+    "fact_ids": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Fact Ids",
+      "type": "array"
+    },
+    "graph_version": {
+      "minLength": 1,
+      "title": "Graph Version",
+      "type": "string"
+    },
+    "hop_count": {
+      "maximum": 3,
+      "minimum": 1,
+      "title": "Hop Count",
+      "type": "integer"
+    },
+    "path_id": {
+      "minLength": 1,
+      "title": "Path Id",
+      "type": "string"
+    },
+    "provenances": {
+      "items": {
+        "$ref": "#/$defs/GraphProvenance"
+      },
+      "minItems": 1,
+      "title": "Provenances",
+      "type": "array"
+    },
+    "score": {
+      "title": "Score",
+      "type": "number"
+    },
+    "summary": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "template": {
+      "$ref": "#/$defs/GraphQueryTemplate"
+    }
+  },
+  "required": [
+    "path_id",
+    "graph_version",
+    "template",
+    "entity_ids",
+    "fact_ids",
+    "provenances",
+    "summary",
+    "score",
+    "hop_count"
+  ],
+  "title": "GraphPathHit",
+  "type": "object"
+}

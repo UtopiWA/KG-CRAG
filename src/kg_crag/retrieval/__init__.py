@@ -22,6 +22,11 @@ from kg_crag.retrieval.fusion import (
     fuse_evidence,
     fusion_version,
 )
+from kg_crag.retrieval.graph import (
+    GraphRetrievalResult,
+    GraphRetriever,
+    ProcessedSourceResolver,
+)
 from kg_crag.retrieval.hybrid import HybridRetrievalService, publish_hybrid_result
 from kg_crag.retrieval.mock import MockReranker, MockRetriever, RerankCall, RetrievalCall
 from kg_crag.retrieval.sparse import SparseRetriever
@@ -31,12 +36,15 @@ __all__ = [
     "DenseEvaluationConfig",
     "DenseRAGConfig",
     "FusionConfig",
+    "GraphRetrievalResult",
+    "GraphRetriever",
     "HybridEvaluationConfig",
     "HybridRetrievalConfig",
     "HybridRetrievalService",
     "HybridRuntimeConfig",
     "MockReranker",
     "MockRetriever",
+    "ProcessedSourceResolver",
     "RerankCall",
     "Reranker",
     "RerankerConfig",

@@ -7,7 +7,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from kg_crag.models import Chunk, PilotManifest, QualityReport
+from kg_crag.models import Chunk, Paper, PilotManifest, QualityReport
 
 
 @dataclass(frozen=True)
@@ -16,6 +16,8 @@ class ProcessedPaper:
     processing_version: str
     chunks: tuple[Chunk, ...]
     directory: Path
+    paper: Paper | None = None
+    paper_hash: str | None = None
 
 
 def _contained_file(root: Path, path: Path) -> Path:
@@ -58,12 +60,26 @@ def discover_processed(processed_root: Path) -> list[ProcessedPaper]:
         chunks.sort(key=lambda item: (item.ordinal, item.chunk_id))
         if len({item.chunk_id for item in chunks}) != len(chunks):
             raise ValueError(f"duplicate chunk ID for {quality.paper_id}")
+        paper: Paper | None = None
+        paper_hash: str | None = None
+        paper_path = quality_file.parent / "paper.json"
+        if paper_path.is_file():
+            paper_file = _contained_file(root, paper_path)
+            paper_hash = hashlib.sha256(paper_file.read_bytes()).hexdigest()
+            expected_paper_hash = quality.artifact_hashes.get("paper.json")
+            if expected_paper_hash is not None and expected_paper_hash != paper_hash:
+                raise ValueError(f"processed paper hash mismatch for {quality.paper_id}")
+            paper = Paper.model_validate_json(paper_file.read_text(encoding="utf-8"))
+            if paper.paper_id != quality.paper_id:
+                raise ValueError(f"processed paper identity mismatch for {quality.paper_id}")
         discovered.setdefault(quality.paper_id, []).append(
             ProcessedPaper(
                 paper_id=quality.paper_id,
                 processing_version=quality.processing_version,
                 chunks=tuple(chunks),
                 directory=quality_file.parent,
+                paper=paper,
+                paper_hash=paper_hash,
             )
         )
     selected: list[ProcessedPaper] = []

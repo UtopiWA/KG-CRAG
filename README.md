@@ -1,6 +1,6 @@
 # KG-CRAG
 
-面向科研文献问答的证据自适应检索 Agent。当前已完成工程基座、论文摄取、Dense Vector RAG 与 Hybrid 检索：可从受控 PDF 发布稳定 Chunk，构建版本化 Qdrant/SQLite FTS5 索引，以 RRF 或加权方式融合 Dense/Sparse Evidence，并在有界本地 Cross-Encoder 重排后执行可选的证据约束回答。Graph、动态路由和纠错工作流仍属于后续迭代。
+面向科研文献问答的证据自适应检索 Agent。当前已完成工程基座、论文摄取、Dense Vector RAG、Hybrid 检索与可溯源 Graph Retriever：可从受控 PDF 发布稳定 Chunk，构建版本化 Qdrant/SQLite/Neo4j 索引，将 Dense、Sparse 与 Graph 命中统一为 Evidence，并对关系和有界多跳检索执行零 LLM 评测。动态路由和纠错工作流仍属于后续迭代。
 
 ## 环境要求
 
@@ -161,6 +161,29 @@ python scripts/evaluate_hybrid_retrieval.py --smoke \
 ```
 
 评测矩阵比较 Dense、Sparse、RRF、Weighted 与 Fusion+Rerank，默认零 LLM。只有显式提供 `--with-answer --selected-strategy fusion_rerank --answer-budget <题数>` 才会对唯一入选配置逐题生成一次回答。完整公式、降级语义、重建/回滚、产物和资源上限见 `docs/hybrid_retrieval.md`。
+
+## 可溯源知识图谱
+
+基础图只读取已发布 Paper/Chunk 和显式引用，不访问网络或 LLM。查询只接受四种固定模板，不接收任意 Cypher：
+
+```bash
+# 先检查 15 篇 pilot 的图身份和规模，再写入内存后端运行清单
+python scripts/build_metadata_graph.py --dry-run
+python scripts/build_metadata_graph.py
+
+# 查询和固定开发集评测均使用内存图，默认零在线调用
+python scripts/query_graph_retrieval.py "CAMEL: Communicative Agents for Mind Exploration of Large Language Model Society"
+python scripts/evaluate_graph_retrieval.py
+
+# 正文抽取必须同时显式允许在线调用并确认预算；可先限制 1 篇、3 个 Chunk
+python scripts/extract_graph_facts.py --online --confirm-budget \
+  --paper-id arxiv:2303.17760 --max-chunks 3
+
+# smoke 通过后才显式写入 Neo4j；默认 memory 仍会保存可审计 Bundle
+python scripts/extract_graph_facts.py --online --confirm-budget --backend neo4j
+```
+
+默认硬上限为 15 篇、每篇 3–5 个代表 Chunk、100 次请求、160,000 输入 Token 和 40,000 输出 Token。抽取缓存、清单和评测结果均为可再生产物并被 Git 忽略；真实 Neo4j 测试仅在 `KG_CRAG_RUN_NEO4J_TESTS=1` 时运行。图身份、Schema、复核、回滚及验收记录见 `docs/graph_retrieval.md`。
 
 ## 项目结构
 

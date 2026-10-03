@@ -36,4 +36,17 @@ processed Chunk -> SQLite FTS5 Sparse 索引 -> SparseRetriever -> Evidence
 冻结开发集 -> 五策略零 LLM 矩阵 -> Recall/MRR/nDCG/覆盖率/阶段时延
 ```
 
-`HybridRetrievalService` 每路最多调用一次；单路故障可显式降级，两路均故障则失败。融合器是无副作用纯函数，Cross-Encoder 惰性加载并允许显式回退。生成器只接收公共 Evidence，不接触 Qdrant、SQLite 或模型对象。本切片不包含 Graph、动态路由、反思、Web 或 UI。
+`HybridRetrievalService` 每路最多调用一次；单路故障可显式降级，两路均故障则失败。融合器是无副作用纯函数，Cross-Encoder 惰性加载并允许显式回退。生成器只接收公共 Evidence，不接触 Qdrant、SQLite 或模型对象。本切片不包含动态路由、反思、Web 或 UI。
+
+## 当前 Graph Retriever 切片
+
+迭代 04 将知识图谱实现为与 Dense/Sparse 并列、按需调用的证据工具：
+
+```text
+published Paper/Chunk -> 无 LLM 基础图 ─┐
+代表 Chunk -> 有预算结构化抽取 -> 复核 ├-> 论文级 GraphBundle -> Memory/Neo4j
+固定模板请求 -> 单次 GraphStore 查询 -> 路径来源复验 -> Graph Evidence
+冻结开发集 -> 零 LLM 关系/多跳矩阵 -> 路径、召回、排序和溯源指标
+```
+
+所有事实先通过公共模型和白名单端点校验，再以论文级事务同步。Neo4j 只接收固定参数化只读模板；默认测试使用版本化内存后端。Graph Retriever 不自动调用 Dense、Sparse、Web 或生成器，来源哈希漂移时拒绝整条路径。本切片仍不包含动态路由、纠错循环、Web、反思、API 或 UI。

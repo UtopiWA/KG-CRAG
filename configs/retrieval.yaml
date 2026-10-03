@@ -60,9 +60,48 @@ sparse:
     - processing_version
 
 graph:
-  top_k: 20
-  max_hops: 3
-  query_timeout_seconds: 10
+  schema_config:
+    schema_version: v1
+    metadata_builder_version: metadata-v1
+    selector_version: representative-v1
+    extractor_version: structured-v1
+    prompt_version: graph-extraction-v1
+    normalization_version: conservative-v1
+    query_template_version: v1
+    model_revision: configured
+  paths:
+    manifest_root: data/processed/graph-runs
+    cache_root: data/processed/graph-extraction-cache
+    review_root: data/processed/graph-review
+    review_decisions: data/processed/graph-review/decisions.json
+    prompt_path: prompts/graph-extraction-v1.txt
+    evaluation_questions: data/evaluation/graph_dev_questions.json
+    evaluation_results_root: data/evaluation/results/graph-retrieval
+  selection:
+    min_chunks_per_paper: 3
+    max_chunks_per_paper: 5
+    min_chunk_chars: 200
+    max_chunk_chars: 8000
+    max_papers: 15
+  extraction:
+    enabled: false
+    max_requests: 100
+    max_input_tokens: 160000
+    max_output_tokens: 40000
+    max_output_chars: 16000
+    batch_size: 1
+    concurrency: 1
+    chars_per_token_estimate: 3
+  normalization:
+    auto_merge_min_confidence: 0.9
+    review_similarity_threshold: 0.8
+  query:
+    top_k: 20
+    max_top_k: 100
+    max_candidates: 100
+    max_hops: 3
+    timeout_seconds: 10
+    min_confidence: 0.0
 
 fusion:
   method: rrf

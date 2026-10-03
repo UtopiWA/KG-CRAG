@@ -1,0 +1,392 @@
+{
+  "$defs": {
+    "GraphEntity": {
+      "additionalProperties": false,
+      "properties": {
+        "aliases": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Aliases",
+          "type": "array"
+        },
+        "entity_id": {
+          "minLength": 1,
+          "title": "Entity Id",
+          "type": "string"
+        },
+        "external_id": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "External Id"
+        },
+        "name": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "node_type": {
+          "$ref": "#/$defs/GraphNodeType"
+        },
+        "normalized_name": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Normalized Name",
+          "type": "string"
+        },
+        "paper_scope": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Paper Scope"
+        },
+        "properties": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 32,
+          "title": "Properties",
+          "type": "object"
+        }
+      },
+      "required": [
+        "entity_id",
+        "node_type",
+        "name",
+        "normalized_name"
+      ],
+      "title": "GraphEntity",
+      "type": "object"
+    },
+    "GraphFact": {
+      "additionalProperties": false,
+      "properties": {
+        "corpus_snapshot": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Corpus Snapshot",
+          "type": "string"
+        },
+        "fact_id": {
+          "minLength": 1,
+          "title": "Fact Id",
+          "type": "string"
+        },
+        "graph_schema_version": {
+          "minLength": 1,
+          "title": "Graph Schema Version",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/GraphProvenance"
+        },
+        "relation": {
+          "$ref": "#/$defs/GraphRelationType"
+        },
+        "source_entity_id": {
+          "minLength": 1,
+          "title": "Source Entity Id",
+          "type": "string"
+        },
+        "source_type": {
+          "$ref": "#/$defs/GraphNodeType"
+        },
+        "target_entity_id": {
+          "minLength": 1,
+          "title": "Target Entity Id",
+          "type": "string"
+        },
+        "target_type": {
+          "$ref": "#/$defs/GraphNodeType"
+        }
+      },
+      "required": [
+        "fact_id",
+        "relation",
+        "source_entity_id",
+        "source_type",
+        "target_entity_id",
+        "target_type",
+        "provenance",
+        "graph_schema_version",
+        "corpus_snapshot"
+      ],
+      "title": "GraphFact",
+      "type": "object"
+    },
+    "GraphIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "corpus_snapshot": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Corpus Snapshot",
+          "type": "string"
+        },
+        "extractor_version": {
+          "minLength": 1,
+          "title": "Extractor Version",
+          "type": "string"
+        },
+        "graph_version": {
+          "minLength": 1,
+          "title": "Graph Version",
+          "type": "string"
+        },
+        "metadata_builder_version": {
+          "minLength": 1,
+          "title": "Metadata Builder Version",
+          "type": "string"
+        },
+        "model": {
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "model_revision": {
+          "minLength": 1,
+          "title": "Model Revision",
+          "type": "string"
+        },
+        "normalization_version": {
+          "minLength": 1,
+          "title": "Normalization Version",
+          "type": "string"
+        },
+        "prompt_version": {
+          "minLength": 1,
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "query_template_version": {
+          "minLength": 1,
+          "title": "Query Template Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "minLength": 1,
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "selector_version": {
+          "minLength": 1,
+          "title": "Selector Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "graph_version",
+        "corpus_snapshot",
+        "metadata_builder_version",
+        "selector_version",
+        "extractor_version",
+        "prompt_version",
+        "model",
+        "model_revision",
+        "normalization_version",
+        "query_template_version"
+      ],
+      "title": "GraphIdentity",
+      "type": "object"
+    },
+    "GraphNodeType": {
+      "enum": [
+        "Paper",
+        "Author",
+        "Institution",
+        "Method",
+        "Model",
+        "Dataset",
+        "Task",
+        "Metric",
+        "Result",
+        "Chunk"
+      ],
+      "title": "GraphNodeType",
+      "type": "string"
+    },
+    "GraphProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "created_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Created At"
+        },
+        "evidence_quote": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Quote"
+        },
+        "extractor_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extractor Version"
+        },
+        "paper_id": {
+          "minLength": 1,
+          "title": "Paper Id",
+          "type": "string"
+        },
+        "prompt_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prompt Version"
+        },
+        "source_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Hash",
+          "type": "string"
+        },
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "metadata",
+            "chunk"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_kind",
+        "paper_id",
+        "source_id",
+        "source_hash"
+      ],
+      "title": "GraphProvenance",
+      "type": "object"
+    },
+    "GraphRelationType": {
+      "enum": [
+        "AUTHORED_BY",
+        "AFFILIATED_WITH",
+        "CITES",
+        "CONTAINS",
+        "HAS_METHOD",
+        "USES_MODEL",
+        "EVALUATED_ON",
+        "ADDRESSES_TASK",
+        "REPORTS_RESULT",
+        "USES_METRIC",
+        "ON_DATASET",
+        "FOR_TASK"
+      ],
+      "title": "GraphRelationType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "entities": {
+      "items": {
+        "$ref": "#/$defs/GraphEntity"
+      },
+      "minItems": 1,
+      "title": "Entities",
+      "type": "array"
+    },
+    "facts": {
+      "items": {
+        "$ref": "#/$defs/GraphFact"
+      },
+      "title": "Facts",
+      "type": "array"
+    },
+    "identity": {
+      "$ref": "#/$defs/GraphIdentity"
+    },
+    "paper_id": {
+      "minLength": 1,
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "unresolved_references": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unresolved References",
+      "type": "array"
+    }
+  },
+  "required": [
+    "identity",
+    "paper_id",
+    "entities"
+  ],
+  "title": "GraphBundle",
+  "type": "object"
+}
