@@ -1,0 +1,40 @@
+# 回答反思与受控 Web 兜底
+
+回答阶段只消费已经终止的纠错工作流结果。内部证据充分时生成带 Claim、Citation 和 facet 绑定的回答；内部知识确实缺失时，才允许在显式开关、可信域名和独立预算都满足的情况下调用一次 Web。所有来源最终统一为 `Evidence`，外部证据始终标记 `external=true`。
+
+## 默认边界
+
+- `grounded_answer.enabled` 与 `grounded_answer.web.enabled` 默认关闭；请求侧还需显式允许 Web。
+- 单题最多生成 2 次、Critic 1 次、反思 1 次、Web 1 次，本阶段 LLM 合计最多 3 次。
+- 输入输出合计最多 12,000 Token，回答上下文最多 16,000 字符。
+- Web 最多返回 5 条，单条摘录最多 2,000 字符，外部上下文合计最多 8,000 字符。
+- 内部重新检索复用纠错工作流的原预算，总检索轮次仍不得超过 2。
+
+运行参数位于 `configs/default.yaml` 的 `grounded_answer` 节。真实模型和搜索密钥只通过 `.env` 或进程环境传入；Tavily 还需设置 `KG_CRAG_WEB_SEARCH_PROVIDER=tavily`、`KG_CRAG_WEB_SEARCH_API_KEY` 和 `KG_CRAG_ENABLE_WEB_FALLBACK=true`。
+
+## 检查与失败语义
+
+候选回答先经过确定性结构、引用、来源、facet、数值和冲突检查。只有确定性检查通过时才调用一次语义 Critic。检查失败后只能选择一次重新生成、内部重新检索或 Web 补证；补救完成后只能接受或保守停止，不会进入第二轮反思。
+
+Provider 超时、输出不可解析、无可信搜索结果、预算不足或检查点不确定时不会隐式重试或切换服务。最终结果会保留缺失 facet、内外证据、停止原因、预算和脱敏 Trace，从而明确知识边界。
+
+## 恢复与产物
+
+检查点和最终报告使用输入、配置、Prompt、模型与 Provider 版本组成的内容身份，并原子写入配置的工作区相对路径。身份一致且最终结果存在时直接复用。恢复只继续能够证明已经完成的纯计算阶段；若检查点位于可能已经发起外部调用的边界，则保守终止，避免重复消费调用额度。
+
+运行产物和评测结果位于 `data/processed/`，属于可再生内容，不提交 Git。公共结果与评测报告 Schema 位于 `docs/schemas/`。
+
+## 评测命令
+
+```bash
+# 只校验 12 题冻结集、录制 Web fixture 和最坏预算，不访问网络
+python scripts/evaluate_grounded_answer.py --dry-run
+
+# 默认离线录制评测；结果按身份缓存
+python scripts/evaluate_grounded_answer.py
+
+# 真实 Provider 验收必须同时确认，且显式限制为 5～10 题
+python scripts/evaluate_grounded_answer.py --online --confirm --limit 5
+```
+
+默认测试全部使用 Mock 或录制响应。真实验收测试只有设置 `KG_CRAG_RUN_GROUNDED_ONLINE=1` 后才会运行，并且仍受 CLI 双重门禁和严格超时限制。

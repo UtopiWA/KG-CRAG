@@ -1,0 +1,1307 @@
+{
+  "$defs": {
+    "AnswerBudgetLedger": {
+      "additionalProperties": false,
+      "properties": {
+        "limit": {
+          "$ref": "#/$defs/AnswerBudgetLimit"
+        },
+        "reserved": {
+          "$ref": "#/$defs/AnswerBudgetUsage"
+        },
+        "used": {
+          "$ref": "#/$defs/AnswerBudgetUsage"
+        }
+      },
+      "title": "AnswerBudgetLedger",
+      "type": "object"
+    },
+    "AnswerBudgetLimit": {
+      "additionalProperties": false,
+      "properties": {
+        "answer_calls": {
+          "default": 2,
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Answer Calls",
+          "type": "integer"
+        },
+        "context_chars": {
+          "default": 16000,
+          "maximum": 16000,
+          "minimum": 1,
+          "title": "Context Chars",
+          "type": "integer"
+        },
+        "critic_calls": {
+          "default": 1,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Critic Calls",
+          "type": "integer"
+        },
+        "external_context_chars": {
+          "default": 8000,
+          "maximum": 8000,
+          "minimum": 0,
+          "title": "External Context Chars",
+          "type": "integer"
+        },
+        "input_tokens": {
+          "default": 9000,
+          "maximum": 12000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 30000,
+          "maximum": 3600000,
+          "minimum": 1,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 3000,
+          "maximum": 12000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "reflection_rounds": {
+          "default": 1,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Reflection Rounds",
+          "type": "integer"
+        },
+        "web_calls": {
+          "default": 1,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Web Calls",
+          "type": "integer"
+        },
+        "web_results": {
+          "default": 5,
+          "maximum": 5,
+          "minimum": 0,
+          "title": "Web Results",
+          "type": "integer"
+        }
+      },
+      "title": "AnswerBudgetLimit",
+      "type": "object"
+    },
+    "AnswerBudgetUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "answer_calls": {
+          "default": 0,
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Answer Calls",
+          "type": "integer"
+        },
+        "context_chars": {
+          "default": 0,
+          "maximum": 16000,
+          "minimum": 0,
+          "title": "Context Chars",
+          "type": "integer"
+        },
+        "critic_calls": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Critic Calls",
+          "type": "integer"
+        },
+        "external_context_chars": {
+          "default": 0,
+          "maximum": 8000,
+          "minimum": 0,
+          "title": "External Context Chars",
+          "type": "integer"
+        },
+        "input_tokens": {
+          "default": 0,
+          "maximum": 12000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 0,
+          "maximum": 3600000,
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "maximum": 12000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "reflection_rounds": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Reflection Rounds",
+          "type": "integer"
+        },
+        "web_calls": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Web Calls",
+          "type": "integer"
+        },
+        "web_results": {
+          "default": 0,
+          "maximum": 5,
+          "minimum": 0,
+          "title": "Web Results",
+          "type": "integer"
+        }
+      },
+      "title": "AnswerBudgetUsage",
+      "type": "object"
+    },
+    "AnswerCheckCode": {
+      "enum": [
+        "invalid_structure",
+        "unknown_citation",
+        "source_mismatch",
+        "facet_mismatch",
+        "uncited_number",
+        "blocking_conflict",
+        "incomplete",
+        "unsupported",
+        "wrong_attribution",
+        "critic_failed"
+      ],
+      "title": "AnswerCheckCode",
+      "type": "string"
+    },
+    "AnswerEvaluation": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptable": {
+          "title": "Acceptable",
+          "type": "boolean"
+        },
+        "attribution_correct": {
+          "title": "Attribution Correct",
+          "type": "boolean"
+        },
+        "citations_supported": {
+          "title": "Citations Supported",
+          "type": "boolean"
+        },
+        "complete": {
+          "title": "Complete",
+          "type": "boolean"
+        },
+        "conflicts_handled": {
+          "title": "Conflicts Handled",
+          "type": "boolean"
+        },
+        "critic_used": {
+          "default": false,
+          "title": "Critic Used",
+          "type": "boolean"
+        },
+        "faithful": {
+          "title": "Faithful",
+          "type": "boolean"
+        },
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/AnswerFinding"
+          },
+          "maxItems": 100,
+          "title": "Findings",
+          "type": "array"
+        },
+        "required_facets_covered": {
+          "title": "Required Facets Covered",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "complete",
+        "faithful",
+        "citations_supported",
+        "conflicts_handled",
+        "attribution_correct",
+        "required_facets_covered",
+        "acceptable"
+      ],
+      "title": "AnswerEvaluation",
+      "type": "object"
+    },
+    "AnswerFinding": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Citation Ids",
+          "type": "array"
+        },
+        "claim_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Claim Ids",
+          "type": "array"
+        },
+        "code": {
+          "$ref": "#/$defs/AnswerCheckCode"
+        },
+        "facet_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Facet Ids",
+          "type": "array"
+        },
+        "reason": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "severity": {
+          "$ref": "#/$defs/FindingSeverity",
+          "default": "error"
+        }
+      },
+      "required": [
+        "code",
+        "reason"
+      ],
+      "title": "AnswerFinding",
+      "type": "object"
+    },
+    "AnswerRunIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "answer_prompt_version": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Answer Prompt Version",
+          "type": "string"
+        },
+        "checker_version": {
+          "minLength": 1,
+          "title": "Checker Version",
+          "type": "string"
+        },
+        "config_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Config Hash",
+          "type": "string"
+        },
+        "critic_prompt_version": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Critic Prompt Version",
+          "type": "string"
+        },
+        "input_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Input Hash",
+          "type": "string"
+        },
+        "internal_run_id": {
+          "pattern": "^run-[a-f0-9]{32}$",
+          "title": "Internal Run Id",
+          "type": "string"
+        },
+        "model_revision": {
+          "minLength": 1,
+          "title": "Model Revision",
+          "type": "string"
+        },
+        "policy_version": {
+          "minLength": 1,
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "run_id": {
+          "pattern": "^answer-run-[a-f0-9]{32}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "search_provider": {
+          "minLength": 1,
+          "title": "Search Provider",
+          "type": "string"
+        },
+        "search_provider_version": {
+          "minLength": 1,
+          "title": "Search Provider Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "internal_run_id",
+        "input_hash",
+        "config_hash",
+        "answer_prompt_version",
+        "critic_prompt_version",
+        "checker_version",
+        "policy_version",
+        "model_revision",
+        "search_provider",
+        "search_provider_version"
+      ],
+      "title": "AnswerRunIdentity",
+      "type": "object"
+    },
+    "AnswerStopReason": {
+      "enum": [
+        "accepted",
+        "conservative",
+        "generation_failed",
+        "critic_failed",
+        "search_failed",
+        "budget_exhausted",
+        "execution_failed"
+      ],
+      "title": "AnswerStopReason",
+      "type": "string"
+    },
+    "BudgetLedger": {
+      "additionalProperties": false,
+      "properties": {
+        "limit": {
+          "$ref": "#/$defs/BudgetLimit"
+        },
+        "reserved": {
+          "$ref": "#/$defs/BudgetUsage"
+        },
+        "used": {
+          "$ref": "#/$defs/BudgetUsage"
+        }
+      },
+      "title": "BudgetLedger",
+      "type": "object"
+    },
+    "BudgetLimit": {
+      "additionalProperties": false,
+      "properties": {
+        "candidates": {
+          "default": 100,
+          "maximum": 10000,
+          "minimum": 1,
+          "title": "Candidates",
+          "type": "integer"
+        },
+        "context_chars": {
+          "default": 20000,
+          "maximum": 1000000,
+          "minimum": 1,
+          "title": "Context Chars",
+          "type": "integer"
+        },
+        "input_tokens": {
+          "default": 16000,
+          "maximum": 20000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 30000,
+          "maximum": 3600000,
+          "minimum": 1,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "llm_calls": {
+          "default": 4,
+          "maximum": 4,
+          "minimum": 0,
+          "title": "Llm Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 4000,
+          "maximum": 20000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "retrieval_rounds": {
+          "default": 2,
+          "maximum": 2,
+          "minimum": 1,
+          "title": "Retrieval Rounds",
+          "type": "integer"
+        },
+        "subquestions": {
+          "default": 3,
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Subquestions",
+          "type": "integer"
+        }
+      },
+      "title": "BudgetLimit",
+      "type": "object"
+    },
+    "BudgetUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "candidates": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Candidates",
+          "type": "integer"
+        },
+        "context_chars": {
+          "default": 0,
+          "maximum": 1000000,
+          "minimum": 0,
+          "title": "Context Chars",
+          "type": "integer"
+        },
+        "input_tokens": {
+          "default": 0,
+          "maximum": 20000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 0,
+          "maximum": 3600000,
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "llm_calls": {
+          "default": 0,
+          "maximum": 4,
+          "minimum": 0,
+          "title": "Llm Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "maximum": 20000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "retrieval_rounds": {
+          "default": 0,
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Retrieval Rounds",
+          "type": "integer"
+        },
+        "subquestions": {
+          "default": 0,
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Subquestions",
+          "type": "integer"
+        }
+      },
+      "title": "BudgetUsage",
+      "type": "object"
+    },
+    "ClaimType": {
+      "enum": [
+        "fact",
+        "synthesis",
+        "inference",
+        "uncertain",
+        "conflict"
+      ],
+      "title": "ClaimType",
+      "type": "string"
+    },
+    "CombinedBudgetSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "$ref": "#/$defs/AnswerBudgetLedger"
+        },
+        "internal": {
+          "$ref": "#/$defs/BudgetLedger"
+        }
+      },
+      "required": [
+        "internal",
+        "answer"
+      ],
+      "title": "CombinedBudgetSummary",
+      "type": "object"
+    },
+    "ErrorCode": {
+      "description": "供调用方稳定分支的错误代码。",
+      "enum": [
+        "validation_error",
+        "configuration_error",
+        "external_service_error",
+        "timeout_error",
+        "not_found",
+        "data_error",
+        "internal_error"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "description": "可安全序列化的统一错误详情。",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "context": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 32,
+          "title": "Context",
+          "type": "object"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "minLength": 1,
+          "title": "Content",
+          "type": "string"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "external": {
+          "default": false,
+          "title": "External",
+          "type": "boolean"
+        },
+        "location": {
+          "$ref": "#/$defs/EvidenceLocation"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Metadata",
+          "type": "object"
+        },
+        "paper_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Paper Id"
+        },
+        "ranks": {
+          "$ref": "#/$defs/EvidenceRanks"
+        },
+        "scores": {
+          "$ref": "#/$defs/EvidenceScores"
+        },
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_type": {
+          "$ref": "#/$defs/EvidenceSourceType"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "content",
+        "source_type",
+        "source_id"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "EvidenceLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "page": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page"
+        },
+        "section": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Section"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "title": "EvidenceLocation",
+      "type": "object"
+    },
+    "EvidenceRanks": {
+      "additionalProperties": false,
+      "properties": {
+        "dense": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dense"
+        },
+        "fusion": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fusion"
+        },
+        "rerank": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rerank"
+        },
+        "sparse": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sparse"
+        }
+      },
+      "title": "EvidenceRanks",
+      "type": "object"
+    },
+    "EvidenceScores": {
+      "additionalProperties": false,
+      "properties": {
+        "dense": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dense"
+        },
+        "fusion": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fusion"
+        },
+        "graph": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph"
+        },
+        "rerank": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rerank"
+        },
+        "sparse": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sparse"
+        }
+      },
+      "title": "EvidenceScores",
+      "type": "object"
+    },
+    "EvidenceSourceType": {
+      "enum": [
+        "chunk",
+        "graph",
+        "web"
+      ],
+      "title": "EvidenceSourceType",
+      "type": "string"
+    },
+    "ExternalFacetCoverage": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Basis",
+          "type": "array"
+        },
+        "coverage_id": {
+          "pattern": "^external-coverage-[a-f0-9]{16}$",
+          "title": "Coverage Id",
+          "type": "string"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "facet_id": {
+          "pattern": "^facet-[a-f0-9]{16}$",
+          "title": "Facet Id",
+          "type": "string"
+        },
+        "matched": {
+          "title": "Matched",
+          "type": "boolean"
+        },
+        "support_strength": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Support Strength",
+          "type": "number"
+        }
+      },
+      "required": [
+        "coverage_id",
+        "facet_id",
+        "evidence_id",
+        "matched"
+      ],
+      "title": "ExternalFacetCoverage",
+      "type": "object"
+    },
+    "FindingSeverity": {
+      "enum": [
+        "error",
+        "warning"
+      ],
+      "title": "FindingSeverity",
+      "type": "string"
+    },
+    "GroundedCitation": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_id": {
+          "pattern": "^E[1-9][0-9]*$",
+          "title": "Citation Id",
+          "type": "string"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "external": {
+          "title": "External",
+          "type": "boolean"
+        },
+        "page": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page"
+        },
+        "paper_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Paper Id"
+        },
+        "section": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Section"
+        },
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_type": {
+          "$ref": "#/$defs/EvidenceSourceType"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "required": [
+        "citation_id",
+        "evidence_id",
+        "source_id",
+        "source_type",
+        "external"
+      ],
+      "title": "GroundedCitation",
+      "type": "object"
+    },
+    "GroundedClaim": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8,
+          "title": "Citation Ids",
+          "type": "array"
+        },
+        "claim_id": {
+          "pattern": "^claim-[a-f0-9]{16}$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "claim_type": {
+          "$ref": "#/$defs/ClaimType"
+        },
+        "facet_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Facet Ids",
+          "type": "array"
+        },
+        "text": {
+          "maxLength": 3000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "claim_id",
+        "text",
+        "claim_type"
+      ],
+      "title": "GroundedClaim",
+      "type": "object"
+    },
+    "RetrievalStrategy": {
+      "enum": [
+        "dense",
+        "sparse",
+        "graph",
+        "hybrid",
+        "web"
+      ],
+      "title": "RetrievalStrategy",
+      "type": "string"
+    },
+    "StopReason": {
+      "enum": [
+        "sufficient",
+        "no_positive_gain",
+        "budget_exhausted",
+        "internal_knowledge_missing",
+        "execution_failed",
+        "invalid_input"
+      ],
+      "title": "StopReason",
+      "type": "string"
+    },
+    "TraceEvent": {
+      "additionalProperties": false,
+      "description": "工作流 TraceEvent v1 的最小稳定结构。",
+      "properties": {
+        "details": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 64,
+          "title": "Details",
+          "type": "object"
+        },
+        "event": {
+          "minLength": 1,
+          "title": "Event",
+          "type": "string"
+        },
+        "node": {
+          "minLength": 1,
+          "title": "Node",
+          "type": "string"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "v1",
+          "default": "v1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "trace_id": {
+          "minLength": 1,
+          "title": "Trace Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "trace_id",
+        "sequence",
+        "node",
+        "event",
+        "occurred_at"
+      ],
+      "title": "TraceEvent",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "answer": {
+      "maxLength": 12000,
+      "minLength": 1,
+      "title": "Answer",
+      "type": "string"
+    },
+    "budget": {
+      "$ref": "#/$defs/CombinedBudgetSummary"
+    },
+    "citations": {
+      "items": {
+        "$ref": "#/$defs/GroundedCitation"
+      },
+      "maxItems": 20,
+      "title": "Citations",
+      "type": "array"
+    },
+    "claims": {
+      "items": {
+        "$ref": "#/$defs/GroundedClaim"
+      },
+      "maxItems": 100,
+      "title": "Claims",
+      "type": "array"
+    },
+    "confidence": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "errors": {
+      "items": {
+        "$ref": "#/$defs/ErrorDetail"
+      },
+      "maxItems": 20,
+      "title": "Errors",
+      "type": "array"
+    },
+    "evaluation": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AnswerEvaluation"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "external_coverage": {
+      "items": {
+        "$ref": "#/$defs/ExternalFacetCoverage"
+      },
+      "maxItems": 100,
+      "title": "External Coverage",
+      "type": "array"
+    },
+    "external_evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "maxItems": 5,
+      "title": "External Evidence",
+      "type": "array"
+    },
+    "finished_at": {
+      "format": "date-time",
+      "title": "Finished At",
+      "type": "string"
+    },
+    "identity": {
+      "$ref": "#/$defs/AnswerRunIdentity"
+    },
+    "internal_evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "maxItems": 20,
+      "title": "Internal Evidence",
+      "type": "array"
+    },
+    "internal_stop_reason": {
+      "$ref": "#/$defs/StopReason"
+    },
+    "missing_required_facet_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 20,
+      "title": "Missing Required Facet Ids",
+      "type": "array"
+    },
+    "question": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Question",
+      "type": "string"
+    },
+    "retrieval_path": {
+      "items": {
+        "$ref": "#/$defs/RetrievalStrategy"
+      },
+      "maxItems": 10,
+      "title": "Retrieval Path",
+      "type": "array"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "stop_reason": {
+      "$ref": "#/$defs/AnswerStopReason"
+    },
+    "trace": {
+      "items": {
+        "$ref": "#/$defs/TraceEvent"
+      },
+      "maxItems": 200,
+      "title": "Trace",
+      "type": "array"
+    },
+    "trace_id": {
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "used_external": {
+      "title": "Used External",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "identity",
+    "trace_id",
+    "question",
+    "answer",
+    "internal_stop_reason",
+    "stop_reason",
+    "used_external",
+    "confidence",
+    "budget",
+    "started_at",
+    "finished_at"
+  ],
+  "title": "GroundedAnswerResult",
+  "type": "object"
+}

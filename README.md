@@ -202,6 +202,23 @@ python scripts/evaluate_corrective_workflow.py --online --confirm-budget --limit
 
 单题硬上限为 2 轮内部检索、3 个子问题、4 次 LLM 调用和 20,000 输入输出 Token。动作目录不包含 Web、回答生成或动态工具名。缓存、检查点和评测结果分别位于 `data/processed/corrective-*` 与 `data/evaluation/results/corrective-workflow/`，均由 Git 忽略。完整语义、恢复和回滚说明见 `docs/corrective_workflow.md`。
 
+## 回答反思与受控 Web 兜底
+
+回答阶段使用严格 Claim/Citation/facet 绑定、确定性检查和最多一次语义 Critic。Web 默认关闭，只有内部停止原因为 `internal_knowledge_missing`、请求显式允许且可信来源策略通过时，才会搜索一次；任何失败均返回可审计的保守知识边界。
+
+```bash
+# 冻结题集与录制 fixture 校验，零网络
+python scripts/evaluate_grounded_answer.py --dry-run
+
+# 默认离线评测
+python scripts/evaluate_grounded_answer.py
+
+# 真实 LLM/Tavily 验收：必须双重确认并限制 5～10 题
+python scripts/evaluate_grounded_answer.py --online --confirm --limit 5
+```
+
+单题最多 2 次生成、1 次 Critic、1 次 Web 和 1 次反思，输入输出合计不超过 12k Token。配置、可信来源、恢复与失败语义详见 `docs/grounded_answer.md`。
+
 ## 项目结构
 
 完整文件树、模块职责、关键脚本和按任务定位说明见仓库上级目录的 `../PROJECT_MAP.md`。新增、删除、重命名重要路径或改变模块职责时，应在同一变更中维护该地图。

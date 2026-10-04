@@ -63,6 +63,60 @@ corrective_workflow:
   max_total_evidence: 100
   max_trace_events: 100
 
+grounded_answer:
+  schema_version: v1
+  enabled: false
+  prompts:
+    answer_path: prompts/grounded-answer-v1.txt
+    critic_path: prompts/answer-critic-v1.txt
+    checker_version: answer-checker-v1
+    policy_version: answer-policy-v1
+  generation:
+    max_selected_evidence: 8
+    max_chars_per_evidence: 2000
+    max_context_chars: 12000
+    max_response_chars: 3000
+    max_claims: 30
+  critic:
+    enabled: true
+    max_context_chars: 4000
+    max_response_chars: 2000
+  web:
+    enabled: false
+    provider: disabled
+    provider_version: disabled-v1
+    allowed_domains:
+      - arxiv.org
+      - openreview.net
+      - aclanthology.org
+      - proceedings.mlr.press
+      - semanticscholar.org
+      - openalex.org
+      - doi.org
+      - github.com
+    allowed_source_types: [paper_site, arxiv, academic_database, project_page]
+    max_results: 5
+    max_excerpt_chars: 2000
+    max_context_chars: 8000
+    timeout_seconds: 15
+    recorded_fixture_path: data/evaluation/fixtures/grounded-web-recorded.json
+  budget:
+    answer_calls: 2
+    critic_calls: 1
+    web_calls: 1
+    reflection_rounds: 1
+    input_tokens: 9000
+    output_tokens: 3000
+    web_results: 5
+    context_chars: 16000
+    external_context_chars: 8000
+    latency_ms: 30000
+  artifacts:
+    cache_root: data/processed/grounded-answer-cache
+    run_root: data/processed/grounded-answer-runs
+    evaluation_root: data/evaluation/results/grounded-answer
+  max_trace_events: 100
+
 chunking:
   tokenizer: regex-v1
   target_tokens: 500

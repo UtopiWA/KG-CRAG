@@ -1,0 +1,15 @@
+{
+  "检索最新公开论文补充缺失的技能库证据。 skill library": [
+    {
+      "provider_result_id": "recorded-arxiv-001",
+      "title": "Recorded Agent Paper",
+      "url": "https://arxiv.org/abs/2301.00001",
+      "accessed_at": "2026-01-01T00:00:00Z",
+      "excerpt": "The agent architecture uses a bounded skill library.",
+      "source_type": "arxiv",
+      "score": 0.9,
+      "requires_auth": false
+    }
+  ],
+  "仅有不可信网页时补充论文证据。 paper evidence": []
+}

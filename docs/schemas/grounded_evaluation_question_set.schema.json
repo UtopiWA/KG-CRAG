@@ -1,0 +1,96 @@
+{
+  "$defs": {
+    "AnswerStopReason": {
+      "enum": [
+        "accepted",
+        "conservative",
+        "generation_failed",
+        "critic_failed",
+        "search_failed",
+        "budget_exhausted",
+        "execution_failed"
+      ],
+      "title": "AnswerStopReason",
+      "type": "string"
+    },
+    "GroundedEvaluationQuestion": {
+      "additionalProperties": false,
+      "properties": {
+        "expected_stop_reason": {
+          "$ref": "#/$defs/AnswerStopReason"
+        },
+        "expected_web_trigger": {
+          "default": false,
+          "title": "Expected Web Trigger",
+          "type": "boolean"
+        },
+        "question": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "question_id": {
+          "pattern": "^gaq-[0-9]{3}$",
+          "title": "Question Id",
+          "type": "string"
+        },
+        "scenario": {
+          "$ref": "#/$defs/GroundedEvaluationScenario"
+        },
+        "web_eligible": {
+          "default": false,
+          "title": "Web Eligible",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "question_id",
+        "question",
+        "scenario",
+        "expected_stop_reason"
+      ],
+      "title": "GroundedEvaluationQuestion",
+      "type": "object"
+    },
+    "GroundedEvaluationScenario": {
+      "enum": [
+        "sufficient",
+        "uncited_number",
+        "wrong_attribution",
+        "unsupported",
+        "conflict",
+        "internal_missing",
+        "web_disabled",
+        "web_failed",
+        "web_untrusted",
+        "budget_exhausted"
+      ],
+      "title": "GroundedEvaluationScenario",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "dataset_version": {
+      "minLength": 1,
+      "title": "Dataset Version",
+      "type": "string"
+    },
+    "questions": {
+      "items": {
+        "$ref": "#/$defs/GroundedEvaluationQuestion"
+      },
+      "maxItems": 20,
+      "minItems": 12,
+      "title": "Questions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "dataset_version",
+    "questions"
+  ],
+  "title": "GroundedEvaluationQuestionSet",
+  "type": "object"
+}

@@ -45,6 +45,9 @@ addopts = "-q --strict-markers --disable-warnings"
 testpaths = ["tests"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
+markers = [
+  "online: requires explicit credentials and performs bounded real provider calls",
+]
 
 [tool.ruff]
 target-version = "py311"

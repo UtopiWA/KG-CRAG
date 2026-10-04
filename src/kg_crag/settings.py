@@ -1,6 +1,7 @@
 """由环境变量驱动的运行时配置。"""
 
 from functools import lru_cache
+from typing import Literal
 from urllib.parse import urlparse
 
 from pydantic import Field, field_validator
@@ -42,8 +43,9 @@ class Settings(BaseSettings):
     reranker_revision: str = Field(default="2cfc18c9415c912f9d8155881c133215df768a70", min_length=1)
     reranker_device: str = Field(default="cpu", pattern=r"^(cpu|cuda(?::[0-9]+)?)$")
     model_cache_root: str = Field(default="data/processed/model-cache", min_length=1)
-    web_search_provider: str = Field(default="disabled", min_length=1)
+    web_search_provider: Literal["disabled", "mock", "recorded", "tavily"] = "disabled"
     web_search_api_key: str | None = None
+    web_search_timeout_seconds: float = Field(default=15.0, gt=0, le=60)
     enable_web_fallback: bool = False
     max_internal_retrieval_rounds: int = Field(default=2, ge=0, le=10)
     max_web_retrieval_rounds: int = Field(default=1, ge=0, le=3)

@@ -1,0 +1,377 @@
+{
+  "$defs": {
+    "AnswerStopReason": {
+      "enum": [
+        "accepted",
+        "conservative",
+        "generation_failed",
+        "critic_failed",
+        "search_failed",
+        "budget_exhausted",
+        "execution_failed"
+      ],
+      "title": "AnswerStopReason",
+      "type": "string"
+    },
+    "ErrorCode": {
+      "description": "供调用方稳定分支的错误代码。",
+      "enum": [
+        "validation_error",
+        "configuration_error",
+        "external_service_error",
+        "timeout_error",
+        "not_found",
+        "data_error",
+        "internal_error"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "description": "可安全序列化的统一错误详情。",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "context": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 32,
+          "title": "Context",
+          "type": "object"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "GroundedEvaluationItem": {
+      "additionalProperties": false,
+      "properties": {
+        "covered_required_facets": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Covered Required Facets",
+          "type": "integer"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "expected_citation_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expected Citation Ids",
+          "type": "array"
+        },
+        "expected_claim_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expected Claim Ids",
+          "type": "array"
+        },
+        "input_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "model_calls": {
+          "default": 0,
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "predicted_citation_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Predicted Citation Ids",
+          "type": "array"
+        },
+        "question_id": {
+          "minLength": 1,
+          "title": "Question Id",
+          "type": "string"
+        },
+        "required_facets": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Required Facets",
+          "type": "integer"
+        },
+        "search_calls": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Search Calls",
+          "type": "integer"
+        },
+        "stop_reason": {
+          "$ref": "#/$defs/AnswerStopReason"
+        },
+        "succeeded": {
+          "title": "Succeeded",
+          "type": "boolean"
+        },
+        "supported_claim_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Supported Claim Ids",
+          "type": "array"
+        },
+        "unsupported_claims": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Unsupported Claims",
+          "type": "integer"
+        },
+        "valid_citation_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Valid Citation Ids",
+          "type": "array"
+        },
+        "web_eligible": {
+          "default": false,
+          "title": "Web Eligible",
+          "type": "boolean"
+        },
+        "web_triggered": {
+          "default": false,
+          "title": "Web Triggered",
+          "type": "boolean"
+        },
+        "web_used": {
+          "default": false,
+          "title": "Web Used",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "question_id",
+        "succeeded",
+        "stop_reason"
+      ],
+      "title": "GroundedEvaluationItem",
+      "type": "object"
+    },
+    "GroundedEvaluationMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_precision": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Citation Precision",
+          "type": "number"
+        },
+        "citation_recall": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Citation Recall",
+          "type": "number"
+        },
+        "completeness": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Completeness",
+          "type": "number"
+        },
+        "failures": {
+          "minimum": 0,
+          "title": "Failures",
+          "type": "integer"
+        },
+        "faithfulness": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Faithfulness",
+          "type": "number"
+        },
+        "input_tokens": {
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "model_calls": {
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "search_calls": {
+          "minimum": 0,
+          "title": "Search Calls",
+          "type": "integer"
+        },
+        "stop_reasons": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/AnswerStopReason"
+          },
+          "title": "Stop Reasons",
+          "type": "object"
+        },
+        "task_score": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Task Score",
+          "type": "number"
+        },
+        "total": {
+          "minimum": 1,
+          "title": "Total",
+          "type": "integer"
+        },
+        "unsupported_claim_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Unsupported Claim Rate",
+          "type": "number"
+        },
+        "web_trigger_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Web Trigger Rate",
+          "type": "number"
+        },
+        "web_usage_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Web Usage Rate",
+          "type": "number"
+        }
+      },
+      "required": [
+        "total",
+        "failures",
+        "task_score",
+        "completeness",
+        "faithfulness",
+        "citation_precision",
+        "citation_recall",
+        "unsupported_claim_rate",
+        "web_trigger_rate",
+        "web_usage_rate",
+        "model_calls",
+        "search_calls",
+        "input_tokens",
+        "output_tokens",
+        "latency_ms",
+        "stop_reasons"
+      ],
+      "title": "GroundedEvaluationMetrics",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "evaluation_id": {
+      "pattern": "^answer-eval-[a-f0-9]{32}$",
+      "title": "Evaluation Id",
+      "type": "string"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/GroundedEvaluationItem"
+      },
+      "minItems": 1,
+      "title": "Items",
+      "type": "array"
+    },
+    "metrics": {
+      "$ref": "#/$defs/GroundedEvaluationMetrics"
+    },
+    "offline": {
+      "title": "Offline",
+      "type": "boolean"
+    },
+    "question_set_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Question Set Hash",
+      "type": "string"
+    }
+  },
+  "required": [
+    "evaluation_id",
+    "offline",
+    "question_set_hash",
+    "items",
+    "metrics",
+    "created_at"
+  ],
+  "title": "GroundedEvaluationReport",
+  "type": "object"
+}

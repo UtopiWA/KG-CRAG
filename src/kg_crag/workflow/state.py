@@ -4,11 +4,19 @@ from typing import TypedDict
 
 from kg_crag.models import (
     ActionRequest,
+    AnswerBudgetLedger,
+    AnswerEvaluation,
+    AnswerRunIdentity,
     BudgetLedger,
     CorrectionDecision,
     CorrectionState,
     Evidence,
     EvidenceRequirement,
+    ExternalFacetCoverage,
+    GroundedAnswerCandidate,
+    GroundedAnswerResult,
+    GroundedCitation,
+    ReflectionDecision,
     RetrievalEvaluation,
     RouteDecision,
     RunIdentity,
@@ -43,11 +51,17 @@ class AgentState(TypedDict, total=False):
     state_fingerprint: str | None
     stop: StopResult | None
     retrieval_evaluation: RetrievalEvaluation | None
-    draft_answer: str | None
-    answer_evaluation: dict[str, str | int | float | bool | None] | None
-    citations: list[dict[str, str | int | None]]
+    answer_identity: AnswerRunIdentity | None
+    answer_budget: AnswerBudgetLedger | None
+    draft_answer: GroundedAnswerCandidate | None
+    answer_evaluation: AnswerEvaluation | None
+    reflection_decision: ReflectionDecision | None
+    citations: list[GroundedCitation]
+    external_evidence: list[Evidence]
+    external_coverage: list[ExternalFacetCoverage]
+    remediation_used: bool
     trace: list[TraceEvent]
-    final_answer: str | None
+    final_answer: GroundedAnswerResult | None
 
 
 def agent_state_from_correction(state: CorrectionState) -> AgentState:
@@ -80,9 +94,15 @@ def agent_state_from_correction(state: CorrectionState) -> AgentState:
         subqueries=[],
         reflection_round=0,
         retrieval_evaluation=None,
+        answer_identity=None,
+        answer_budget=None,
         draft_answer=None,
         answer_evaluation=None,
+        reflection_decision=None,
         citations=[],
+        external_evidence=[],
+        external_coverage=[],
+        remediation_used=False,
         final_answer=None,
     )
 

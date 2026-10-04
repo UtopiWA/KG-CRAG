@@ -58,3 +58,12 @@ corrective_workflow:
   smoke_questions: 5
   online_smoke_questions: 3
   online_max_questions: 20
+
+grounded_answer:
+  questions_path: data/evaluation/grounded_answer_dev_questions.json
+  results_root: data/evaluation/results/grounded-answer
+  fixture_path: data/evaluation/fixtures/grounded-web-recorded.json
+  max_questions: 20
+  smoke_questions: 5
+  online_min_questions: 5
+  online_max_questions: 10

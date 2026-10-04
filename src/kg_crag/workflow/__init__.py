@@ -3,3 +3,6 @@
 from kg_crag.workflow.state import AgentState, TraceEvent
 
 __all__ = ["AgentState", "TraceEvent"]
+from kg_crag.workflow.answer import run_grounded_answer_workflow
+
+__all__ = ["run_grounded_answer_workflow"]

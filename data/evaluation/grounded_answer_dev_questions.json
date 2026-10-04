@@ -1,0 +1,17 @@
+{
+  "dataset_version": "grounded-answer-dev-v1",
+  "questions": [
+    {"question_id":"gaq-001","question":"概述 ReAct 的推理与行动循环。","scenario":"sufficient","expected_stop_reason":"accepted"},
+    {"question_id":"gaq-002","question":"比较工具调用 Agent 的两种规划方式。","scenario":"sufficient","expected_stop_reason":"accepted"},
+    {"question_id":"gaq-003","question":"说明记忆模块在 Agent 中的作用。","scenario":"sufficient","expected_stop_reason":"accepted"},
+    {"question_id":"gaq-004","question":"给出论文报告的准确率数值。","scenario":"uncited_number","expected_stop_reason":"conservative"},
+    {"question_id":"gaq-005","question":"哪篇论文首先提出该方法？","scenario":"wrong_attribution","expected_stop_reason":"conservative"},
+    {"question_id":"gaq-006","question":"证明该架构在所有任务上更好。","scenario":"unsupported","expected_stop_reason":"conservative"},
+    {"question_id":"gaq-007","question":"解释两项实验结论之间的冲突。","scenario":"conflict","expected_stop_reason":"conservative"},
+    {"question_id":"gaq-008","question":"检索最新公开论文补充缺失的技能库证据。","scenario":"internal_missing","expected_stop_reason":"accepted","web_eligible":true,"expected_web_trigger":true},
+    {"question_id":"gaq-009","question":"在禁止联网时回答内部语料缺失的问题。","scenario":"web_disabled","expected_stop_reason":"search_failed"},
+    {"question_id":"gaq-010","question":"在搜索服务失败时补充外部证据。","scenario":"web_failed","expected_stop_reason":"search_failed","web_eligible":true,"expected_web_trigger":true},
+    {"question_id":"gaq-011","question":"仅有不可信网页时补充论文证据。","scenario":"web_untrusted","expected_stop_reason":"search_failed","web_eligible":true,"expected_web_trigger":true},
+    {"question_id":"gaq-012","question":"在回答预算耗尽后继续生成结论。","scenario":"budget_exhausted","expected_stop_reason":"budget_exhausted"}
+  ]
+}

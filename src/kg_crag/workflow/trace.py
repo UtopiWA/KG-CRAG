@@ -8,7 +8,19 @@ from typing import Any
 from kg_crag.models import TraceEvent
 from kg_crag.models.foundation import ScalarValue
 
-_FORBIDDEN = ("prompt", "reasoning", "password", "secret", "api_key", "authorization")
+_FORBIDDEN = (
+    "prompt",
+    "reasoning",
+    "password",
+    "secret",
+    "api_key",
+    "authorization",
+    "credential",
+    "excerpt",
+    "content",
+    "body",
+    "raw_response",
+)
 
 
 def safe_trace_details(details: dict[str, Any]) -> dict[str, ScalarValue]:

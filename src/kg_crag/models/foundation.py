@@ -21,6 +21,7 @@ _SENSITIVE_KEY_MARKERS = (
     "credential",
     "secret",
 )
+_SAFE_TOKEN_COUNTERS = {"inputtokens", "outputtokens", "tokencount", "tokensused", "totaltokens"}
 
 
 def _reject_sensitive_keys(values: dict[str, ScalarValue]) -> dict[str, ScalarValue]:
@@ -29,6 +30,8 @@ def _reject_sensitive_keys(values: dict[str, ScalarValue]) -> dict[str, ScalarVa
     for key in values:
         # 去掉大小写和分隔符差异，防止 api_key、API-Key 等变体绕过检查。
         normalized = re.sub(r"[^a-z0-9]", "", key.casefold())
+        if normalized in _SAFE_TOKEN_COUNTERS:
+            continue
         if any(marker in normalized for marker in _SENSITIVE_KEY_MARKERS):
             raise ValueError("sensitive context keys are not allowed")
     return values

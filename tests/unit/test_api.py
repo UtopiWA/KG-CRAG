@@ -6,7 +6,9 @@ from kg_crag.api.app import app
 
 
 def test_health() -> None:
-    response = TestClient(app).get("/health")
+    # 显式关闭 TestClient，避免其 AnyIO socket 在后续测试中才被垃圾回收。
+    with TestClient(app) as client:
+        response = client.get("/health")
     assert response.status_code == 200
     assert response.json() == {
         "status": "ok",
