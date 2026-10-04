@@ -1,0 +1,905 @@
+{
+  "$defs": {
+    "ErrorCode": {
+      "description": "供调用方稳定分支的错误代码。",
+      "enum": [
+        "validation_error",
+        "configuration_error",
+        "external_service_error",
+        "timeout_error",
+        "not_found",
+        "data_error",
+        "internal_error"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "description": "可安全序列化的统一错误详情。",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "context": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 32,
+          "title": "Context",
+          "type": "object"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "EvaluationItemResult": {
+      "additionalProperties": false,
+      "properties": {
+        "metrics": {
+          "additionalProperties": {
+            "$ref": "#/$defs/EvaluationMetricValue"
+          },
+          "maxProperties": 100,
+          "title": "Metrics",
+          "type": "object"
+        },
+        "observation": {
+          "$ref": "#/$defs/StrategyObservation"
+        },
+        "question_id": {
+          "pattern": "^ueq-[a-z0-9-]{3,120}$",
+          "title": "Question Id",
+          "type": "string"
+        },
+        "source_artifact_hash": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Artifact Hash"
+        },
+        "strategy": {
+          "$ref": "#/$defs/UnifiedStrategy"
+        },
+        "trace_sequences": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 200,
+          "title": "Trace Sequences",
+          "type": "array"
+        }
+      },
+      "required": [
+        "question_id",
+        "strategy",
+        "observation"
+      ],
+      "title": "EvaluationItemResult",
+      "type": "object"
+    },
+    "EvaluationMetricValue": {
+      "additionalProperties": false,
+      "properties": {
+        "denominator": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Denominator"
+        },
+        "not_applicable_reason": {
+          "anyOf": [
+            {
+              "maxLength": 300,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Not Applicable Reason"
+        },
+        "numerator": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Numerator"
+        },
+        "question_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Question Ids",
+          "type": "array"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "title": "EvaluationMetricValue",
+      "type": "object"
+    },
+    "EvaluationResourceUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "estimated_cost": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Estimated Cost"
+        },
+        "input_tokens": {
+          "default": 0,
+          "maximum": 10000000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "judge_calls": {
+          "default": 0,
+          "maximum": 50,
+          "minimum": 0,
+          "title": "Judge Calls",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 0,
+          "maximum": 86400000,
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "model_calls": {
+          "default": 0,
+          "maximum": 1000,
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "maximum": 10000000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "tool_calls": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Tool Calls",
+          "type": "integer"
+        },
+        "web_calls": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Web Calls",
+          "type": "integer"
+        }
+      },
+      "title": "EvaluationResourceUsage",
+      "type": "object"
+    },
+    "EvaluationRunIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "config_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Config Hash",
+          "type": "string"
+        },
+        "corpus_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Corpus Hash",
+          "type": "string"
+        },
+        "dataset_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Dataset Hash",
+          "type": "string"
+        },
+        "evidence_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Evidence Hash",
+          "type": "string"
+        },
+        "index_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Index Hash",
+          "type": "string"
+        },
+        "judge_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Judge Hash",
+          "type": "string"
+        },
+        "metric_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Metric Hash",
+          "type": "string"
+        },
+        "model_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Model Hash",
+          "type": "string"
+        },
+        "prompt_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Prompt Hash",
+          "type": "string"
+        },
+        "run_id": {
+          "pattern": "^unified-run-[a-f0-9]{32}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seed": {
+          "maximum": 4294967295,
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "split_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Split Hash",
+          "type": "string"
+        },
+        "strategy_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Strategy Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "dataset_hash",
+        "split_hash",
+        "corpus_hash",
+        "evidence_hash",
+        "index_hash",
+        "config_hash",
+        "strategy_hash",
+        "model_hash",
+        "prompt_hash",
+        "metric_hash",
+        "judge_hash",
+        "seed"
+      ],
+      "title": "EvaluationRunIdentity",
+      "type": "object"
+    },
+    "EvaluationSliceMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "metrics": {
+          "additionalProperties": {
+            "$ref": "#/$defs/EvaluationMetricValue"
+          },
+          "maxProperties": 100,
+          "minProperties": 1,
+          "title": "Metrics",
+          "type": "object"
+        },
+        "question_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Question Ids",
+          "type": "array"
+        },
+        "slice_name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Slice Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "slice_name",
+        "question_ids",
+        "metrics"
+      ],
+      "title": "EvaluationSliceMetrics",
+      "type": "object"
+    },
+    "EvaluationSplit": {
+      "enum": [
+        "dev",
+        "test"
+      ],
+      "title": "EvaluationSplit",
+      "type": "string"
+    },
+    "EvaluationStageStatus": {
+      "enum": [
+        "pending",
+        "succeeded",
+        "failed",
+        "skipped",
+        "budget_stopped"
+      ],
+      "title": "EvaluationStageStatus",
+      "type": "string"
+    },
+    "EvaluationTraceEvent": {
+      "additionalProperties": false,
+      "description": "关联运行与题目的脱敏 TraceEvent v2。",
+      "properties": {
+        "details": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 64,
+          "title": "Details",
+          "type": "object"
+        },
+        "event": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Event",
+          "type": "string"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "phase": {
+          "$ref": "#/$defs/EvaluationTracePhase"
+        },
+        "question_id": {
+          "anyOf": [
+            {
+              "pattern": "^ueq-[a-z0-9-]{3,120}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Question Id"
+        },
+        "run_id": {
+          "pattern": "^unified-run-[a-f0-9]{32}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "v2",
+          "default": "v2",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "status": {
+          "$ref": "#/$defs/EvaluationTraceStatus"
+        },
+        "trace_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Trace Id",
+          "type": "string"
+        },
+        "usage": {
+          "$ref": "#/$defs/TraceResourceUsage"
+        }
+      },
+      "required": [
+        "trace_id",
+        "run_id",
+        "sequence",
+        "phase",
+        "event",
+        "status",
+        "occurred_at"
+      ],
+      "title": "EvaluationTraceEvent",
+      "type": "object"
+    },
+    "EvaluationTracePhase": {
+      "description": "统一评测允许记录的有限阶段。",
+      "enum": [
+        "validate",
+        "retrieve",
+        "assess",
+        "answer",
+        "judge",
+        "aggregate",
+        "publish"
+      ],
+      "title": "EvaluationTracePhase",
+      "type": "string"
+    },
+    "EvaluationTraceStatus": {
+      "enum": [
+        "started",
+        "succeeded",
+        "failed",
+        "skipped",
+        "budget_stopped"
+      ],
+      "title": "EvaluationTraceStatus",
+      "type": "string"
+    },
+    "JudgeRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "question_id": {
+          "pattern": "^ueq-[a-z0-9-]{3,120}$",
+          "title": "Question Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/EvaluationStageStatus"
+        },
+        "strategy": {
+          "$ref": "#/$defs/UnifiedStrategy"
+        },
+        "usage": {
+          "$ref": "#/$defs/EvaluationResourceUsage"
+        },
+        "verdict": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/JudgeVerdict"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "question_id",
+        "strategy",
+        "status"
+      ],
+      "title": "JudgeRecord",
+      "type": "object"
+    },
+    "JudgeVerdict": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_correct": {
+          "title": "Citation Correct",
+          "type": "boolean"
+        },
+        "complete": {
+          "title": "Complete",
+          "type": "boolean"
+        },
+        "correct": {
+          "title": "Correct",
+          "type": "boolean"
+        },
+        "faithful": {
+          "title": "Faithful",
+          "type": "boolean"
+        },
+        "input_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Input Hash",
+          "type": "string"
+        },
+        "judge_version": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Judge Version",
+          "type": "string"
+        },
+        "prompt_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Prompt Hash",
+          "type": "string"
+        },
+        "question_id": {
+          "pattern": "^ueq-[a-z0-9-]{3,120}$",
+          "title": "Question Id",
+          "type": "string"
+        },
+        "reason_labels": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Reason Labels",
+          "type": "array"
+        },
+        "strategy": {
+          "$ref": "#/$defs/UnifiedStrategy"
+        },
+        "usage": {
+          "$ref": "#/$defs/EvaluationResourceUsage"
+        }
+      },
+      "required": [
+        "question_id",
+        "strategy",
+        "judge_version",
+        "prompt_hash",
+        "input_hash",
+        "correct",
+        "complete",
+        "faithful",
+        "citation_correct",
+        "usage"
+      ],
+      "title": "JudgeVerdict",
+      "type": "object"
+    },
+    "StrategyObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "action_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Action Ids",
+          "type": "array"
+        },
+        "cited_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Cited Evidence Ids",
+          "type": "array"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "final_covered_facet_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Final Covered Facet Ids",
+          "type": "array"
+        },
+        "initial_covered_facet_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Initial Covered Facet Ids",
+          "type": "array"
+        },
+        "loop_count": {
+          "default": 0,
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Loop Count",
+          "type": "integer"
+        },
+        "matched_answer_point_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Matched Answer Point Ids",
+          "type": "array"
+        },
+        "predicted_sufficient": {
+          "default": false,
+          "title": "Predicted Sufficient",
+          "type": "boolean"
+        },
+        "question_id": {
+          "pattern": "^ueq-[a-z0-9-]{3,120}$",
+          "title": "Question Id",
+          "type": "string"
+        },
+        "ranked_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Ranked Evidence Ids",
+          "type": "array"
+        },
+        "route": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Route"
+        },
+        "status": {
+          "$ref": "#/$defs/EvaluationStageStatus"
+        },
+        "strategy": {
+          "$ref": "#/$defs/UnifiedStrategy"
+        },
+        "usage": {
+          "$ref": "#/$defs/EvaluationResourceUsage"
+        },
+        "web_used": {
+          "default": false,
+          "title": "Web Used",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "question_id",
+        "strategy",
+        "status"
+      ],
+      "title": "StrategyObservation",
+      "type": "object"
+    },
+    "TraceResourceUsage": {
+      "additionalProperties": false,
+      "description": "单个事件记录的资源增量，而非完整账本。",
+      "properties": {
+        "input_tokens": {
+          "default": 0,
+          "maximum": 1000000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 0,
+          "maximum": 3600000,
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "model_calls": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "maximum": 1000000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "tool_calls": {
+          "default": 0,
+          "maximum": 1000,
+          "minimum": 0,
+          "title": "Tool Calls",
+          "type": "integer"
+        },
+        "web_calls": {
+          "default": 0,
+          "maximum": 20,
+          "minimum": 0,
+          "title": "Web Calls",
+          "type": "integer"
+        }
+      },
+      "title": "TraceResourceUsage",
+      "type": "object"
+    },
+    "UnifiedStrategy": {
+      "enum": [
+        "fixed_hybrid",
+        "type_router",
+        "facet_corrective"
+      ],
+      "title": "UnifiedStrategy",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "fixture_mode": {
+      "title": "Fixture Mode",
+      "type": "boolean"
+    },
+    "identity": {
+      "$ref": "#/$defs/EvaluationRunIdentity"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/EvaluationItemResult"
+      },
+      "maxItems": 300,
+      "minItems": 1,
+      "title": "Items",
+      "type": "array"
+    },
+    "judge_records": {
+      "items": {
+        "$ref": "#/$defs/JudgeRecord"
+      },
+      "maxItems": 50,
+      "title": "Judge Records",
+      "type": "array"
+    },
+    "judge_status": {
+      "default": "not_requested",
+      "enum": [
+        "not_requested",
+        "completed",
+        "failed"
+      ],
+      "title": "Judge Status",
+      "type": "string"
+    },
+    "offline": {
+      "title": "Offline",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "selected_answer_strategy": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/UnifiedStrategy"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "slices": {
+      "additionalProperties": {
+        "items": {
+          "$ref": "#/$defs/EvaluationSliceMetrics"
+        },
+        "type": "array"
+      },
+      "minProperties": 1,
+      "title": "Slices",
+      "type": "object"
+    },
+    "split": {
+      "$ref": "#/$defs/EvaluationSplit"
+    },
+    "trace": {
+      "items": {
+        "$ref": "#/$defs/EvaluationTraceEvent"
+      },
+      "maxItems": 20000,
+      "title": "Trace",
+      "type": "array"
+    }
+  },
+  "required": [
+    "identity",
+    "split",
+    "offline",
+    "fixture_mode",
+    "items",
+    "slices",
+    "created_at"
+  ],
+  "title": "UnifiedEvaluationReport",
+  "type": "object"
+}

@@ -1,0 +1,16 @@
+{
+  "annotation_guide_version": "unified-annotation-guide-v1",
+  "corpus_snapshot": "unified-source-fixtures-v1",
+  "dataset_hash": "7605e2ec82dfa1a64cf6d14162b98a65c40d8324c9a7339ed3f44dcca50e07dc",
+  "dataset_version": "unified-agent-qa-v1",
+  "dev_count": 40,
+  "dev_hash": "a8461927d422848287697bbee93b1a58ebb86147d5b83f78d7e9c7caf3179800",
+  "dev_path": "data/evaluation/unified/dev.json",
+  "evidence_version": "unified-evidence-annotations-v1",
+  "review_note": "候选集已通过来源、稳定 ID、facet/Evidence 引用、压力类型、规模与跨划分泄漏的自动校验；仍需人工逐题复核后才能用于真实开发选择或正式测试。",
+  "reviewed": false,
+  "schema_version": "v1",
+  "test_count": 20,
+  "test_hash": "bef1142b9ab884b8351c648b840b4c6a735e7cc7327e8ec1a78d031c49579583",
+  "test_path": "data/evaluation/unified/test.json"
+}

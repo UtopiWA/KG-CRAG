@@ -22,7 +22,7 @@ def test_schema_export_is_byte_stable_and_check_detects_drift(tmp_path: Path) ->
 
     assert export(tmp_path) == 0
     first = {path.name: path.read_bytes() for path in sorted(tmp_path.glob("*.json"))}
-    assert len(first) == 31
+    assert len(first) == 38
 
     assert export(tmp_path) == 0
     second = {path.name: path.read_bytes() for path in sorted(tmp_path.glob("*.json"))}

@@ -1,0 +1,1755 @@
+{
+  "dataset_version": "unified-agent-qa-v1",
+  "questions": [
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q01"
+          ],
+          "point_id": "point-f3e059e03222ee46"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-1c71f59af1419dda",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q01"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q01",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q01"
+        ]
+      ],
+      "normalized_question": "what architecture does agent system 1 use?",
+      "question": "What architecture does Agent System 1 use?",
+      "question_id": "ueq-corrective-dev-questions-q01",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "target-q01": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q01",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q01"
+      ],
+      "split": "dev",
+      "stress_category": "terminology_mismatch"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q02"
+          ],
+          "point_id": "point-ab9664a9663f6a36"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-736032ca5ca7b284",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q02"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q02",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q02"
+        ]
+      ],
+      "normalized_question": "what architecture does agent system 2 use?",
+      "question": "What architecture does Agent System 2 use?",
+      "question_id": "ueq-corrective-dev-questions-q02",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "target-q02": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q02",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q02"
+      ],
+      "split": "dev",
+      "stress_category": "terminology_mismatch"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q03"
+          ],
+          "point_id": "point-bf4e7f160b210299"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-1c17d151540fced7",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q03"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q03",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q03"
+        ]
+      ],
+      "normalized_question": "what architecture does agent system 3 use?",
+      "question": "What architecture does Agent System 3 use?",
+      "question_id": "ueq-corrective-dev-questions-q03",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "target-q03": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q03",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q03"
+      ],
+      "split": "dev",
+      "stress_category": "terminology_mismatch"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q04"
+          ],
+          "point_id": "point-76124945c4617e1d"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-579f81ab535e6c96",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q04"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q04",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q04"
+        ]
+      ],
+      "normalized_question": "which paper introduces the alphaagent 4 entity?",
+      "question": "Which paper introduces the AlphaAgent 4 entity?",
+      "question_id": "ueq-corrective-dev-questions-q04",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "target-q04": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q04",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q04"
+      ],
+      "split": "dev",
+      "stress_category": "entity_alias"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q05"
+          ],
+          "point_id": "point-6d4706d086afcfcd"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-fdbaa8655586905e",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q05"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q05",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q05"
+        ]
+      ],
+      "normalized_question": "which paper introduces the alphaagent 5 entity?",
+      "question": "Which paper introduces the AlphaAgent 5 entity?",
+      "question_id": "ueq-corrective-dev-questions-q05",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "target-q05": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q05",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q05"
+      ],
+      "split": "dev",
+      "stress_category": "entity_alias"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q06"
+          ],
+          "point_id": "point-fbec017c89702822"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-51f103765847d395",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q06"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q06",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q06"
+        ]
+      ],
+      "normalized_question": "which paper introduces the alphaagent 6 entity?",
+      "question": "Which paper introduces the AlphaAgent 6 entity?",
+      "question_id": "ueq-corrective-dev-questions-q06",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "target-q06": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q06",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q06"
+      ],
+      "split": "dev",
+      "stress_category": "entity_alias"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q07"
+          ],
+          "point_id": "point-959fef49478547b3"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-adccf1dbacbdeb94",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q07"
+          ]
+        },
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-c8b594d771fa2059",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q07"
+          ]
+        },
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-ea6082eb0f37fd0e",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q07"
+          ]
+        },
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-f009a685516187f2",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q07"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q07",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q07"
+        ]
+      ],
+      "normalized_question": "compare methoda7 vs methodb7 architecture and results",
+      "question": "Compare MethodA7 vs MethodB7 architecture and results",
+      "question_id": "ueq-corrective-dev-questions-q07",
+      "question_types": [
+        "comparison"
+      ],
+      "relevant_evidence": {
+        "target-q07": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q07",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q07"
+      ],
+      "split": "dev",
+      "stress_category": "comparison_side"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q08"
+          ],
+          "point_id": "point-249bfd7f011ca79d"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-492f03a2cecacfc1",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q08"
+          ]
+        },
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-96a8545a3faa6d95",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q08"
+          ]
+        },
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-9f1f892f32f4135b",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q08"
+          ]
+        },
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-cec046d91c879bf8",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q08"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q08",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q08"
+        ]
+      ],
+      "normalized_question": "compare methoda8 vs methodb8 architecture and results",
+      "question": "Compare MethodA8 vs MethodB8 architecture and results",
+      "question_id": "ueq-corrective-dev-questions-q08",
+      "question_types": [
+        "comparison"
+      ],
+      "relevant_evidence": {
+        "target-q08": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q08",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q08"
+      ],
+      "split": "dev",
+      "stress_category": "comparison_side"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q09"
+          ],
+          "point_id": "point-60ddc71a226b7d50"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-49d919ebcdb4d6ad",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q09"
+          ]
+        },
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-c152052ff0e8731b",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q09"
+          ]
+        },
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-d4e6f11670ab5b1e",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q09"
+          ]
+        },
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-d6ac0cad839fb110",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q09"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q09",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q09"
+        ]
+      ],
+      "normalized_question": "compare methoda9 vs methodb9 architecture and results",
+      "question": "Compare MethodA9 vs MethodB9 architecture and results",
+      "question_id": "ueq-corrective-dev-questions-q09",
+      "question_types": [
+        "comparison"
+      ],
+      "relevant_evidence": {
+        "target-q09": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q09",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q09"
+      ],
+      "split": "dev",
+      "stress_category": "comparison_side"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q10"
+          ],
+          "point_id": "point-023b5379fc270ad7"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-c0d91f6ca7ed2ed3",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q10"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q10",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q10"
+        ]
+      ],
+      "normalized_question": "what multi-hop relationship links agent 10 and tool 10?",
+      "question": "What multi-hop relationship links Agent 10 and Tool 10?",
+      "question_id": "ueq-corrective-dev-questions-q10",
+      "question_types": [
+        "multi_hop"
+      ],
+      "relevant_evidence": {
+        "target-q10": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q10",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q10"
+      ],
+      "split": "dev",
+      "stress_category": "multi_hop_gap"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q11"
+          ],
+          "point_id": "point-61726a26d295ab20"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-87755151bc33b1b0",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q11"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q11",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q11"
+        ]
+      ],
+      "normalized_question": "what multi-hop relationship links agent 11 and tool 11?",
+      "question": "What multi-hop relationship links Agent 11 and Tool 11?",
+      "question_id": "ueq-corrective-dev-questions-q11",
+      "question_types": [
+        "multi_hop"
+      ],
+      "relevant_evidence": {
+        "target-q11": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q11",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q11"
+      ],
+      "split": "dev",
+      "stress_category": "multi_hop_gap"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q12"
+          ],
+          "point_id": "point-4eaf130477530512"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-3028db2b4692a7e1",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q12"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q12",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q12"
+        ]
+      ],
+      "normalized_question": "what multi-hop relationship links agent 12 and tool 12?",
+      "question": "What multi-hop relationship links Agent 12 and Tool 12?",
+      "question_id": "ueq-corrective-dev-questions-q12",
+      "question_types": [
+        "multi_hop"
+      ],
+      "relevant_evidence": {
+        "target-q12": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q12",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q12"
+      ],
+      "split": "dev",
+      "stress_category": "multi_hop_gap"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q13"
+          ],
+          "point_id": "point-efb596dbde50aae4"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-4183838c94b76c16",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q13"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q13",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q13"
+        ]
+      ],
+      "normalized_question": "what accuracy metric is reported for agent 13?",
+      "question": "What accuracy metric is reported for Agent 13?",
+      "question_id": "ueq-corrective-dev-questions-q13",
+      "question_types": [
+        "metric"
+      ],
+      "relevant_evidence": {
+        "target-q13": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q13",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q13"
+      ],
+      "split": "dev",
+      "stress_category": "metric_missing"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q14"
+          ],
+          "point_id": "point-831ffeacec1a2f10"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-2bfaeef7140d879e",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q14"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q14",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q14"
+        ]
+      ],
+      "normalized_question": "what accuracy metric is reported for agent 14?",
+      "question": "What accuracy metric is reported for Agent 14?",
+      "question_id": "ueq-corrective-dev-questions-q14",
+      "question_types": [
+        "metric"
+      ],
+      "relevant_evidence": {
+        "target-q14": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q14",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q14"
+      ],
+      "split": "dev",
+      "stress_category": "metric_missing"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q15"
+          ],
+          "point_id": "point-f83dd855196483ac"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-0b7ac3997ade56ef",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q15"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q15",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "target-q15"
+        ]
+      ],
+      "normalized_question": "what accuracy metric is reported for agent 15?",
+      "question": "What accuracy metric is reported for Agent 15?",
+      "question_id": "ueq-corrective-dev-questions-q15",
+      "question_types": [
+        "metric"
+      ],
+      "relevant_evidence": {
+        "target-q15": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q15",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q15"
+      ],
+      "split": "dev",
+      "stress_category": "metric_missing"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q16"
+          ],
+          "point_id": "point-d7b7f7fd45ee7722"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-3bdc8e70e48b28e2",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q16"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "conflicting",
+      "leakage_group_id": "leak-corrective-dev-questions-q16",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "what accuracy metric is reported for agent 16?",
+      "question": "What accuracy metric is reported for Agent 16?",
+      "question_id": "ueq-corrective-dev-questions-q16",
+      "question_types": [
+        "metric"
+      ],
+      "relevant_evidence": {
+        "target-q16": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q16",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q16"
+      ],
+      "split": "dev",
+      "stress_category": "conflict"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q17"
+          ],
+          "point_id": "point-6967b21e0d6d6be0"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-5741b5acb7b09db3",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q17"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "conflicting",
+      "leakage_group_id": "leak-corrective-dev-questions-q17",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "what accuracy metric is reported for agent 17?",
+      "question": "What accuracy metric is reported for Agent 17?",
+      "question_id": "ueq-corrective-dev-questions-q17",
+      "question_types": [
+        "metric"
+      ],
+      "relevant_evidence": {
+        "target-q17": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q17",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q17"
+      ],
+      "split": "dev",
+      "stress_category": "conflict"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "回答该压力题的核心证据要求。",
+          "evidence_ids": [
+            "target-q18"
+          ],
+          "point_id": "point-bd247bdfcd8618c7"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-fe16f096ad352357",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q18"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "conflicting",
+      "leakage_group_id": "leak-corrective-dev-questions-q18",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "what accuracy metric is reported for agent 18?",
+      "question": "What accuracy metric is reported for Agent 18?",
+      "question_id": "ueq-corrective-dev-questions-q18",
+      "question_types": [
+        "metric"
+      ],
+      "relevant_evidence": {
+        "target-q18": 3
+      },
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q18",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q18"
+      ],
+      "split": "dev",
+      "stress_category": "conflict"
+    },
+    {
+      "answer_points": [],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-aad45b3a368a1e53",
+          "required": true,
+          "target_evidence_ids": []
+        }
+      ],
+      "knowledge_sufficiency": "insufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q19",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "what unavailable finding is reported for agent 19?",
+      "question": "What unavailable finding is reported for Agent 19?",
+      "question_id": "ueq-corrective-dev-questions-q19",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {},
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q19",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q19"
+      ],
+      "split": "dev",
+      "stress_category": "internal_missing"
+    },
+    {
+      "answer_points": [],
+      "facets": [
+        {
+          "description": "由纠错开发集冻结的必需 facet。",
+          "facet_id": "facet-7b9b1da137016cbb",
+          "required": true,
+          "target_evidence_ids": []
+        }
+      ],
+      "knowledge_sufficiency": "insufficient",
+      "leakage_group_id": "leak-corrective-dev-questions-q20",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "what unavailable finding is reported for agent 20?",
+      "question": "What unavailable finding is reported for Agent 20?",
+      "question_id": "ueq-corrective-dev-questions-q20",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {},
+      "source_fixture": "data/evaluation/corrective_dev_questions.json#q20",
+      "source_group_ids": [
+        "source-corrective-dev-questions-q20"
+      ],
+      "split": "dev",
+      "stress_category": "internal_missing"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "CAMEL 摘要直接说明研究动机与可扩展的智能体协作方案。",
+          "evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ],
+          "point_id": "point-07da08c6f80112f3"
+        }
+      ],
+      "facets": [
+        {
+          "description": "CAMEL 摘要直接说明研究动机与可扩展的智能体协作方案。",
+          "facet_id": "facet-07da08c6f80112f3",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-camel-purpose",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+        ]
+      ],
+      "normalized_question": "camel 研究试图通过什么方式减少复杂任务求解中对人工输入的依赖?",
+      "question": "CAMEL 研究试图通过什么方式减少复杂任务求解中对人工输入的依赖？",
+      "question_id": "ueq-hybrid-dev-questions-camel-purpose",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#camel-purpose",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-camel-purpose"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "摘要概括了 CAMEL 的交流式智能体和角色扮演框架。",
+          "evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ],
+          "point_id": "point-74b70338109337a1"
+        }
+      ],
+      "facets": [
+        {
+          "description": "摘要概括了 CAMEL 的交流式智能体和角色扮演框架。",
+          "facet_id": "facet-74b70338109337a1",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-camel-roleplay",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+        ]
+      ],
+      "normalized_question": "camel 如何利用角色扮演和交流式智能体完成任务?",
+      "question": "CAMEL 如何利用角色扮演和交流式智能体完成任务？",
+      "question_id": "ueq-hybrid-dev-questions-camel-roleplay",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#camel-roleplay",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-camel-roleplay"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "论文摘要给出生成式智能体的定义和可信行为模拟目标。",
+          "evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ],
+          "point_id": "point-177a78aa0f9c6495"
+        }
+      ],
+      "facets": [
+        {
+          "description": "论文摘要给出生成式智能体的定义和可信行为模拟目标。",
+          "facet_id": "facet-177a78aa0f9c6495",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-generative-agents-definition",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+        ]
+      ],
+      "normalized_question": "generative agents 论文如何定义生成式智能体及其目标?",
+      "question": "Generative Agents 论文如何定义生成式智能体及其目标？",
+      "question_id": "ueq-hybrid-dev-questions-generative-agents-definition",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#generative-agents-definition",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-generative-agents-definition"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "摘要列举了沉浸环境、沟通排练和原型设计等用途。",
+          "evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ],
+          "point_id": "point-ff5cb5dfc0446b22"
+        }
+      ],
+      "facets": [
+        {
+          "description": "摘要列举了沉浸环境、沟通排练和原型设计等用途。",
+          "facet_id": "facet-ff5cb5dfc0446b22",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-generative-agents-applications",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+        ]
+      ],
+      "normalized_question": "生成式智能体的可信人类行为代理可以支持哪些类型的交互应用?",
+      "question": "生成式智能体的可信人类行为代理可以支持哪些类型的交互应用？",
+      "question_id": "ueq-hybrid-dev-questions-generative-agents-applications",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#generative-agents-applications",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-generative-agents-applications"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "摘要明确描述逐 token 推理在探索与策略前瞻任务上的不足。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-317e6498f69ed590"
+        }
+      ],
+      "facets": [
+        {
+          "description": "摘要明确描述逐 token 推理在探索与策略前瞻任务上的不足。",
+          "facet_id": "facet-317e6498f69ed590",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-tree-of-thoughts-motivation",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+        ]
+      ],
+      "normalized_question": "tree of thoughts 主要解决语言模型逐 token 左到右决策的什么局限?",
+      "question": "Tree of Thoughts 主要解决语言模型逐 token 左到右决策的什么局限？",
+      "question_id": "ueq-hybrid-dev-questions-tree-of-thoughts-motivation",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#tree-of-thoughts-motivation",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-tree-of-thoughts-motivation"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "摘要介绍了以思路为中间单位的搜索式审慎推理。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-527851720118f684"
+        }
+      ],
+      "facets": [
+        {
+          "description": "摘要介绍了以思路为中间单位的搜索式审慎推理。",
+          "facet_id": "facet-527851720118f684",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-tree-of-thoughts-search",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+        ]
+      ],
+      "normalized_question": "tree of thoughts 为什么要在多个推理思路之间进行探索?",
+      "question": "Tree of Thoughts 为什么要在多个推理思路之间进行探索？",
+      "question_id": "ueq-hybrid-dev-questions-tree-of-thoughts-search",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#tree-of-thoughts-search",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-tree-of-thoughts-search"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "Voyager 摘要集中列出了自动课程、技能库和迭代提示机制。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-4fa8d89e19edd818"
+        }
+      ],
+      "facets": [
+        {
+          "description": "Voyager 摘要集中列出了自动课程、技能库和迭代提示机制。",
+          "facet_id": "facet-4fa8d89e19edd818",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-voyager-components",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+        ]
+      ],
+      "normalized_question": "voyager 在 minecraft 中持续学习所依赖的三个核心组件是什么?",
+      "question": "Voyager 在 Minecraft 中持续学习所依赖的三个核心组件是什么？",
+      "question_id": "ueq-hybrid-dev-questions-voyager-components",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#voyager-components",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-voyager-components"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "摘要描述其无人工干预的持续探索、技能获取和新发现。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-dc6b69d8f13ed486"
+        }
+      ],
+      "facets": [
+        {
+          "description": "摘要描述其无人工干预的持续探索、技能获取和新发现。",
+          "facet_id": "facet-dc6b69d8f13ed486",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-voyager-lifelong-learning",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+        ]
+      ],
+      "normalized_question": "voyager 为什么被称为具身终身学习智能体?",
+      "question": "Voyager 为什么被称为具身终身学习智能体？",
+      "question_id": "ueq-hybrid-dev-questions-voyager-lifelong-learning",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#voyager-lifelong-learning",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-voyager-lifelong-learning"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "摘要说明开源模型难以调用真实 API 完成用户指令的问题。",
+          "evidence_ids": [
+            "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
+          ],
+          "point_id": "point-5f70991991d12777"
+        }
+      ],
+      "facets": [
+        {
+          "description": "摘要说明开源模型难以调用真实 API 完成用户指令的问题。",
+          "facet_id": "facet-5f70991991d12777",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-toolllm-problem",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
+        ]
+      ],
+      "normalized_question": "toolllm 针对开源大语言模型的哪项工具使用缺陷提出方案?",
+      "question": "ToolLLM 针对开源大语言模型的哪项工具使用缺陷提出方案？",
+      "question_id": "ueq-hybrid-dev-questions-toolllm-problem",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#toolllm-problem",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-toolllm-problem"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "摘要介绍复杂任务的协作困难及 MetaGPT 的 SOP 组织方式。",
+          "evidence_ids": [
+            "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
+          ],
+          "point_id": "point-e74141b204c26934"
+        }
+      ],
+      "facets": [
+        {
+          "description": "摘要介绍复杂任务的协作困难及 MetaGPT 的 SOP 组织方式。",
+          "facet_id": "facet-e74141b204c26934",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-metagpt-sop",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
+        ]
+      ],
+      "normalized_question": "metagpt 为什么在多智能体协作中引入标准作业程序 sop?",
+      "question": "MetaGPT 为什么在多智能体协作中引入标准作业程序 SOP？",
+      "question_id": "ueq-hybrid-dev-questions-metagpt-sop",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#metagpt-sop",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-metagpt-sop"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "摘要概括了交互环境、多维基准及其评测目的。",
+          "evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ],
+          "point_id": "point-f654d10baddd44eb"
+        }
+      ],
+      "facets": [
+        {
+          "description": "摘要概括了交互环境、多维基准及其评测目的。",
+          "facet_id": "facet-f654d10baddd44eb",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-agentbench-scope",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+        ]
+      ],
+      "normalized_question": "agentbench 用什么类型的环境对 llm 智能体进行多维评测?",
+      "question": "AgentBench 用什么类型的环境对 LLM 智能体进行多维评测？",
+      "question_id": "ueq-hybrid-dev-questions-agentbench-scope",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#agentbench-scope",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-agentbench-scope"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "LATS 摘要直接陈述其对推理、行动与规划能力的协同。",
+          "evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ],
+          "point_id": "point-fe75708b74006f38"
+        }
+      ],
+      "facets": [
+        {
+          "description": "LATS 摘要直接陈述其对推理、行动与规划能力的协同。",
+          "facet_id": "facet-fe75708b74006f38",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-lats-capabilities",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+        ]
+      ],
+      "normalized_question": "language agent tree search 统一了语言智能体的哪些关键能力?",
+      "question": "Language Agent Tree Search 统一了语言智能体的哪些关键能力？",
+      "question_id": "ueq-hybrid-dev-questions-lats-capabilities",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#lats-capabilities",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-lats-capabilities"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "引言列出推理、多模态、网页浏览和工具使用等能力。",
+          "evidence_ids": [
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+          ],
+          "point_id": "point-3af80282ece97762"
+        }
+      ],
+      "facets": [
+        {
+          "description": "引言列出推理、多模态、网页浏览和工具使用等能力。",
+          "facet_id": "facet-3af80282ece97762",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-gaia-abilities",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+        ]
+      ],
+      "normalized_question": "gaia 基准的问题要求通用 ai 助手具备哪些基础能力?",
+      "question": "GAIA 基准的问题要求通用 AI 助手具备哪些基础能力？",
+      "question_id": "ueq-hybrid-dev-questions-gaia-abilities",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#gaia-abilities",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-gaia-abilities"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "摘要说明幻觉、不可解释性以及缺少真实答案带来的问题。",
+          "evidence_ids": [
+            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+          ],
+          "point_id": "point-667b2fe239b7096c"
+        }
+      ],
+      "facets": [
+        {
+          "description": "摘要说明幻觉、不可解释性以及缺少真实答案带来的问题。",
+          "facet_id": "facet-667b2fe239b7096c",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-paperqa-motivation",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+        ]
+      ],
+      "normalized_question": "paperqa 为什么需要用检索增强方法回答科学研究问题?",
+      "question": "PaperQA 为什么需要用检索增强方法回答科学研究问题？",
+      "question_id": "ueq-hybrid-dev-questions-paperqa-motivation",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#paperqa-motivation",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-paperqa-motivation"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "GraphRAG 摘要对局部检索在全局问题上的失败给出动机。",
+          "evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ],
+          "point_id": "point-5cca1fed86f65f61"
+        }
+      ],
+      "facets": [
+        {
+          "description": "GraphRAG 摘要对局部检索在全局问题上的失败给出动机。",
+          "facet_id": "facet-5cca1fed86f65f61",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-graphrag-global-questions",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+        ]
+      ],
+      "normalized_question": "传统 rag 为什么难以回答面向整个文档集合的全局问题?",
+      "question": "传统 RAG 为什么难以回答面向整个文档集合的全局问题？",
+      "question_id": "ueq-hybrid-dev-questions-graphrag-global-questions",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#graphrag-global-questions",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-graphrag-global-questions"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "摘要描述从局部检索转向支持全局、查询聚焦摘要的目标。",
+          "evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ],
+          "point_id": "point-bb8e7f6a6fc76957"
+        }
+      ],
+      "facets": [
+        {
+          "description": "摘要描述从局部检索转向支持全局、查询聚焦摘要的目标。",
+          "facet_id": "facet-bb8e7f6a6fc76957",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-graphrag-goal",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+        ]
+      ],
+      "normalized_question": "graphrag 的图方法旨在怎样改进面向语料库的摘要回答?",
+      "question": "GraphRAG 的图方法旨在怎样改进面向语料库的摘要回答？",
+      "question_id": "ueq-hybrid-dev-questions-graphrag-goal",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#graphrag-goal",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-graphrag-goal"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "摘要讨论大量知识存储、持续整合新信息和避免灾难性遗忘。",
+          "evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ],
+          "point_id": "point-a5fb9e92f94ef5a8"
+        }
+      ],
+      "facets": [
+        {
+          "description": "摘要讨论大量知识存储、持续整合新信息和避免灾难性遗忘。",
+          "facet_id": "facet-a5fb9e92f94ef5a8",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-hipporag-memory",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+        ]
+      ],
+      "normalized_question": "hipporag 从哺乳动物长期记忆中借鉴了什么核心能力?",
+      "question": "HippoRAG 从哺乳动物长期记忆中借鉴了什么核心能力？",
+      "question_id": "ueq-hybrid-dev-questions-hipporag-memory",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#hipporag-memory",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-hipporag-memory"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "摘要说明以图检索支持基于证据的医疗回答和可靠性。",
+          "evidence_ids": [
+            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+          ],
+          "point_id": "point-aa6d81b3bbbcf6e5"
+        }
+      ],
+      "facets": [
+        {
+          "description": "摘要说明以图检索支持基于证据的医疗回答和可靠性。",
+          "facet_id": "facet-aa6d81b3bbbcf6e5",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-medgraphrag-safety",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+        ]
+      ],
+      "normalized_question": "medgraphrag 如何定位其在医疗问答安全性方面的作用?",
+      "question": "MedGraphRAG 如何定位其在医疗问答安全性方面的作用？",
+      "question_id": "ueq-hybrid-dev-questions-medgraphrag-safety",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#medgraphrag-safety",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-medgraphrag-safety"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "摘要概括传统平面数据表示及相关效率问题。",
+          "evidence_ids": [
+            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+          ],
+          "point_id": "point-caf017876b2a15ed"
+        }
+      ],
+      "facets": [
+        {
+          "description": "摘要概括传统平面数据表示及相关效率问题。",
+          "facet_id": "facet-caf017876b2a15ed",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-lightrag-limitations",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+        ]
+      ],
+      "normalized_question": "lightrag 认为已有 rag 系统存在哪些结构或效率局限?",
+      "question": "LightRAG 认为已有 RAG 系统存在哪些结构或效率局限？",
+      "question_id": "ueq-hybrid-dev-questions-lightrag-limitations",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#lightrag-limitations",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-lightrag-limitations"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "综述摘要说明静态知识对动态实时查询及可靠回答的限制。",
+          "evidence_ids": [
+            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+          ],
+          "point_id": "point-10bdae6d4d9b5301"
+        }
+      ],
+      "facets": [
+        {
+          "description": "综述摘要说明静态知识对动态实时查询及可靠回答的限制。",
+          "facet_id": "facet-10bdae6d4d9b5301",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-hybrid-dev-questions-agentic-rag-motivation",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+        ]
+      ],
+      "normalized_question": "agentic rag 综述认为静态训练数据给大语言模型带来什么限制?",
+      "question": "Agentic RAG 综述认为静态训练数据给大语言模型带来什么限制？",
+      "question_id": "ueq-hybrid-dev-questions-agentic-rag-motivation",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#agentic-rag-motivation",
+      "source_group_ids": [
+        "source-hybrid-dev-questions-agentic-rag-motivation"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    }
+  ],
+  "schema_version": "v1",
+  "split": "dev"
+}

@@ -1,0 +1,265 @@
+{
+  "$defs": {
+    "EvaluationResourceUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "estimated_cost": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Estimated Cost"
+        },
+        "input_tokens": {
+          "default": 0,
+          "maximum": 10000000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "judge_calls": {
+          "default": 0,
+          "maximum": 50,
+          "minimum": 0,
+          "title": "Judge Calls",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 0,
+          "maximum": 86400000,
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "model_calls": {
+          "default": 0,
+          "maximum": 1000,
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "maximum": 10000000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "tool_calls": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Tool Calls",
+          "type": "integer"
+        },
+        "web_calls": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Web Calls",
+          "type": "integer"
+        }
+      },
+      "title": "EvaluationResourceUsage",
+      "type": "object"
+    },
+    "EvaluationRunIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "config_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Config Hash",
+          "type": "string"
+        },
+        "corpus_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Corpus Hash",
+          "type": "string"
+        },
+        "dataset_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Dataset Hash",
+          "type": "string"
+        },
+        "evidence_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Evidence Hash",
+          "type": "string"
+        },
+        "index_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Index Hash",
+          "type": "string"
+        },
+        "judge_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Judge Hash",
+          "type": "string"
+        },
+        "metric_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Metric Hash",
+          "type": "string"
+        },
+        "model_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Model Hash",
+          "type": "string"
+        },
+        "prompt_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Prompt Hash",
+          "type": "string"
+        },
+        "run_id": {
+          "pattern": "^unified-run-[a-f0-9]{32}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seed": {
+          "maximum": 4294967295,
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "split_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Split Hash",
+          "type": "string"
+        },
+        "strategy_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Strategy Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "dataset_hash",
+        "split_hash",
+        "corpus_hash",
+        "evidence_hash",
+        "index_hash",
+        "config_hash",
+        "strategy_hash",
+        "model_hash",
+        "prompt_hash",
+        "metric_hash",
+        "judge_hash",
+        "seed"
+      ],
+      "title": "EvaluationRunIdentity",
+      "type": "object"
+    },
+    "EvaluationSplit": {
+      "enum": [
+        "dev",
+        "test"
+      ],
+      "title": "EvaluationSplit",
+      "type": "string"
+    },
+    "EvaluationStageStatus": {
+      "enum": [
+        "pending",
+        "succeeded",
+        "failed",
+        "skipped",
+        "budget_stopped"
+      ],
+      "title": "EvaluationStageStatus",
+      "type": "string"
+    },
+    "UnifiedStrategy": {
+      "enum": [
+        "fixed_hybrid",
+        "type_router",
+        "facet_corrective"
+      ],
+      "title": "UnifiedStrategy",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "budget": {
+      "$ref": "#/$defs/EvaluationResourceUsage"
+    },
+    "checkpoint_hashes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "maxProperties": 300,
+      "title": "Checkpoint Hashes",
+      "type": "object"
+    },
+    "completed_item_keys": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 300,
+      "title": "Completed Item Keys",
+      "type": "array"
+    },
+    "failures": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "maxProperties": 50,
+      "title": "Failures",
+      "type": "object"
+    },
+    "finished_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Finished At"
+    },
+    "identity": {
+      "$ref": "#/$defs/EvaluationRunIdentity"
+    },
+    "selected_answer_strategy": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/UnifiedStrategy"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "split": {
+      "$ref": "#/$defs/EvaluationSplit"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/EvaluationStageStatus"
+    }
+  },
+  "required": [
+    "identity",
+    "split",
+    "status",
+    "started_at"
+  ],
+  "title": "EvaluationRunManifest",
+  "type": "object"
+}

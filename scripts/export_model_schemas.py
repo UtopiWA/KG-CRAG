@@ -17,6 +17,10 @@ from kg_crag.models import (
     DenseEvaluationReport,
     DenseRAGResult,
     ErrorDetail,
+    EvaluationDatasetManifest,
+    EvaluationFailureReport,
+    EvaluationRunManifest,
+    EvaluationTraceEvent,
     Evidence,
     GraphBundle,
     GraphEvaluationQuestionSet,
@@ -39,7 +43,10 @@ from kg_crag.models import (
     RetrievalEvaluation,
     RouteDecision,
     SparseIndexRunManifest,
+    StrategyObservationSet,
     TraceEvent,
+    UnifiedEvaluationReport,
+    UnifiedQuestionSet,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -54,6 +61,10 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "dense_evaluation_report": DenseEvaluationReport,
     "dense_rag_result": DenseRAGResult,
     "error_detail": ErrorDetail,
+    "evaluation_dataset_manifest": EvaluationDatasetManifest,
+    "evaluation_failure_report": EvaluationFailureReport,
+    "evaluation_run_manifest": EvaluationRunManifest,
+    "evaluation_trace_event_v2": EvaluationTraceEvent,
     "evidence": Evidence,
     "graph_bundle": GraphBundle,
     "graph_evaluation_question_set": GraphEvaluationQuestionSet,
@@ -77,6 +88,9 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "route_decision": RouteDecision,
     "sparse_index_run_manifest": SparseIndexRunManifest,
     "trace_event": TraceEvent,
+    "strategy_observation_set": StrategyObservationSet,
+    "unified_evaluation_report": UnifiedEvaluationReport,
+    "unified_question_set": UnifiedQuestionSet,
 }
 
 

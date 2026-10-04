@@ -1,0 +1,209 @@
+{
+  "$defs": {
+    "ErrorCode": {
+      "description": "供调用方稳定分支的错误代码。",
+      "enum": [
+        "validation_error",
+        "configuration_error",
+        "external_service_error",
+        "timeout_error",
+        "not_found",
+        "data_error",
+        "internal_error"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "description": "可安全序列化的统一错误详情。",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "context": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 32,
+          "title": "Context",
+          "type": "object"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "EvaluationFailureRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "$ref": "#/$defs/ErrorDetail"
+        },
+        "question_id": {
+          "pattern": "^ueq-[a-z0-9-]{3,120}$",
+          "title": "Question Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/EvaluationStageStatus"
+        },
+        "strategy": {
+          "$ref": "#/$defs/UnifiedStrategy"
+        },
+        "usage": {
+          "$ref": "#/$defs/EvaluationResourceUsage"
+        }
+      },
+      "required": [
+        "question_id",
+        "strategy",
+        "status",
+        "error",
+        "usage"
+      ],
+      "title": "EvaluationFailureRecord",
+      "type": "object"
+    },
+    "EvaluationResourceUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "estimated_cost": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Estimated Cost"
+        },
+        "input_tokens": {
+          "default": 0,
+          "maximum": 10000000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "judge_calls": {
+          "default": 0,
+          "maximum": 50,
+          "minimum": 0,
+          "title": "Judge Calls",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 0,
+          "maximum": 86400000,
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "model_calls": {
+          "default": 0,
+          "maximum": 1000,
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "maximum": 10000000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "tool_calls": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Tool Calls",
+          "type": "integer"
+        },
+        "web_calls": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Web Calls",
+          "type": "integer"
+        }
+      },
+      "title": "EvaluationResourceUsage",
+      "type": "object"
+    },
+    "EvaluationStageStatus": {
+      "enum": [
+        "pending",
+        "succeeded",
+        "failed",
+        "skipped",
+        "budget_stopped"
+      ],
+      "title": "EvaluationStageStatus",
+      "type": "string"
+    },
+    "UnifiedStrategy": {
+      "enum": [
+        "fixed_hybrid",
+        "type_router",
+        "facet_corrective"
+      ],
+      "title": "UnifiedStrategy",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "failures": {
+      "items": {
+        "$ref": "#/$defs/EvaluationFailureRecord"
+      },
+      "maxItems": 300,
+      "title": "Failures",
+      "type": "array"
+    },
+    "run_id": {
+      "pattern": "^unified-run-[a-f0-9]{32}$",
+      "title": "Run Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id"
+  ],
+  "title": "EvaluationFailureReport",
+  "type": "object"
+}

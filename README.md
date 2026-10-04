@@ -219,6 +219,25 @@ python scripts/evaluate_grounded_answer.py --online --confirm --limit 5
 
 单题最多 2 次生成、1 次 Critic、1 次 Web 和 1 次反思，输入输出合计不超过 12k Token。配置、可信来源、恢复与失败语义详见 `docs/grounded_answer.md`。
 
+## 统一评测与可观测性
+
+迭代 7 将既有评测 fixture 迁移为 60 题统一候选集（40 dev、20 test），统一记录问题类型、答案要点、必需/可选 facet、最小充分 Evidence、压力类型和知识充分性。候选集已通过自动校验但仍待人工逐题复核；复核前只能校验数据或运行明确标记的离线 fixture 回放，不访问 LLM、Web、Qdrant 或 Neo4j：
+
+```powershell
+# 数据迁移默认 dry-run；冻结数据已存在时不会静默覆盖
+python scripts/migrate_unified_evaluation_dataset.py
+python scripts/validate_evaluation_dataset.py
+
+# 仅检查配置、哈希、规模和泄漏门禁
+python scripts/evaluate_unified.py --dry-run
+
+# 验收 runner、检查点、Trace 和报告；结果带 fixture_mode=true，不能冻结研究选择
+python scripts/evaluate_unified.py --fixture-mode
+python scripts/evaluate_unified.py --fixture-mode --selected-answer-strategy facet_corrective
+```
+
+真实策略应先通过 `UnifiedEvaluationRunner` 适配器或 `StrategyObservationSet` 发布完整三策略观察，再由 `--observations <file>` 生成可比较报告。开发选择只能由非 fixture 的 dev 报告一次性冻结；正式 test 还要求 `--confirm-test-run`，每个数据集版本只允许一次且不能携带调参/选策略参数。Judge 默认关闭，只能用于已选系统、显式预算确认和最多 50 个预声明回答，结果不覆盖人工真值。详细契约、产物和恢复方式见 `docs/evaluation_observability.md`。
+
 ## 项目结构
 
 完整文件树、模块职责、关键脚本和按任务定位说明见仓库上级目录的 `../PROJECT_MAP.md`。新增、删除、重命名重要路径或改变模块职责时，应在同一变更中维护该地图。

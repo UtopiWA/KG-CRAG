@@ -1,0 +1,173 @@
+{
+  "$defs": {
+    "EvaluationTracePhase": {
+      "description": "统一评测允许记录的有限阶段。",
+      "enum": [
+        "validate",
+        "retrieve",
+        "assess",
+        "answer",
+        "judge",
+        "aggregate",
+        "publish"
+      ],
+      "title": "EvaluationTracePhase",
+      "type": "string"
+    },
+    "EvaluationTraceStatus": {
+      "enum": [
+        "started",
+        "succeeded",
+        "failed",
+        "skipped",
+        "budget_stopped"
+      ],
+      "title": "EvaluationTraceStatus",
+      "type": "string"
+    },
+    "TraceResourceUsage": {
+      "additionalProperties": false,
+      "description": "单个事件记录的资源增量，而非完整账本。",
+      "properties": {
+        "input_tokens": {
+          "default": 0,
+          "maximum": 1000000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 0,
+          "maximum": 3600000,
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "model_calls": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "maximum": 1000000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "tool_calls": {
+          "default": 0,
+          "maximum": 1000,
+          "minimum": 0,
+          "title": "Tool Calls",
+          "type": "integer"
+        },
+        "web_calls": {
+          "default": 0,
+          "maximum": 20,
+          "minimum": 0,
+          "title": "Web Calls",
+          "type": "integer"
+        }
+      },
+      "title": "TraceResourceUsage",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "关联运行与题目的脱敏 TraceEvent v2。",
+  "properties": {
+    "details": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "maxProperties": 64,
+      "title": "Details",
+      "type": "object"
+    },
+    "event": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Event",
+      "type": "string"
+    },
+    "occurred_at": {
+      "format": "date-time",
+      "title": "Occurred At",
+      "type": "string"
+    },
+    "phase": {
+      "$ref": "#/$defs/EvaluationTracePhase"
+    },
+    "question_id": {
+      "anyOf": [
+        {
+          "pattern": "^ueq-[a-z0-9-]{3,120}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Question Id"
+    },
+    "run_id": {
+      "pattern": "^unified-run-[a-f0-9]{32}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "v2",
+      "default": "v2",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sequence": {
+      "minimum": 0,
+      "title": "Sequence",
+      "type": "integer"
+    },
+    "status": {
+      "$ref": "#/$defs/EvaluationTraceStatus"
+    },
+    "trace_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "usage": {
+      "$ref": "#/$defs/TraceResourceUsage"
+    }
+  },
+  "required": [
+    "trace_id",
+    "run_id",
+    "sequence",
+    "phase",
+    "event",
+    "status",
+    "occurred_at"
+  ],
+  "title": "EvaluationTraceEvent",
+  "type": "object"
+}

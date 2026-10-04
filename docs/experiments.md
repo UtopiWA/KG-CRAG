@@ -25,3 +25,11 @@ Every run must record the dataset split, random seed, configuration hash, prompt
 该矩阵不生成回答，开发集可以调整规则与成本，最终测试集和回答质量不得用于本迭代调参。在线模式先展示最坏预算并要求确认：smoke 最多 3 题，扩大验证最多 20 题；离线与在线报告使用不同身份。
 
 2026-10-04 验收记录：20 题 × 3 策略离线矩阵完成且零失败；facet 纠错的必需覆盖率为 0.8276、恢复率为 0.75、无意义动作率为 0.25，20 次纠错触发共计 40 轮内部检索。相同身份重复运行在约 1.7 秒内从逐题检查点重放。随后以 `glm-5.3-flash` 对 q07 执行一次在线 smoke：Provider 返回未通过严格结构校验，系统没有重试或切换 Provider，按规则整批回退并保守记录 1 次调用、4000 输入 Token、2000 输出 Token 和 5000 ms；最终工作流仍以 `sufficient` 停止。相同身份约 2.3 秒重放最终检查点，未再次调用模型。真实 LLM 成功生成结构化 facet 的路径仍标记为未验证，不据此扩大在线题数。
+
+## Unified Evaluation v1
+
+`data/evaluation/unified/manifest.json` 保存 60 题候选集：dev 40 题由纠错压力集和 Hybrid 标注迁移，test 20 题由 Graph 与内部知识缺失题迁移。清单绑定两个 split 内容哈希、来源 fixture、标注指南、语料/Evidence 版本；校验器在运行前检查 schema、规模、压力类型、稳定 ID、facet/Evidence 引用、近重复、泄漏组和答案来源组。当前 `reviewed=false`，人工逐题复核完成前不得生成真实开发选择或正式测试结果。
+
+统一 runner 以完整内容身份比较 `fixed_hybrid`、`type_router` 与 `facet_corrective`，逐题报告 Recall/MRR/nDCG、Evidence/facet 覆盖、充分性、恢复、无效动作、回答/引用、循环、Web 和资源成本。失败题留在固定分母，任一汇总指标保存组成 question ID；检查点、失败清单、运行清单和报告均原子发布。Trace v2 只保存运行/题目 ID、阶段、状态、有限标量和资源增量，旧 Trace v1 通过只读适配器读取。
+
+2026-10-04 管线验收记录：60 题候选集自动校验通过；40 题 dev 的三策略 fixture 回放生成 120 个逐题结果、零网络调用，原身份复跑全部复用检查点；仅 `facet_corrective` 保留回答字段的门禁也通过。该报告带 `fixture_mode=true`，只证明编排、指标和恢复行为，不作为检索质量结论，也未用于冻结开发选择。Judge 保持 `not_requested`，未消耗 Token。人工逐题复核、真实 dev 矩阵和正式 test 尚未执行。

@@ -1,0 +1,695 @@
+{
+  "dataset_version": "unified-agent-qa-v1",
+  "questions": [
+    {
+      "answer_points": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "evidence_ids": [
+            "fact:0341c4d2236be44aae63886ffd5ca3ae13f088a4f36d96eff84c0dfc64cace2a"
+          ],
+          "point_id": "point-6375babe1ebfe6f7"
+        }
+      ],
+      "facets": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "facet_id": "facet-6375babe1ebfe6f7",
+          "required": true,
+          "target_evidence_ids": [
+            "fact:0341c4d2236be44aae63886ffd5ca3ae13f088a4f36d96eff84c0dfc64cace2a"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-graph-dev-questions-graph-01",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "fact:0341c4d2236be44aae63886ffd5ca3ae13f088a4f36d96eff84c0dfc64cace2a"
+        ]
+      ],
+      "normalized_question": "which graph facts belong to camel?",
+      "question": "Which graph facts belong to CAMEL?",
+      "question_id": "ueq-graph-dev-questions-graph-01",
+      "question_types": [
+        "relationship"
+      ],
+      "relevant_evidence": {
+        "fact:0341c4d2236be44aae63886ffd5ca3ae13f088a4f36d96eff84c0dfc64cace2a": 3
+      },
+      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-01",
+      "source_group_ids": [
+        "source-graph-dev-questions-graph-01"
+      ],
+      "split": "test",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "evidence_ids": [
+            "fact:01de68a59e6376ac3cb66a0d23965ab1e617e9898e5f09921696aa60f91ae2a8"
+          ],
+          "point_id": "point-257f121a7164955e"
+        }
+      ],
+      "facets": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "facet_id": "facet-257f121a7164955e",
+          "required": true,
+          "target_evidence_ids": [
+            "fact:01de68a59e6376ac3cb66a0d23965ab1e617e9898e5f09921696aa60f91ae2a8"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-graph-dev-questions-graph-02",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "fact:01de68a59e6376ac3cb66a0d23965ab1e617e9898e5f09921696aa60f91ae2a8"
+        ]
+      ],
+      "normalized_question": "which graph facts belong to generative agents?",
+      "question": "Which graph facts belong to Generative Agents?",
+      "question_id": "ueq-graph-dev-questions-graph-02",
+      "question_types": [
+        "relationship"
+      ],
+      "relevant_evidence": {
+        "fact:01de68a59e6376ac3cb66a0d23965ab1e617e9898e5f09921696aa60f91ae2a8": 3
+      },
+      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-02",
+      "source_group_ids": [
+        "source-graph-dev-questions-graph-02"
+      ],
+      "split": "test",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "evidence_ids": [
+            "fact:01c6543d5e379c131c10f9852e46611315f6e1ad16caee664fb148fae1378e79"
+          ],
+          "point_id": "point-e85c93714947bec4"
+        }
+      ],
+      "facets": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "facet_id": "facet-e85c93714947bec4",
+          "required": true,
+          "target_evidence_ids": [
+            "fact:01c6543d5e379c131c10f9852e46611315f6e1ad16caee664fb148fae1378e79"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-graph-dev-questions-graph-03",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "fact:01c6543d5e379c131c10f9852e46611315f6e1ad16caee664fb148fae1378e79"
+        ]
+      ],
+      "normalized_question": "which graph facts belong to tree of thoughts?",
+      "question": "Which graph facts belong to Tree of Thoughts?",
+      "question_id": "ueq-graph-dev-questions-graph-03",
+      "question_types": [
+        "relationship"
+      ],
+      "relevant_evidence": {
+        "fact:01c6543d5e379c131c10f9852e46611315f6e1ad16caee664fb148fae1378e79": 3
+      },
+      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-03",
+      "source_group_ids": [
+        "source-graph-dev-questions-graph-03"
+      ],
+      "split": "test",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "evidence_ids": [
+            "fact:04c4490b562ecf3abbff18ac047d961ba38d2b08fc2907d8f49e5b8205f82510"
+          ],
+          "point_id": "point-33bf5ca531e689a1"
+        }
+      ],
+      "facets": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "facet_id": "facet-33bf5ca531e689a1",
+          "required": true,
+          "target_evidence_ids": [
+            "fact:04c4490b562ecf3abbff18ac047d961ba38d2b08fc2907d8f49e5b8205f82510"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-graph-dev-questions-graph-04",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "fact:04c4490b562ecf3abbff18ac047d961ba38d2b08fc2907d8f49e5b8205f82510"
+        ]
+      ],
+      "normalized_question": "which graph facts belong to voyager?",
+      "question": "Which graph facts belong to Voyager?",
+      "question_id": "ueq-graph-dev-questions-graph-04",
+      "question_types": [
+        "relationship"
+      ],
+      "relevant_evidence": {
+        "fact:04c4490b562ecf3abbff18ac047d961ba38d2b08fc2907d8f49e5b8205f82510": 3
+      },
+      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-04",
+      "source_group_ids": [
+        "source-graph-dev-questions-graph-04"
+      ],
+      "split": "test",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "evidence_ids": [
+            "fact:00715079ce0af0b2b43c5ae4abbf48546622c05d8b27d42564ee4648ac6c11c1"
+          ],
+          "point_id": "point-c6f3282b4b2203ab"
+        }
+      ],
+      "facets": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "facet_id": "facet-c6f3282b4b2203ab",
+          "required": true,
+          "target_evidence_ids": [
+            "fact:00715079ce0af0b2b43c5ae4abbf48546622c05d8b27d42564ee4648ac6c11c1"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-graph-dev-questions-graph-05",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "fact:00715079ce0af0b2b43c5ae4abbf48546622c05d8b27d42564ee4648ac6c11c1"
+        ]
+      ],
+      "normalized_question": "which graph facts belong to toolllm?",
+      "question": "Which graph facts belong to ToolLLM?",
+      "question_id": "ueq-graph-dev-questions-graph-05",
+      "question_types": [
+        "relationship"
+      ],
+      "relevant_evidence": {
+        "fact:00715079ce0af0b2b43c5ae4abbf48546622c05d8b27d42564ee4648ac6c11c1": 3
+      },
+      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-05",
+      "source_group_ids": [
+        "source-graph-dev-questions-graph-05"
+      ],
+      "split": "test",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "evidence_ids": [
+            "fact:084386a9cd7d6b76cff38dd8fecfe6240abc748345423ea7120b8ba1c40d4149"
+          ],
+          "point_id": "point-de3b3922b3e62748"
+        }
+      ],
+      "facets": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "facet_id": "facet-de3b3922b3e62748",
+          "required": true,
+          "target_evidence_ids": [
+            "fact:084386a9cd7d6b76cff38dd8fecfe6240abc748345423ea7120b8ba1c40d4149"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-graph-dev-questions-graph-06",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "fact:084386a9cd7d6b76cff38dd8fecfe6240abc748345423ea7120b8ba1c40d4149"
+        ]
+      ],
+      "normalized_question": "which graph facts belong to metagpt?",
+      "question": "Which graph facts belong to MetaGPT?",
+      "question_id": "ueq-graph-dev-questions-graph-06",
+      "question_types": [
+        "relationship"
+      ],
+      "relevant_evidence": {
+        "fact:084386a9cd7d6b76cff38dd8fecfe6240abc748345423ea7120b8ba1c40d4149": 3
+      },
+      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-06",
+      "source_group_ids": [
+        "source-graph-dev-questions-graph-06"
+      ],
+      "split": "test",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "evidence_ids": [
+            "fact:0022e6a51a4b997a6102011bedc371c84c95f7f0b78c10c183c4dda311f5d3fd"
+          ],
+          "point_id": "point-6e9c38ca9b651a0b"
+        }
+      ],
+      "facets": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "facet_id": "facet-6e9c38ca9b651a0b",
+          "required": true,
+          "target_evidence_ids": [
+            "fact:0022e6a51a4b997a6102011bedc371c84c95f7f0b78c10c183c4dda311f5d3fd"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-graph-dev-questions-graph-07",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "fact:0022e6a51a4b997a6102011bedc371c84c95f7f0b78c10c183c4dda311f5d3fd"
+        ]
+      ],
+      "normalized_question": "which graph facts belong to agentbench?",
+      "question": "Which graph facts belong to AgentBench?",
+      "question_id": "ueq-graph-dev-questions-graph-07",
+      "question_types": [
+        "relationship"
+      ],
+      "relevant_evidence": {
+        "fact:0022e6a51a4b997a6102011bedc371c84c95f7f0b78c10c183c4dda311f5d3fd": 3
+      },
+      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-07",
+      "source_group_ids": [
+        "source-graph-dev-questions-graph-07"
+      ],
+      "split": "test",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "evidence_ids": [
+            "fact:00306f8aaa30b2a68684c550f007bbc82d90c930453dd57fba5692c515dccbac"
+          ],
+          "point_id": "point-2c13c8679064c115"
+        }
+      ],
+      "facets": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "facet_id": "facet-2c13c8679064c115",
+          "required": true,
+          "target_evidence_ids": [
+            "fact:00306f8aaa30b2a68684c550f007bbc82d90c930453dd57fba5692c515dccbac"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-graph-dev-questions-graph-08",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "fact:00306f8aaa30b2a68684c550f007bbc82d90c930453dd57fba5692c515dccbac"
+        ]
+      ],
+      "normalized_question": "which graph facts belong to language agent tree search?",
+      "question": "Which graph facts belong to Language Agent Tree Search?",
+      "question_id": "ueq-graph-dev-questions-graph-08",
+      "question_types": [
+        "relationship"
+      ],
+      "relevant_evidence": {
+        "fact:00306f8aaa30b2a68684c550f007bbc82d90c930453dd57fba5692c515dccbac": 3
+      },
+      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-08",
+      "source_group_ids": [
+        "source-graph-dev-questions-graph-08"
+      ],
+      "split": "test",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "evidence_ids": [
+            "fact:1db68df68ef5446a63e61ae8015484468c2258e240050607825be217c80f9e99",
+            "fact:62daf6497d0c543231037cac7cda7255b88bd425091b34be0769cf2934a8bbe9"
+          ],
+          "point_id": "point-74bd7c5607a176f1"
+        }
+      ],
+      "facets": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "facet_id": "facet-74bd7c5607a176f1",
+          "required": true,
+          "target_evidence_ids": [
+            "fact:1db68df68ef5446a63e61ae8015484468c2258e240050607825be217c80f9e99",
+            "fact:62daf6497d0c543231037cac7cda7255b88bd425091b34be0769cf2934a8bbe9"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak-graph-dev-questions-graph-09",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "fact:1db68df68ef5446a63e61ae8015484468c2258e240050607825be217c80f9e99",
+          "fact:62daf6497d0c543231037cac7cda7255b88bd425091b34be0769cf2934a8bbe9"
+        ]
+      ],
+      "normalized_question": "which papers share the same explicitly identified author?",
+      "question": "Which papers share the same explicitly identified author?",
+      "question_id": "ueq-graph-dev-questions-graph-09",
+      "question_types": [
+        "multi_hop"
+      ],
+      "relevant_evidence": {
+        "fact:1db68df68ef5446a63e61ae8015484468c2258e240050607825be217c80f9e99": 3,
+        "fact:62daf6497d0c543231037cac7cda7255b88bd425091b34be0769cf2934a8bbe9": 3
+      },
+      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-09",
+      "source_group_ids": [
+        "source-graph-dev-questions-graph-09"
+      ],
+      "split": "test",
+      "stress_category": "multi_hop_gap"
+    },
+    {
+      "answer_points": [],
+      "facets": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "facet_id": "facet-19ec0ea40bf16907",
+          "required": true,
+          "target_evidence_ids": []
+        }
+      ],
+      "knowledge_sufficiency": "insufficient",
+      "leakage_group_id": "leak-graph-dev-questions-graph-10",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "find graph evidence for an unknown entity.",
+      "question": "Find graph evidence for an unknown entity.",
+      "question_id": "ueq-graph-dev-questions-graph-10",
+      "question_types": [
+        "relationship"
+      ],
+      "relevant_evidence": {},
+      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-10",
+      "source_group_ids": [
+        "source-graph-dev-questions-graph-10"
+      ],
+      "split": "test",
+      "stress_category": "internal_missing"
+    },
+    {
+      "answer_points": [],
+      "facets": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "facet_id": "facet-954301bbf07ee68f",
+          "required": true,
+          "target_evidence_ids": []
+        }
+      ],
+      "knowledge_sufficiency": "insufficient",
+      "leakage_group_id": "leak-graph-dev-questions-graph-11",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "reject a graph result whose source is unavailable.",
+      "question": "Reject a graph result whose source is unavailable.",
+      "question_id": "ueq-graph-dev-questions-graph-11",
+      "question_types": [
+        "relationship"
+      ],
+      "relevant_evidence": {},
+      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-11",
+      "source_group_ids": [
+        "source-graph-dev-questions-graph-11"
+      ],
+      "split": "test",
+      "stress_category": "internal_missing"
+    },
+    {
+      "answer_points": [],
+      "facets": [
+        {
+          "description": "冻结图事实应支持关系或多跳答案。",
+          "facet_id": "facet-c648595cf94ef84c",
+          "required": true,
+          "target_evidence_ids": []
+        }
+      ],
+      "knowledge_sufficiency": "insufficient",
+      "leakage_group_id": "leak-graph-dev-questions-graph-12",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "keep an unresolved ambiguous entity separate.",
+      "question": "Keep an unresolved ambiguous entity separate.",
+      "question_id": "ueq-graph-dev-questions-graph-12",
+      "question_types": [
+        "relationship"
+      ],
+      "relevant_evidence": {},
+      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-12",
+      "source_group_ids": [
+        "source-graph-dev-questions-graph-12"
+      ],
+      "split": "test",
+      "stress_category": "internal_missing"
+    },
+    {
+      "answer_points": [],
+      "facets": [
+        {
+          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
+          "facet_id": "facet-512307f1d7c85d04",
+          "required": true,
+          "target_evidence_ids": []
+        }
+      ],
+      "knowledge_sufficiency": "insufficient",
+      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-001",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "概述 react 的推理与行动循环。",
+      "question": "概述 ReAct 的推理与行动循环。",
+      "question_id": "ueq-grounded-answer-dev-questions-gaq-001",
+      "question_types": [
+        "synthesis"
+      ],
+      "relevant_evidence": {},
+      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-001",
+      "source_group_ids": [
+        "source-grounded-answer-dev-questions-gaq-001"
+      ],
+      "split": "test",
+      "stress_category": "internal_missing"
+    },
+    {
+      "answer_points": [],
+      "facets": [
+        {
+          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
+          "facet_id": "facet-7989da115aa95344",
+          "required": true,
+          "target_evidence_ids": []
+        }
+      ],
+      "knowledge_sufficiency": "insufficient",
+      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-002",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "比较工具调用 agent 的两种规划方式。",
+      "question": "比较工具调用 Agent 的两种规划方式。",
+      "question_id": "ueq-grounded-answer-dev-questions-gaq-002",
+      "question_types": [
+        "synthesis"
+      ],
+      "relevant_evidence": {},
+      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-002",
+      "source_group_ids": [
+        "source-grounded-answer-dev-questions-gaq-002"
+      ],
+      "split": "test",
+      "stress_category": "internal_missing"
+    },
+    {
+      "answer_points": [],
+      "facets": [
+        {
+          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
+          "facet_id": "facet-47d397ad67db88d8",
+          "required": true,
+          "target_evidence_ids": []
+        }
+      ],
+      "knowledge_sufficiency": "insufficient",
+      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-003",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "说明记忆模块在 agent 中的作用。",
+      "question": "说明记忆模块在 Agent 中的作用。",
+      "question_id": "ueq-grounded-answer-dev-questions-gaq-003",
+      "question_types": [
+        "synthesis"
+      ],
+      "relevant_evidence": {},
+      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-003",
+      "source_group_ids": [
+        "source-grounded-answer-dev-questions-gaq-003"
+      ],
+      "split": "test",
+      "stress_category": "internal_missing"
+    },
+    {
+      "answer_points": [],
+      "facets": [
+        {
+          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
+          "facet_id": "facet-9facd0de0e8ac334",
+          "required": true,
+          "target_evidence_ids": []
+        }
+      ],
+      "knowledge_sufficiency": "insufficient",
+      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-004",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "给出论文报告的准确率数值。",
+      "question": "给出论文报告的准确率数值。",
+      "question_id": "ueq-grounded-answer-dev-questions-gaq-004",
+      "question_types": [
+        "synthesis"
+      ],
+      "relevant_evidence": {},
+      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-004",
+      "source_group_ids": [
+        "source-grounded-answer-dev-questions-gaq-004"
+      ],
+      "split": "test",
+      "stress_category": "internal_missing"
+    },
+    {
+      "answer_points": [],
+      "facets": [
+        {
+          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
+          "facet_id": "facet-2acd8fd055750f5d",
+          "required": true,
+          "target_evidence_ids": []
+        }
+      ],
+      "knowledge_sufficiency": "insufficient",
+      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-005",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "哪篇论文首先提出该方法?",
+      "question": "哪篇论文首先提出该方法？",
+      "question_id": "ueq-grounded-answer-dev-questions-gaq-005",
+      "question_types": [
+        "synthesis"
+      ],
+      "relevant_evidence": {},
+      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-005",
+      "source_group_ids": [
+        "source-grounded-answer-dev-questions-gaq-005"
+      ],
+      "split": "test",
+      "stress_category": "internal_missing"
+    },
+    {
+      "answer_points": [],
+      "facets": [
+        {
+          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
+          "facet_id": "facet-599f36ca293d5c8c",
+          "required": true,
+          "target_evidence_ids": []
+        }
+      ],
+      "knowledge_sufficiency": "insufficient",
+      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-006",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "证明该架构在所有任务上更好。",
+      "question": "证明该架构在所有任务上更好。",
+      "question_id": "ueq-grounded-answer-dev-questions-gaq-006",
+      "question_types": [
+        "synthesis"
+      ],
+      "relevant_evidence": {},
+      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-006",
+      "source_group_ids": [
+        "source-grounded-answer-dev-questions-gaq-006"
+      ],
+      "split": "test",
+      "stress_category": "internal_missing"
+    },
+    {
+      "answer_points": [],
+      "facets": [
+        {
+          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
+          "facet_id": "facet-7e352da139fc2b1a",
+          "required": true,
+          "target_evidence_ids": []
+        }
+      ],
+      "knowledge_sufficiency": "insufficient",
+      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-007",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "解释两项实验结论之间的冲突。",
+      "question": "解释两项实验结论之间的冲突。",
+      "question_id": "ueq-grounded-answer-dev-questions-gaq-007",
+      "question_types": [
+        "synthesis"
+      ],
+      "relevant_evidence": {},
+      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-007",
+      "source_group_ids": [
+        "source-grounded-answer-dev-questions-gaq-007"
+      ],
+      "split": "test",
+      "stress_category": "internal_missing"
+    },
+    {
+      "answer_points": [],
+      "facets": [
+        {
+          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
+          "facet_id": "facet-de0426937d3a5a5b",
+          "required": true,
+          "target_evidence_ids": []
+        }
+      ],
+      "knowledge_sufficiency": "insufficient",
+      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-008",
+      "minimum_sufficient_evidence_sets": [],
+      "normalized_question": "检索最新公开论文补充缺失的技能库证据。",
+      "question": "检索最新公开论文补充缺失的技能库证据。",
+      "question_id": "ueq-grounded-answer-dev-questions-gaq-008",
+      "question_types": [
+        "synthesis"
+      ],
+      "relevant_evidence": {},
+      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-008",
+      "source_group_ids": [
+        "source-grounded-answer-dev-questions-gaq-008"
+      ],
+      "split": "test",
+      "stress_category": "internal_missing"
+    }
+  ],
+  "schema_version": "v1",
+  "split": "test"
+}

@@ -1,0 +1,101 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "annotation_guide_version": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Annotation Guide Version",
+      "type": "string"
+    },
+    "corpus_snapshot": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Corpus Snapshot",
+      "type": "string"
+    },
+    "dataset_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Dataset Hash",
+      "type": "string"
+    },
+    "dataset_version": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Dataset Version",
+      "type": "string"
+    },
+    "dev_count": {
+      "maximum": 50,
+      "minimum": 40,
+      "title": "Dev Count",
+      "type": "integer"
+    },
+    "dev_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Dev Hash",
+      "type": "string"
+    },
+    "dev_path": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Dev Path",
+      "type": "string"
+    },
+    "evidence_version": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Evidence Version",
+      "type": "string"
+    },
+    "review_note": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Review Note",
+      "type": "string"
+    },
+    "reviewed": {
+      "title": "Reviewed",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "test_count": {
+      "maximum": 30,
+      "minimum": 20,
+      "title": "Test Count",
+      "type": "integer"
+    },
+    "test_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Test Hash",
+      "type": "string"
+    },
+    "test_path": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Test Path",
+      "type": "string"
+    }
+  },
+  "required": [
+    "dataset_version",
+    "corpus_snapshot",
+    "evidence_version",
+    "dev_path",
+    "test_path",
+    "dev_count",
+    "test_count",
+    "dev_hash",
+    "test_hash",
+    "dataset_hash",
+    "annotation_guide_version",
+    "reviewed",
+    "review_note"
+  ],
+  "title": "EvaluationDatasetManifest",
+  "type": "object"
+}

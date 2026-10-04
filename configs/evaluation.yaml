@@ -67,3 +67,27 @@ grounded_answer:
   smoke_questions: 5
   online_min_questions: 5
   online_max_questions: 10
+
+unified_evaluation:
+  manifest_path: data/evaluation/unified/manifest.json
+  results_root: data/evaluation/results/unified
+  selection_path: data/evaluation/unified/development-selection.json
+  test_lock_root: data/evaluation/results/unified/test-locks
+  strategies: [fixed_hybrid, type_router, facet_corrective]
+  top_k: 10
+  near_duplicate_threshold: 0.92
+  max_questions: 80
+  max_candidates_per_question: 50
+  max_loops_per_question: 2
+  max_model_calls: 50
+  max_input_tokens: 200000
+  max_output_tokens: 50000
+  max_latency_ms: 3600000
+  max_estimated_cost: 10.0
+  max_trace_events: 20000
+  online: false
+  with_judge: false
+  judge_max_answers: 20
+  judge_rounds: 1
+  judge_models: 1
+  seed: 42

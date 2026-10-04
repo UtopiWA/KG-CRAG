@@ -1,0 +1,259 @@
+{
+  "$defs": {
+    "EvaluationAnswerPoint": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "point_id": {
+          "pattern": "^point-[a-f0-9]{16}$",
+          "title": "Point Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "point_id",
+        "description"
+      ],
+      "title": "EvaluationAnswerPoint",
+      "type": "object"
+    },
+    "EvaluationFacetTarget": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "facet_id": {
+          "pattern": "^facet-[a-f0-9]{16}$",
+          "title": "Facet Id",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "target_evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Target Evidence Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "facet_id",
+        "description"
+      ],
+      "title": "EvaluationFacetTarget",
+      "type": "object"
+    },
+    "EvaluationSplit": {
+      "enum": [
+        "dev",
+        "test"
+      ],
+      "title": "EvaluationSplit",
+      "type": "string"
+    },
+    "KnowledgeSufficiency": {
+      "enum": [
+        "sufficient",
+        "conflicting",
+        "insufficient"
+      ],
+      "title": "KnowledgeSufficiency",
+      "type": "string"
+    },
+    "StressCategory": {
+      "enum": [
+        "control",
+        "terminology_mismatch",
+        "entity_alias",
+        "comparison_side",
+        "multi_hop_gap",
+        "metric_missing",
+        "conflict",
+        "internal_missing"
+      ],
+      "title": "StressCategory",
+      "type": "string"
+    },
+    "UnifiedEvaluationQuestion": {
+      "additionalProperties": false,
+      "description": "冻结问题及其最小可验证真值。",
+      "properties": {
+        "answer_points": {
+          "items": {
+            "$ref": "#/$defs/EvaluationAnswerPoint"
+          },
+          "maxItems": 20,
+          "title": "Answer Points",
+          "type": "array"
+        },
+        "facets": {
+          "items": {
+            "$ref": "#/$defs/EvaluationFacetTarget"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Facets",
+          "type": "array"
+        },
+        "knowledge_sufficiency": {
+          "$ref": "#/$defs/KnowledgeSufficiency"
+        },
+        "leakage_group_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Leakage Group Id",
+          "type": "string"
+        },
+        "minimum_sufficient_evidence_sets": {
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "maxItems": 10,
+          "title": "Minimum Sufficient Evidence Sets",
+          "type": "array"
+        },
+        "normalized_question": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Normalized Question",
+          "type": "string"
+        },
+        "question": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "question_id": {
+          "pattern": "^ueq-[a-z0-9-]{3,120}$",
+          "title": "Question Id",
+          "type": "string"
+        },
+        "question_types": {
+          "items": {
+            "$ref": "#/$defs/UnifiedQuestionType"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Question Types",
+          "type": "array"
+        },
+        "relevant_evidence": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "maxProperties": 100,
+          "title": "Relevant Evidence",
+          "type": "object"
+        },
+        "source_fixture": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Source Fixture",
+          "type": "string"
+        },
+        "source_group_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Source Group Ids",
+          "type": "array"
+        },
+        "split": {
+          "$ref": "#/$defs/EvaluationSplit"
+        },
+        "stress_category": {
+          "$ref": "#/$defs/StressCategory"
+        }
+      },
+      "required": [
+        "question_id",
+        "split",
+        "question",
+        "normalized_question",
+        "question_types",
+        "stress_category",
+        "knowledge_sufficiency",
+        "facets",
+        "leakage_group_id",
+        "source_group_ids",
+        "source_fixture"
+      ],
+      "title": "UnifiedEvaluationQuestion",
+      "type": "object"
+    },
+    "UnifiedQuestionType": {
+      "enum": [
+        "factoid",
+        "comparison",
+        "relationship",
+        "multi_hop",
+        "metric",
+        "synthesis"
+      ],
+      "title": "UnifiedQuestionType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "dataset_version": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Dataset Version",
+      "type": "string"
+    },
+    "questions": {
+      "items": {
+        "$ref": "#/$defs/UnifiedEvaluationQuestion"
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "title": "Questions",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "split": {
+      "$ref": "#/$defs/EvaluationSplit"
+    }
+  },
+  "required": [
+    "dataset_version",
+    "split",
+    "questions"
+  ],
+  "title": "UnifiedQuestionSet",
+  "type": "object"
+}
