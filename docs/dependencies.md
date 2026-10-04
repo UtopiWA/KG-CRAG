@@ -21,3 +21,9 @@
 - `openai==1.63.2`：实现 OpenAI-compatible LLM Provider，采用 Apache-2.0 许可证。SDK 只出现在 `providers` 适配器层，凭据仅从环境变量读取。
 
 默认 Embedding 模型为 `BAAI/bge-m3`，配置固定修订 `5617a9f61b028005a4858fdac845db406aefb181`，模型许可证为 MIT。首次显式运行真实索引命令时可能需要从模型仓库下载权重；导入包、运行默认 pytest 或 dry-run 不得触发下载。生产或课程交付前应同时复核模型卡、上游依赖许可证和实际分发方式。
+
+## 演示界面依赖
+
+- `streamlit==1.42.0` 和 `httpx==0.28.1` 位于 `demo` 可选依赖组，只服务于本地演示界面和 HTTP 客户端。
+- 核心包、API 和默认单元测试不导入 Streamlit；未安装 `demo` 时仍可运行领域代码和 `kg-crag-api`。
+- UI 只能调用 `/v1` 公共接口，不得导入 Retriever、数据库或模型 Provider。升级 Streamlit/httpx 时需复跑应用契约测试和三个固定回放闭环。

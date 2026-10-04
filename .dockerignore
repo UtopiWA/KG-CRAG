@@ -1,0 +1,17 @@
+.env
+.git
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.mypy_cache
+.ruff_cache
+data/raw
+data/interim
+data/processed
+data/evaluation/results
+.docker-data
+tmp
+dist
+build
+*.egg-info

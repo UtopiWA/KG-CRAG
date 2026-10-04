@@ -25,6 +25,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+demo = [
+  "httpx==0.28.1",
+  "streamlit==1.42.0",
+]
 dev = [
   "httpx==0.28.1",
   "mypy==1.15.0",
@@ -36,6 +40,7 @@ dev = [
 
 [project.scripts]
 kg-crag-api = "kg_crag.api.app:run"
+kg-crag-ui = "kg_crag.ui.app:run"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/kg_crag"]

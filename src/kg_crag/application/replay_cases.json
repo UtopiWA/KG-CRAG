@@ -1,0 +1,98 @@
+{
+  "schema_version": "v1",
+  "fixture_version": "demo-replay-v1",
+  "cases": [
+    {
+      "case_id": "sufficient",
+      "question": "一个证据充分的科研问题如何被回答？",
+      "response": {
+        "trace_id": "demo-trace-sufficient-v1",
+        "answer": "内部证据已覆盖问题所需的定义与方法两个 facet，因此工作流接受回答。",
+        "citations": [
+          {
+            "citation_id": "E1",
+            "evidence_id": "demo-evidence-sufficient-1",
+            "title": "内部论文证据示例",
+            "source_channels": ["dense", "sparse"],
+            "paper_id": "demo:paper-sufficient",
+            "section": "Method",
+            "page": 3,
+            "external": false
+          }
+        ],
+        "facets": [
+          {"facet_id": "demo-facet-definition", "label": "方法定义", "status": "covered", "evidence_ids": ["demo-evidence-sufficient-1"]},
+          {"facet_id": "demo-facet-method", "label": "核心方法", "status": "covered", "evidence_ids": ["demo-evidence-sufficient-1"]}
+        ],
+        "actions": [],
+        "retrieval_path": ["dense", "sparse"],
+        "budget": {"tool_calls": 2, "elapsed_ms": 18, "stopped": false},
+        "stop_reason": "accepted"
+      },
+      "trace": {
+        "trace_id": "demo-trace-sufficient-v1",
+        "events": [
+          {"sequence": 0, "phase": "retrieve", "event": "internal_evidence_retrieved", "status": "succeeded", "occurred_at": "2026-10-05T00:00:00Z", "details": {"evidence_count": 1}},
+          {"sequence": 1, "phase": "assess", "event": "required_facets_covered", "status": "succeeded", "occurred_at": "2026-10-05T00:00:00Z", "details": {"covered": 2}},
+          {"sequence": 2, "phase": "answer", "event": "answer_accepted", "status": "succeeded", "occurred_at": "2026-10-05T00:00:00Z", "details": {"citation_count": 1}}
+        ]
+      }
+    },
+    {
+      "case_id": "corrected-gap",
+      "question": "首次检索遗漏一个比较侧时如何纠错？",
+      "response": {
+        "trace_id": "demo-trace-corrected-v1",
+        "answer": "首次检索只覆盖方法 A；工作流针对缺失的 B 侧执行一次 Sparse 补检，随后两个比较 facet 均被覆盖。",
+        "citations": [
+          {"citation_id": "E1", "evidence_id": "demo-evidence-a", "title": "方法 A 内部证据", "source_channels": ["dense"], "paper_id": "demo:paper-a", "section": "Method", "page": 2, "external": false},
+          {"citation_id": "E2", "evidence_id": "demo-evidence-b", "title": "方法 B 补充证据", "source_channels": ["sparse"], "paper_id": "demo:paper-b", "section": "Results", "page": 5, "external": false}
+        ],
+        "facets": [
+          {"facet_id": "demo-facet-a", "label": "方法 A", "status": "covered", "evidence_ids": ["demo-evidence-a"]},
+          {"facet_id": "demo-facet-b", "label": "方法 B", "status": "covered", "evidence_ids": ["demo-evidence-b"]}
+        ],
+        "actions": [
+          {"sequence": 0, "action": "sparse", "reason": "comparison_side_missing", "target_facet_ids": ["demo-facet-b"], "status": "succeeded"}
+        ],
+        "retrieval_path": ["dense", "sparse"],
+        "budget": {"tool_calls": 2, "elapsed_ms": 31, "stopped": false},
+        "stop_reason": "accepted_after_correction"
+      },
+      "trace": {
+        "trace_id": "demo-trace-corrected-v1",
+        "events": [
+          {"sequence": 0, "phase": "assess", "event": "facet_gap_detected", "status": "succeeded", "occurred_at": "2026-10-05T00:00:00Z", "details": {"missing": 1}},
+          {"sequence": 1, "phase": "retrieve", "event": "sparse_correction_executed", "status": "succeeded", "occurred_at": "2026-10-05T00:00:00Z", "details": {"new_evidence": 1}},
+          {"sequence": 2, "phase": "assess", "event": "facet_gap_recovered", "status": "succeeded", "occurred_at": "2026-10-05T00:00:00Z", "details": {"covered": 2}}
+        ]
+      }
+    },
+    {
+      "case_id": "conservative-stop",
+      "question": "外部依赖不可用且内部证据不足时如何处理？",
+      "response": {
+        "trace_id": "demo-trace-conservative-v1",
+        "answer": "当前内部证据不足，且可选外部来源不可用；系统保留知识边界并停止，而不生成未经支持的结论。",
+        "citations": [],
+        "facets": [
+          {"facet_id": "demo-facet-missing", "label": "缺失实验结果", "status": "missing", "evidence_ids": []}
+        ],
+        "actions": [
+          {"sequence": 0, "action": "web_search", "reason": "internal_knowledge_missing", "target_facet_ids": ["demo-facet-missing"], "status": "dependency_unavailable"}
+        ],
+        "retrieval_path": ["dense", "sparse"],
+        "budget": {"tool_calls": 2, "web_calls": 0, "elapsed_ms": 22, "stopped": true, "stop_reason": "dependency_unavailable"},
+        "stop_reason": "conservative_stop"
+      },
+      "trace": {
+        "trace_id": "demo-trace-conservative-v1",
+        "events": [
+          {"sequence": 0, "phase": "assess", "event": "internal_knowledge_missing", "status": "succeeded", "occurred_at": "2026-10-05T00:00:00Z", "details": {"missing": 1}},
+          {"sequence": 1, "phase": "answer", "event": "external_dependency_unavailable", "status": "failed", "occurred_at": "2026-10-05T00:00:00Z", "details": {"component": "web"}},
+          {"sequence": 2, "phase": "answer", "event": "conservative_stop", "status": "succeeded", "occurred_at": "2026-10-05T00:00:00Z", "details": {"unsupported_claims": 0}}
+        ]
+      }
+    }
+  ]
+}

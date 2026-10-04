@@ -1,0 +1,75 @@
+{
+  "$defs": {
+    "ApplicationErrorCode": {
+      "enum": [
+        "validation_error",
+        "not_found",
+        "conflict",
+        "dependency_unavailable",
+        "budget_stopped",
+        "timeout",
+        "cancelled",
+        "internal_error"
+      ],
+      "title": "ApplicationErrorCode",
+      "type": "string"
+    },
+    "ApplicationErrorDetail": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ApplicationErrorCode"
+        },
+        "fields": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "maxProperties": 16,
+          "title": "Fields",
+          "type": "object"
+        },
+        "message": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ApplicationErrorDetail",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "error": {
+      "$ref": "#/$defs/ApplicationErrorDetail"
+    },
+    "request_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Request Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "error"
+  ],
+  "title": "ApplicationErrorResponse",
+  "type": "object"
+}

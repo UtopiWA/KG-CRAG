@@ -1,0 +1,97 @@
+{
+  "$defs": {
+    "ApplicationMode": {
+      "description": "调用方可选择的有限运行模式。",
+      "enum": [
+        "live",
+        "replay"
+      ],
+      "title": "ApplicationMode",
+      "type": "string"
+    },
+    "ComponentReadiness": {
+      "additionalProperties": false,
+      "properties": {
+        "component": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Component",
+          "type": "string"
+        },
+        "message": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        },
+        "status": {
+          "$ref": "#/$defs/ComponentStatus"
+        }
+      },
+      "required": [
+        "component",
+        "status",
+        "required",
+        "message"
+      ],
+      "title": "ComponentReadiness",
+      "type": "object"
+    },
+    "ComponentStatus": {
+      "enum": [
+        "ready",
+        "degraded",
+        "disabled"
+      ],
+      "title": "ComponentStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "available_modes": {
+      "items": {
+        "$ref": "#/$defs/ApplicationMode"
+      },
+      "maxItems": 2,
+      "minItems": 1,
+      "title": "Available Modes",
+      "type": "array"
+    },
+    "components": {
+      "items": {
+        "$ref": "#/$defs/ComponentReadiness"
+      },
+      "maxItems": 20,
+      "minItems": 1,
+      "title": "Components",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ComponentStatus"
+    },
+    "version": {
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "version",
+    "available_modes",
+    "components"
+  ],
+  "title": "ReadinessResponse",
+  "type": "object"
+}

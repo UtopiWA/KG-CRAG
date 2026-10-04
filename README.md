@@ -14,7 +14,7 @@ python -m venv .venv
 # Windows PowerShell
 .venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-python -m pip install -e ".[dev]"
+python -m pip install -e ".[dev,demo]"
 Copy-Item .env.example .env
 ```
 
@@ -28,13 +28,15 @@ pytest
 ruff check .
 mypy
 
-# 基础数据服务
-docker compose up -d qdrant neo4j
+# 基础数据服务按需启动
+docker compose --profile stores --profile graph up -d
 docker compose ps
 
-# API（当前仅包含健康检查）
-uvicorn kg_crag.api.app:app --reload
-# GET http://127.0.0.1:8000/health
+# API 与演示 UI（默认只加载固定回放，不访问外部服务）
+kg-crag-api
+kg-crag-ui
+# GET http://127.0.0.1:8000/health 和 /ready
+# UI http://127.0.0.1:8501
 ```
 
 ## 工程基座契约
@@ -48,7 +50,23 @@ uvicorn kg_crag.api.app:app --reload
   或 Neo4j 的完整语义。
 - `Settings` 要求端口位于 1–65535，Qdrant 使用带主机的 HTTP(S) URL，Neo4j 使用带主机
   的 `bolt://` 或 `neo4j://` URI；工作流循环次数继续受各字段上限约束。
-- `/health` 只返回 `status`、`version` 和 `environment`，不会探测外部服务或返回密钥。
+- `/health` 只返回 `status`、`version` 和 `environment`；`/ready` 另行报告回放、实时工作流与可选 Graph 的就绪或降级状态。
+
+## 查询 API、演示界面与低资源运行
+
+迭代 08 提供 `/v1/queries`、`/v1/documents/{paper_id}`、`/v1/ingestion/runs` 和 `/v1/traces/{trace_id}`。公共模型拒绝未知字段，统一错误响应只包含稳定错误码、安全消息、`request_id` 与可重试状态；API/UI 不重写检索、充分性或纠错逻辑。
+
+默认进程仅加载 `demo-replay-v1` 的三个脱敏案例：证据充分、纠错补全和保守停止。所有回放都显式标记为非实时、非正式实验结果；实时工作流未装配或依赖失败时返回 503，不会静默回退。容器也必须显式选择 profile：
+
+```powershell
+# 最低资源演示：API + UI，共 3 GiB 容器上限
+docker compose --profile replay up --build
+
+# 全部应用和存储服务，共 9 GiB 容器上限
+docker compose --profile full up --build
+```
+
+Qdrant/Neo4j 数据目录和模型缓存均可迁移到空间充足的磁盘；镜像排除密钥、论文、模型权重、缓存和数据库卷。接口、回放边界、资源上限、持久化及故障排查见 `docs/application.md`。应用烟雾测试不读取正式 test split，也不会创建正式测试锁。
 
 公共模型 Schema 快照位于 `docs/schemas/`：
 

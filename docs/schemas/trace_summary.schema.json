@@ -1,0 +1,135 @@
+{
+  "$defs": {
+    "ApplicationMode": {
+      "description": "调用方可选择的有限运行模式。",
+      "enum": [
+        "live",
+        "replay"
+      ],
+      "title": "ApplicationMode",
+      "type": "string"
+    },
+    "TraceEventSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "details": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 16,
+          "title": "Details",
+          "type": "object"
+        },
+        "event": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Event",
+          "type": "string"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "phase": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Phase",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Status"
+        }
+      },
+      "required": [
+        "sequence",
+        "phase",
+        "event",
+        "occurred_at"
+      ],
+      "title": "TraceEventSummary",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "events": {
+      "items": {
+        "$ref": "#/$defs/TraceEventSummary"
+      },
+      "maxItems": 200,
+      "title": "Events",
+      "type": "array"
+    },
+    "mode": {
+      "$ref": "#/$defs/ApplicationMode"
+    },
+    "replay_fixture_version": {
+      "anyOf": [
+        {
+          "maxLength": 64,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Replay Fixture Version"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "trace_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "truncated": {
+      "default": false,
+      "title": "Truncated",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "trace_id",
+    "mode"
+  ],
+  "title": "TraceSummary",
+  "type": "object"
+}

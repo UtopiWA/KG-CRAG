@@ -1,0 +1,385 @@
+{
+  "$defs": {
+    "ActionSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Action",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "sequence": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "status": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Status",
+          "type": "string"
+        },
+        "target_facet_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Target Facet Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "sequence",
+        "action",
+        "reason",
+        "status"
+      ],
+      "title": "ActionSummary",
+      "type": "object"
+    },
+    "ApplicationBudgetSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "elapsed_ms": {
+          "default": 0,
+          "maximum": 600000,
+          "minimum": 0,
+          "title": "Elapsed Ms",
+          "type": "integer"
+        },
+        "input_tokens": {
+          "default": 0,
+          "maximum": 100000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "model_calls": {
+          "default": 0,
+          "maximum": 20,
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "maximum": 100000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "stop_reason": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stop Reason"
+        },
+        "stopped": {
+          "default": false,
+          "title": "Stopped",
+          "type": "boolean"
+        },
+        "tool_calls": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Tool Calls",
+          "type": "integer"
+        },
+        "web_calls": {
+          "default": 0,
+          "maximum": 5,
+          "minimum": 0,
+          "title": "Web Calls",
+          "type": "integer"
+        }
+      },
+      "title": "ApplicationBudgetSummary",
+      "type": "object"
+    },
+    "ApplicationMode": {
+      "description": "调用方可选择的有限运行模式。",
+      "enum": [
+        "live",
+        "replay"
+      ],
+      "title": "ApplicationMode",
+      "type": "string"
+    },
+    "CitationSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "citation_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Citation Id",
+          "type": "string"
+        },
+        "evidence_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "external": {
+          "default": false,
+          "title": "External",
+          "type": "boolean"
+        },
+        "page": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page"
+        },
+        "paper_id": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Paper Id"
+        },
+        "section": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Section"
+        },
+        "source_channels": {
+          "items": {
+            "$ref": "#/$defs/PublicSourceType"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Source Channels",
+          "type": "array"
+        },
+        "title": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "required": [
+        "citation_id",
+        "evidence_id",
+        "title",
+        "source_channels"
+      ],
+      "title": "CitationSummary",
+      "type": "object"
+    },
+    "FacetStatus": {
+      "enum": [
+        "covered",
+        "missing",
+        "conflicting"
+      ],
+      "title": "FacetStatus",
+      "type": "string"
+    },
+    "FacetSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "facet_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Facet Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/FacetStatus"
+        }
+      },
+      "required": [
+        "facet_id",
+        "label",
+        "status"
+      ],
+      "title": "FacetSummary",
+      "type": "object"
+    },
+    "PublicSourceType": {
+      "enum": [
+        "internal",
+        "dense",
+        "sparse",
+        "graph",
+        "web"
+      ],
+      "title": "PublicSourceType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "actions": {
+      "items": {
+        "$ref": "#/$defs/ActionSummary"
+      },
+      "maxItems": 20,
+      "title": "Actions",
+      "type": "array"
+    },
+    "answer": {
+      "maxLength": 12000,
+      "minLength": 1,
+      "title": "Answer",
+      "type": "string"
+    },
+    "budget": {
+      "$ref": "#/$defs/ApplicationBudgetSummary"
+    },
+    "citations": {
+      "items": {
+        "$ref": "#/$defs/CitationSummary"
+      },
+      "maxItems": 20,
+      "title": "Citations",
+      "type": "array"
+    },
+    "facets": {
+      "items": {
+        "$ref": "#/$defs/FacetSummary"
+      },
+      "maxItems": 40,
+      "title": "Facets",
+      "type": "array"
+    },
+    "mode": {
+      "$ref": "#/$defs/ApplicationMode"
+    },
+    "replay_fixture_version": {
+      "anyOf": [
+        {
+          "maxLength": 64,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Replay Fixture Version"
+    },
+    "replay_notice": {
+      "anyOf": [
+        {
+          "maxLength": 300,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Replay Notice"
+    },
+    "request_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Request Id",
+      "type": "string"
+    },
+    "retrieval_path": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 10,
+      "title": "Retrieval Path",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "stop_reason": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Stop Reason",
+      "type": "string"
+    },
+    "trace_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Trace Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "mode",
+    "request_id",
+    "trace_id",
+    "answer",
+    "stop_reason"
+  ],
+  "title": "QueryResponse",
+  "type": "object"
+}

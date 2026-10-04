@@ -1,0 +1,115 @@
+{
+  "$defs": {
+    "IngestionItemSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_names": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Artifact Names",
+          "type": "array"
+        },
+        "paper_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Paper Id",
+          "type": "string"
+        },
+        "processing_version": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Processing Version"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "maxLength": 300,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "status": {
+          "maxLength": 40,
+          "minLength": 1,
+          "title": "Status",
+          "type": "string"
+        },
+        "warning_count": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Warning Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "paper_id",
+        "status"
+      ],
+      "title": "IngestionItemSummary",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "complete": {
+      "title": "Complete",
+      "type": "boolean"
+    },
+    "dry_run": {
+      "title": "Dry Run",
+      "type": "boolean"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/IngestionItemSummary"
+      },
+      "maxItems": 5,
+      "minItems": 1,
+      "title": "Items",
+      "type": "array"
+    },
+    "request_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Request Id",
+      "type": "string"
+    },
+    "run_id": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "run_id",
+    "dry_run",
+    "complete",
+    "items"
+  ],
+  "title": "IngestionRunResponse",
+  "type": "object"
+}

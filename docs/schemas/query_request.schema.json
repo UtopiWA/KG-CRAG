@@ -1,0 +1,44 @@
+{
+  "$defs": {
+    "ApplicationMode": {
+      "description": "调用方可选择的有限运行模式。",
+      "enum": [
+        "live",
+        "replay"
+      ],
+      "title": "ApplicationMode",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "mode": {
+      "$ref": "#/$defs/ApplicationMode",
+      "default": "replay"
+    },
+    "question": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Question",
+      "type": "string"
+    },
+    "replay_case_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z0-9-]{3,64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Replay Case Id"
+    }
+  },
+  "required": [
+    "question"
+  ],
+  "title": "QueryRequest",
+  "type": "object"
+}

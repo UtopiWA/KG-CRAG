@@ -1,0 +1,34 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "confirm": {
+      "default": false,
+      "title": "Confirm",
+      "type": "boolean"
+    },
+    "dry_run": {
+      "default": true,
+      "title": "Dry Run",
+      "type": "boolean"
+    },
+    "force": {
+      "default": false,
+      "title": "Force",
+      "type": "boolean"
+    },
+    "paper_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 5,
+      "minItems": 1,
+      "title": "Paper Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "paper_ids"
+  ],
+  "title": "IngestionRunRequest",
+  "type": "object"
+}

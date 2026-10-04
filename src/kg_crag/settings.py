@@ -1,10 +1,11 @@
 """由环境变量驱动的运行时配置。"""
 
 from functools import lru_cache
+from pathlib import PurePath
 from typing import Literal
 from urllib.parse import urlparse
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -23,6 +24,16 @@ class Settings(BaseSettings):
     log_level: str = Field(default="INFO", min_length=1)
     api_host: str = Field(default="127.0.0.1", min_length=1)
     api_port: int = Field(default=8000, ge=1, le=65535)
+    api_request_timeout_seconds: float = Field(default=30.0, gt=0, le=120)
+    api_max_trace_events: int = Field(default=100, ge=1, le=200)
+    api_max_pdf_bytes: int = Field(default=52_428_800, ge=1024, le=104_857_600)
+    replay_fixture_path: str = Field(
+        default="src/kg_crag/application/replay_cases.json",
+        min_length=1,
+    )
+    ui_api_base_url: str = Field(default="http://127.0.0.1:8000", min_length=1)
+    application_memory_target_mb: int = Field(default=10_240, ge=1024, le=10_240)
+    application_memory_hard_limit_mb: int = Field(default=12_288, ge=1024, le=12_288)
     qdrant_url: str = Field(default="http://localhost:6333", min_length=1)
     qdrant_api_key: str | None = None
     neo4j_uri: str = Field(default="bolt://localhost:7687", min_length=1)
@@ -70,6 +81,34 @@ class Settings(BaseSettings):
         if parsed.scheme not in {"bolt", "neo4j"} or not parsed.netloc:
             raise ValueError("neo4j_uri must be a bolt:// or neo4j:// URI with a host")
         return value
+
+    @field_validator("ui_api_base_url")
+    @classmethod
+    def ui_api_base_url_is_http(cls, value: str) -> str:
+        """界面只允许调用明确的 HTTP(S) API 基址。"""
+
+        parsed = urlparse(value)
+        if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+            raise ValueError("ui_api_base_url must be an HTTP(S) URL with a host")
+        return value.rstrip("/")
+
+    @field_validator("replay_fixture_path")
+    @classmethod
+    def replay_fixture_path_is_workspace_relative(cls, value: str) -> str:
+        """回放文件必须由工作区内的稳定相对路径定位。"""
+
+        path = PurePath(value)
+        if path.is_absolute() or ".." in path.parts:
+            raise ValueError("replay_fixture_path must be workspace-relative and contained")
+        return path.as_posix()
+
+    @model_validator(mode="after")
+    def application_memory_limits_are_ordered(self) -> "Settings":
+        """目标值不能高于阻止继续加载可选组件的硬边界。"""
+
+        if self.application_memory_target_mb > self.application_memory_hard_limit_mb:
+            raise ValueError("application memory target must not exceed hard limit")
+        return self
 
 
 # 配置在进程内只解析一次，避免同一请求链中重复读取环境变量和 .env。

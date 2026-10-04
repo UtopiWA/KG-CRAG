@@ -1,0 +1,77 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "abstract": {
+      "default": "",
+      "maxLength": 2000,
+      "title": "Abstract",
+      "type": "string"
+    },
+    "authors": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Authors",
+      "type": "array"
+    },
+    "chunk_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Chunk Ids",
+      "type": "array"
+    },
+    "paper_id": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "processing_version": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Processing Version",
+      "type": "string"
+    },
+    "quality_passed": {
+      "title": "Quality Passed",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "year": {
+      "anyOf": [
+        {
+          "maximum": 2100,
+          "minimum": 1900,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Year"
+    }
+  },
+  "required": [
+    "paper_id",
+    "title",
+    "processing_version",
+    "quality_passed"
+  ],
+  "title": "DocumentSummary",
+  "type": "object"
+}
