@@ -95,6 +95,25 @@ async def test_sentence_transformer_maps_load_and_dimension_failures() -> None:
         await wrong.embed(["input"])
 
 
+async def test_sentence_transformer_can_forbid_remote_model_resolution() -> None:
+    created: list[dict[str, object]] = []
+
+    def factory(name: str, **kwargs: object) -> FakeSentenceModel:
+        created.append({"name": name, **kwargs})
+        return FakeSentenceModel()
+
+    provider = SentenceTransformerEmbeddingProvider(
+        "model",
+        "revision",
+        dimensions=2,
+        normalize=True,
+        local_files_only=True,
+        model_factory=factory,
+    )
+    await provider.embed(["input"])
+    assert created == [{"name": "model", "revision": "revision", "local_files_only": True}]
+
+
 async def test_openai_compatible_provider_success_and_safe_errors() -> None:
     response = SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content="answer"))])
     completions = FakeCompletions(response=response)

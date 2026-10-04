@@ -1,0 +1,85 @@
+{
+  "$defs": {
+    "EvaluationQuestionOrigin": {
+      "enum": [
+        "fixture_migration",
+        "chunk_derived"
+      ],
+      "title": "EvaluationQuestionOrigin",
+      "type": "string"
+    },
+    "EvaluationQuestionSourceRecord": {
+      "additionalProperties": false,
+      "description": "当前题目文本的直接来源及其上游派生依据。",
+      "properties": {
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "origin": {
+          "$ref": "#/$defs/EvaluationQuestionOrigin"
+        },
+        "origin_locator": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Origin Locator",
+          "type": "string"
+        },
+        "question": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "question_id": {
+          "pattern": "^ueq-[a-z0-9-]{3,120}$",
+          "title": "Question Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "question_id",
+        "question",
+        "origin",
+        "origin_locator"
+      ],
+      "title": "EvaluationQuestionSourceRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "统一题目的冻结直接来源目录。",
+  "properties": {
+    "dataset_version": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Dataset Version",
+      "type": "string"
+    },
+    "records": {
+      "items": {
+        "$ref": "#/$defs/EvaluationQuestionSourceRecord"
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "title": "Records",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "dataset_version",
+    "records"
+  ],
+  "title": "EvaluationQuestionSourceCatalog",
+  "type": "object"
+}

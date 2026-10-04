@@ -17,6 +17,7 @@ from kg_crag.models import (
     EvaluationResourceUsage,
     EvaluationSplit,
     EvaluationStageStatus,
+    EvidenceMatchMode,
     KnowledgeSufficiency,
     StrategyObservation,
     StressCategory,
@@ -147,6 +148,30 @@ def test_facet_recovery_and_meaningless_correction_are_distinct() -> None:
     with pytest.raises(ValueError, match="unknown facet"):
         compute_facet_metrics(
             _question(), _observation(final_covered_facet_ids=["facet-ffffffffffffffff"])
+        )
+
+
+def test_all_match_facet_cannot_be_claimed_from_one_conflict_side() -> None:
+    joint = EvaluationFacetTarget(
+        facet_id="facet-0000000000000004",
+        description="All conflict sides",
+        target_evidence_ids=["e-a", "e-b"],
+        evidence_match=EvidenceMatchMode.ALL,
+    )
+    question = _question().model_copy(
+        update={
+            "facets": [joint],
+            "minimum_sufficient_evidence_sets": [["e-a", "e-b"]],
+        }
+    )
+    with pytest.raises(ValueError, match="without required Evidence"):
+        compute_facet_metrics(
+            question,
+            _observation(
+                ranked_evidence_ids=["e-a"],
+                initial_covered_facet_ids=[],
+                final_covered_facet_ids=[joint.facet_id],
+            ),
         )
 
 

@@ -14,7 +14,8 @@ from kg_crag.evaluation.artifacts import (
     publish_formal_test_lock,
 )
 from kg_crag.evaluation.config import load_unified_evaluation_config
-from kg_crag.evaluation.dataset import load_unified_dataset
+from kg_crag.evaluation.dataset import canonical_digest, load_unified_dataset
+from kg_crag.evaluation.observation_collection import prepare_extractive_answer_validation
 from kg_crag.evaluation.runner import (
     UnifiedEvaluationRunner,
     UnifiedStrategyAdapter,
@@ -51,6 +52,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--selected-answer-strategy",
         choices=[item.value for item in UnifiedStrategy],
+    )
+    parser.add_argument(
+        "--extractive-answer-validation",
+        action="store_true",
+        help="仅为入选策略按 Top-8 Evidence 执行零 LLM 抽取式回答/引用核算",
     )
     parser.add_argument(
         "--freeze-selection",
@@ -126,6 +132,10 @@ async def _run(argv: list[str] | None = None) -> int:
         raise ValueError("select exactly one input mode: --fixture-mode or --observations")
     if args.fixture_mode and args.freeze_selection:
         raise ValueError("fixture-mode reports cannot freeze the development selection")
+    if args.extractive_answer_validation and not args.selected_answer_strategy:
+        raise ValueError("extractive answer validation requires --selected-answer-strategy")
+    if args.extractive_answer_validation and args.fixture_mode:
+        raise ValueError("extractive answer validation requires recorded observations")
     if args.fixture_mode and split is EvaluationSplit.TEST:
         raise ValueError("fixture-mode results cannot consume the one-time formal test run")
     selected = (
@@ -136,6 +146,7 @@ async def _run(argv: list[str] | None = None) -> int:
         else None
     )
     adapters: Mapping[UnifiedStrategy, UnifiedStrategyAdapter]
+    observation_set: StrategyObservationSet | None = None
     if args.fixture_mode:
         adapters = fixture_adapters()
     else:
@@ -143,6 +154,12 @@ async def _run(argv: list[str] | None = None) -> int:
         observation_set = StrategyObservationSet.model_validate_json(
             args.observations.read_text(encoding="utf-8")
         )
+        if args.extractive_answer_validation:
+            observation_set = prepare_extractive_answer_validation(
+                observation_set,
+                question_set,
+                selected_strategy=UnifiedStrategy(args.selected_answer_strategy),
+            )
         adapters = recorded_adapters(
             observation_set,
             question_set,
@@ -156,6 +173,9 @@ async def _run(argv: list[str] | None = None) -> int:
         fixture_mode=args.fixture_mode,
     )
     versions = _versions(args)
+    if observation_set is not None:
+        # 观察内容本身会改变结果，必须进入身份，避免复用同名但内容已变化的文件。
+        versions["strategy"] = f"{versions['strategy']}:{canonical_digest(observation_set)}"
     planned_identity = build_run_identity(
         loaded_manifest,
         question_set,
@@ -178,11 +198,28 @@ async def _run(argv: list[str] | None = None) -> int:
     )
     report_path = PROJECT_ROOT / config.results_root / report.identity.run_id / "report.json"
     if args.freeze_selection:
+        assert observation_set is not None
         freeze_development_selection(
             PROJECT_ROOT / config.selection_path,
             manifest=loaded_manifest,
             report=report,
             selected_strategy=UnifiedStrategy(args.freeze_selection),
+            version_declarations={
+                "index": args.index_version,
+                "strategy": args.strategy_version,
+                "observation_hash": canonical_digest(observation_set),
+                "model": args.model_version,
+                "prompt": args.prompt_version,
+                "metric": args.metric_version,
+                "judge": args.judge_version,
+            },
+            thresholds={
+                "top_k": config.top_k,
+                "near_duplicate_threshold": config.near_duplicate_threshold,
+                "max_candidates_per_question": config.max_candidates_per_question,
+                "max_loops_per_question": config.max_loops_per_question,
+                "with_judge": config.with_judge,
+            },
             workspace_root=PROJECT_ROOT,
         )
     if split is EvaluationSplit.TEST:

@@ -12,6 +12,7 @@ from kg_crag.models import (
     EvaluationTraceEvent,
     EvaluationTracePhase,
     EvaluationTraceStatus,
+    EvidenceMatchMode,
     KnowledgeSufficiency,
     StressCategory,
     TraceEvent,
@@ -87,6 +88,23 @@ def test_question_rejects_incomplete_minimum_set_and_invalid_missing_truth() -> 
         )
     with pytest.raises(ValidationError, match="knowledge-missing"):
         _question(knowledge_sufficiency=KnowledgeSufficiency.INSUFFICIENT)
+
+
+def test_all_match_facet_requires_every_target_evidence() -> None:
+    joint = EvaluationFacetTarget(
+        facet_id="facet-0000000000000002",
+        description="Joint conflict facet.",
+        target_evidence_ids=["evidence-1", "evidence-2"],
+        evidence_match=EvidenceMatchMode.ALL,
+    )
+    assert not joint.is_covered_by({"evidence-1"})
+    assert joint.is_covered_by({"evidence-1", "evidence-2"})
+    with pytest.raises(ValidationError, match="does not cover every required facet"):
+        _question(
+            facets=[joint],
+            relevant_evidence={"evidence-1": 3, "evidence-2": 3},
+            minimum_sufficient_evidence_sets=[["evidence-1"]],
+        )
 
 
 def test_trace_v2_requires_question_scope_timezone_and_bounded_details() -> None:

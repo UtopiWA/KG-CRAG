@@ -1,45 +1,62 @@
 {
-  "dataset_version": "unified-agent-qa-v1",
+  "dataset_version": "unified-agent-qa-v4",
   "questions": [
     {
       "answer_points": [
         {
-          "description": "冻结图事实应支持关系或多跳答案。",
+          "description": "构建可扩展的交流式智能体自主协作。",
           "evidence_ids": [
-            "fact:0341c4d2236be44aae63886ffd5ca3ae13f088a4f36d96eff84c0dfc64cace2a"
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
           ],
-          "point_id": "point-6375babe1ebfe6f7"
+          "point_id": "point-f0a01f5abc8d4a13"
+        },
+        {
+          "description": "用角色扮演和 inception prompting 引导智能体在最少人工监督下完成任务。",
+          "evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ],
+          "point_id": "point-3bc5d8476172e2c2"
         }
       ],
       "facets": [
         {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "facet_id": "facet-6375babe1ebfe6f7",
+          "description": "构建可扩展的交流式智能体自主协作。",
+          "evidence_match": "any",
+          "facet_id": "facet-f0a01f5abc8d4a13",
           "required": true,
           "target_evidence_ids": [
-            "fact:0341c4d2236be44aae63886ffd5ca3ae13f088a4f36d96eff84c0dfc64cace2a"
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ]
+        },
+        {
+          "description": "用角色扮演和 inception prompting 引导智能体在最少人工监督下完成任务。",
+          "evidence_match": "any",
+          "facet_id": "facet-3bc5d8476172e2c2",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
           ]
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-graph-dev-questions-graph-01",
+      "leakage_group_id": "leak:ueq-literature-camel-purpose",
       "minimum_sufficient_evidence_sets": [
         [
-          "fact:0341c4d2236be44aae63886ffd5ca3ae13f088a4f36d96eff84c0dfc64cace2a"
+          "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
         ]
       ],
-      "normalized_question": "which graph facts belong to camel?",
-      "question": "Which graph facts belong to CAMEL?",
-      "question_id": "ueq-graph-dev-questions-graph-01",
+      "normalized_question": "camel 研究试图通过什么方式减少复杂任务求解中对人工输入的依赖?",
+      "question": "CAMEL 研究试图通过什么方式减少复杂任务求解中对人工输入的依赖？",
+      "question_id": "ueq-literature-camel-purpose",
       "question_types": [
-        "relationship"
+        "synthesis"
       ],
       "relevant_evidence": {
-        "fact:0341c4d2236be44aae63886ffd5ca3ae13f088a4f36d96eff84c0dfc64cace2a": 3
+        "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce": 3
       },
-      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-01",
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#camel-purpose",
       "source_group_ids": [
-        "source-graph-dev-questions-graph-01"
+        "paper:arxiv:2303.17760"
       ],
       "split": "test",
       "stress_category": "control"
@@ -47,647 +64,1353 @@
     {
       "answer_points": [
         {
-          "description": "冻结图事实应支持关系或多跳答案。",
+          "description": "为交流式智能体设定角色扮演框架。",
           "evidence_ids": [
-            "fact:01de68a59e6376ac3cb66a0d23965ab1e617e9898e5f09921696aa60f91ae2a8"
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
           ],
-          "point_id": "point-257f121a7164955e"
+          "point_id": "point-4939a1c6db7220d5"
+        },
+        {
+          "description": "使用 inception prompting 自主引导对话走向任务完成。",
+          "evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ],
+          "point_id": "point-df7d7b9cb55fab4c"
+        },
+        {
+          "description": "在推进任务时保持与人类意图一致。",
+          "evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ],
+          "point_id": "point-ac03d070b8799d80"
         }
       ],
       "facets": [
         {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "facet_id": "facet-257f121a7164955e",
+          "description": "为交流式智能体设定角色扮演框架。",
+          "evidence_match": "any",
+          "facet_id": "facet-4939a1c6db7220d5",
           "required": true,
           "target_evidence_ids": [
-            "fact:01de68a59e6376ac3cb66a0d23965ab1e617e9898e5f09921696aa60f91ae2a8"
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ]
+        },
+        {
+          "description": "使用 inception prompting 自主引导对话走向任务完成。",
+          "evidence_match": "any",
+          "facet_id": "facet-df7d7b9cb55fab4c",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ]
+        },
+        {
+          "description": "在推进任务时保持与人类意图一致。",
+          "evidence_match": "any",
+          "facet_id": "facet-ac03d070b8799d80",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
           ]
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-graph-dev-questions-graph-02",
+      "leakage_group_id": "leak:ueq-literature-camel-roleplay",
       "minimum_sufficient_evidence_sets": [
         [
-          "fact:01de68a59e6376ac3cb66a0d23965ab1e617e9898e5f09921696aa60f91ae2a8"
+          "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
         ]
       ],
-      "normalized_question": "which graph facts belong to generative agents?",
-      "question": "Which graph facts belong to Generative Agents?",
-      "question_id": "ueq-graph-dev-questions-graph-02",
-      "question_types": [
-        "relationship"
-      ],
-      "relevant_evidence": {
-        "fact:01de68a59e6376ac3cb66a0d23965ab1e617e9898e5f09921696aa60f91ae2a8": 3
-      },
-      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-02",
-      "source_group_ids": [
-        "source-graph-dev-questions-graph-02"
-      ],
-      "split": "test",
-      "stress_category": "control"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "evidence_ids": [
-            "fact:01c6543d5e379c131c10f9852e46611315f6e1ad16caee664fb148fae1378e79"
-          ],
-          "point_id": "point-e85c93714947bec4"
-        }
-      ],
-      "facets": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "facet_id": "facet-e85c93714947bec4",
-          "required": true,
-          "target_evidence_ids": [
-            "fact:01c6543d5e379c131c10f9852e46611315f6e1ad16caee664fb148fae1378e79"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-graph-dev-questions-graph-03",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "fact:01c6543d5e379c131c10f9852e46611315f6e1ad16caee664fb148fae1378e79"
-        ]
-      ],
-      "normalized_question": "which graph facts belong to tree of thoughts?",
-      "question": "Which graph facts belong to Tree of Thoughts?",
-      "question_id": "ueq-graph-dev-questions-graph-03",
-      "question_types": [
-        "relationship"
-      ],
-      "relevant_evidence": {
-        "fact:01c6543d5e379c131c10f9852e46611315f6e1ad16caee664fb148fae1378e79": 3
-      },
-      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-03",
-      "source_group_ids": [
-        "source-graph-dev-questions-graph-03"
-      ],
-      "split": "test",
-      "stress_category": "control"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "evidence_ids": [
-            "fact:04c4490b562ecf3abbff18ac047d961ba38d2b08fc2907d8f49e5b8205f82510"
-          ],
-          "point_id": "point-33bf5ca531e689a1"
-        }
-      ],
-      "facets": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "facet_id": "facet-33bf5ca531e689a1",
-          "required": true,
-          "target_evidence_ids": [
-            "fact:04c4490b562ecf3abbff18ac047d961ba38d2b08fc2907d8f49e5b8205f82510"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-graph-dev-questions-graph-04",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "fact:04c4490b562ecf3abbff18ac047d961ba38d2b08fc2907d8f49e5b8205f82510"
-        ]
-      ],
-      "normalized_question": "which graph facts belong to voyager?",
-      "question": "Which graph facts belong to Voyager?",
-      "question_id": "ueq-graph-dev-questions-graph-04",
-      "question_types": [
-        "relationship"
-      ],
-      "relevant_evidence": {
-        "fact:04c4490b562ecf3abbff18ac047d961ba38d2b08fc2907d8f49e5b8205f82510": 3
-      },
-      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-04",
-      "source_group_ids": [
-        "source-graph-dev-questions-graph-04"
-      ],
-      "split": "test",
-      "stress_category": "control"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "evidence_ids": [
-            "fact:00715079ce0af0b2b43c5ae4abbf48546622c05d8b27d42564ee4648ac6c11c1"
-          ],
-          "point_id": "point-c6f3282b4b2203ab"
-        }
-      ],
-      "facets": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "facet_id": "facet-c6f3282b4b2203ab",
-          "required": true,
-          "target_evidence_ids": [
-            "fact:00715079ce0af0b2b43c5ae4abbf48546622c05d8b27d42564ee4648ac6c11c1"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-graph-dev-questions-graph-05",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "fact:00715079ce0af0b2b43c5ae4abbf48546622c05d8b27d42564ee4648ac6c11c1"
-        ]
-      ],
-      "normalized_question": "which graph facts belong to toolllm?",
-      "question": "Which graph facts belong to ToolLLM?",
-      "question_id": "ueq-graph-dev-questions-graph-05",
-      "question_types": [
-        "relationship"
-      ],
-      "relevant_evidence": {
-        "fact:00715079ce0af0b2b43c5ae4abbf48546622c05d8b27d42564ee4648ac6c11c1": 3
-      },
-      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-05",
-      "source_group_ids": [
-        "source-graph-dev-questions-graph-05"
-      ],
-      "split": "test",
-      "stress_category": "control"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "evidence_ids": [
-            "fact:084386a9cd7d6b76cff38dd8fecfe6240abc748345423ea7120b8ba1c40d4149"
-          ],
-          "point_id": "point-de3b3922b3e62748"
-        }
-      ],
-      "facets": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "facet_id": "facet-de3b3922b3e62748",
-          "required": true,
-          "target_evidence_ids": [
-            "fact:084386a9cd7d6b76cff38dd8fecfe6240abc748345423ea7120b8ba1c40d4149"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-graph-dev-questions-graph-06",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "fact:084386a9cd7d6b76cff38dd8fecfe6240abc748345423ea7120b8ba1c40d4149"
-        ]
-      ],
-      "normalized_question": "which graph facts belong to metagpt?",
-      "question": "Which graph facts belong to MetaGPT?",
-      "question_id": "ueq-graph-dev-questions-graph-06",
-      "question_types": [
-        "relationship"
-      ],
-      "relevant_evidence": {
-        "fact:084386a9cd7d6b76cff38dd8fecfe6240abc748345423ea7120b8ba1c40d4149": 3
-      },
-      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-06",
-      "source_group_ids": [
-        "source-graph-dev-questions-graph-06"
-      ],
-      "split": "test",
-      "stress_category": "control"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "evidence_ids": [
-            "fact:0022e6a51a4b997a6102011bedc371c84c95f7f0b78c10c183c4dda311f5d3fd"
-          ],
-          "point_id": "point-6e9c38ca9b651a0b"
-        }
-      ],
-      "facets": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "facet_id": "facet-6e9c38ca9b651a0b",
-          "required": true,
-          "target_evidence_ids": [
-            "fact:0022e6a51a4b997a6102011bedc371c84c95f7f0b78c10c183c4dda311f5d3fd"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-graph-dev-questions-graph-07",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "fact:0022e6a51a4b997a6102011bedc371c84c95f7f0b78c10c183c4dda311f5d3fd"
-        ]
-      ],
-      "normalized_question": "which graph facts belong to agentbench?",
-      "question": "Which graph facts belong to AgentBench?",
-      "question_id": "ueq-graph-dev-questions-graph-07",
-      "question_types": [
-        "relationship"
-      ],
-      "relevant_evidence": {
-        "fact:0022e6a51a4b997a6102011bedc371c84c95f7f0b78c10c183c4dda311f5d3fd": 3
-      },
-      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-07",
-      "source_group_ids": [
-        "source-graph-dev-questions-graph-07"
-      ],
-      "split": "test",
-      "stress_category": "control"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "evidence_ids": [
-            "fact:00306f8aaa30b2a68684c550f007bbc82d90c930453dd57fba5692c515dccbac"
-          ],
-          "point_id": "point-2c13c8679064c115"
-        }
-      ],
-      "facets": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "facet_id": "facet-2c13c8679064c115",
-          "required": true,
-          "target_evidence_ids": [
-            "fact:00306f8aaa30b2a68684c550f007bbc82d90c930453dd57fba5692c515dccbac"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-graph-dev-questions-graph-08",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "fact:00306f8aaa30b2a68684c550f007bbc82d90c930453dd57fba5692c515dccbac"
-        ]
-      ],
-      "normalized_question": "which graph facts belong to language agent tree search?",
-      "question": "Which graph facts belong to Language Agent Tree Search?",
-      "question_id": "ueq-graph-dev-questions-graph-08",
-      "question_types": [
-        "relationship"
-      ],
-      "relevant_evidence": {
-        "fact:00306f8aaa30b2a68684c550f007bbc82d90c930453dd57fba5692c515dccbac": 3
-      },
-      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-08",
-      "source_group_ids": [
-        "source-graph-dev-questions-graph-08"
-      ],
-      "split": "test",
-      "stress_category": "control"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "evidence_ids": [
-            "fact:1db68df68ef5446a63e61ae8015484468c2258e240050607825be217c80f9e99",
-            "fact:62daf6497d0c543231037cac7cda7255b88bd425091b34be0769cf2934a8bbe9"
-          ],
-          "point_id": "point-74bd7c5607a176f1"
-        }
-      ],
-      "facets": [
-        {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "facet_id": "facet-74bd7c5607a176f1",
-          "required": true,
-          "target_evidence_ids": [
-            "fact:1db68df68ef5446a63e61ae8015484468c2258e240050607825be217c80f9e99",
-            "fact:62daf6497d0c543231037cac7cda7255b88bd425091b34be0769cf2934a8bbe9"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-graph-dev-questions-graph-09",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "fact:1db68df68ef5446a63e61ae8015484468c2258e240050607825be217c80f9e99",
-          "fact:62daf6497d0c543231037cac7cda7255b88bd425091b34be0769cf2934a8bbe9"
-        ]
-      ],
-      "normalized_question": "which papers share the same explicitly identified author?",
-      "question": "Which papers share the same explicitly identified author?",
-      "question_id": "ueq-graph-dev-questions-graph-09",
+      "normalized_question": "camel 如何利用角色扮演和交流式智能体完成任务?",
+      "question": "CAMEL 如何利用角色扮演和交流式智能体完成任务？",
+      "question_id": "ueq-literature-camel-roleplay",
       "question_types": [
         "multi_hop"
       ],
       "relevant_evidence": {
-        "fact:1db68df68ef5446a63e61ae8015484468c2258e240050607825be217c80f9e99": 3,
-        "fact:62daf6497d0c543231037cac7cda7255b88bd425091b34be0769cf2934a8bbe9": 3
+        "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce": 3
       },
-      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-09",
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#camel-roleplay",
       "source_group_ids": [
-        "source-graph-dev-questions-graph-09"
+        "paper:arxiv:2303.17760"
       ],
       "split": "test",
       "stress_category": "multi_hop_gap"
     },
     {
-      "answer_points": [],
-      "facets": [
+      "answer_points": [
         {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "facet_id": "facet-19ec0ea40bf16907",
-          "required": true,
-          "target_evidence_ids": []
+          "description": "核心设计是交流式智能体的角色扮演框架。",
+          "evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ],
+          "point_id": "point-5005211b7df0156c"
+        },
+        {
+          "description": "框架以 inception prompting 引导协作。",
+          "evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ],
+          "point_id": "point-042788d0751de9c5"
         }
       ],
-      "knowledge_sufficiency": "insufficient",
-      "leakage_group_id": "leak-graph-dev-questions-graph-10",
-      "minimum_sufficient_evidence_sets": [],
-      "normalized_question": "find graph evidence for an unknown entity.",
-      "question": "Find graph evidence for an unknown entity.",
-      "question_id": "ueq-graph-dev-questions-graph-10",
-      "question_types": [
-        "relationship"
+      "facets": [
+        {
+          "description": "核心设计是交流式智能体的角色扮演框架。",
+          "evidence_match": "any",
+          "facet_id": "facet-5005211b7df0156c",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ]
+        },
+        {
+          "description": "框架以 inception prompting 引导协作。",
+          "evidence_match": "any",
+          "facet_id": "facet-042788d0751de9c5",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ]
+        }
       ],
-      "relevant_evidence": {},
-      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-10",
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-camel-acronym-exact",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+        ]
+      ],
+      "normalized_question": "缩写 camel 对应的智能体协作方法具有什么核心设计?",
+      "question": "缩写 CAMEL 对应的智能体协作方法具有什么核心设计？",
+      "question_id": "ueq-literature-camel-acronym-exact",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#camel-acronym-exact",
       "source_group_ids": [
-        "source-graph-dev-questions-graph-10"
+        "paper:arxiv:2303.17760"
       ],
       "split": "test",
-      "stress_category": "internal_missing"
+      "stress_category": "control"
     },
     {
-      "answer_points": [],
-      "facets": [
+      "answer_points": [
         {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "facet_id": "facet-954301bbf07ee68f",
-          "required": true,
-          "target_evidence_ids": []
+          "description": "生成用于研究智能体社会行为与能力的对话数据。",
+          "evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ],
+          "point_id": "point-5b0072c94b7eb318"
+        },
+        {
+          "description": "支持研究多智能体场景中的指令遵循式协作。",
+          "evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ],
+          "point_id": "point-a09760bd573ae347"
         }
       ],
-      "knowledge_sufficiency": "insufficient",
-      "leakage_group_id": "leak-graph-dev-questions-graph-11",
-      "minimum_sufficient_evidence_sets": [],
-      "normalized_question": "reject a graph result whose source is unavailable.",
-      "question": "Reject a graph result whose source is unavailable.",
-      "question_id": "ueq-graph-dev-questions-graph-11",
-      "question_types": [
-        "relationship"
+      "facets": [
+        {
+          "description": "生成用于研究智能体社会行为与能力的对话数据。",
+          "evidence_match": "any",
+          "facet_id": "facet-5b0072c94b7eb318",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ]
+        },
+        {
+          "description": "支持研究多智能体场景中的指令遵循式协作。",
+          "evidence_match": "any",
+          "facet_id": "facet-a09760bd573ae347",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+          ]
+        }
       ],
-      "relevant_evidence": {},
-      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-11",
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-camel-research-use",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+        ]
+      ],
+      "normalized_question": "camel 的角色扮演框架除完成任务外还能生成什么研究资源?",
+      "question": "CAMEL 的角色扮演框架除完成任务外还能生成什么研究资源？",
+      "question_id": "ueq-literature-camel-research-use",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-camel-research-use",
       "source_group_ids": [
-        "source-graph-dev-questions-graph-11"
+        "paper:arxiv:2303.17760"
       ],
       "split": "test",
-      "stress_category": "internal_missing"
+      "stress_category": "terminology_mismatch"
     },
     {
-      "answer_points": [],
-      "facets": [
+      "answer_points": [
         {
-          "description": "冻结图事实应支持关系或多跳答案。",
-          "facet_id": "facet-c648595cf94ef84c",
-          "required": true,
-          "target_evidence_ids": []
+          "description": "难以探索多个候选路径。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-d01f393bca0526d9"
+        },
+        {
+          "description": "缺乏战略前瞻。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-2130478de38b588d"
+        },
+        {
+          "description": "早期错误决策会对后续过程产生关键影响。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-60cb0027102380b5"
         }
       ],
-      "knowledge_sufficiency": "insufficient",
-      "leakage_group_id": "leak-graph-dev-questions-graph-12",
-      "minimum_sufficient_evidence_sets": [],
-      "normalized_question": "keep an unresolved ambiguous entity separate.",
-      "question": "Keep an unresolved ambiguous entity separate.",
-      "question_id": "ueq-graph-dev-questions-graph-12",
-      "question_types": [
-        "relationship"
-      ],
-      "relevant_evidence": {},
-      "source_fixture": "data/evaluation/graph_dev_questions.json#graph-12",
-      "source_group_ids": [
-        "source-graph-dev-questions-graph-12"
-      ],
-      "split": "test",
-      "stress_category": "internal_missing"
-    },
-    {
-      "answer_points": [],
       "facets": [
         {
-          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
-          "facet_id": "facet-512307f1d7c85d04",
+          "description": "难以探索多个候选路径。",
+          "evidence_match": "any",
+          "facet_id": "facet-d01f393bca0526d9",
           "required": true,
-          "target_evidence_ids": []
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        },
+        {
+          "description": "缺乏战略前瞻。",
+          "evidence_match": "any",
+          "facet_id": "facet-2130478de38b588d",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        },
+        {
+          "description": "早期错误决策会对后续过程产生关键影响。",
+          "evidence_match": "any",
+          "facet_id": "facet-60cb0027102380b5",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
         }
       ],
-      "knowledge_sufficiency": "insufficient",
-      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-001",
-      "minimum_sufficient_evidence_sets": [],
-      "normalized_question": "概述 react 的推理与行动循环。",
-      "question": "概述 ReAct 的推理与行动循环。",
-      "question_id": "ueq-grounded-answer-dev-questions-gaq-001",
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-tree-of-thoughts-motivation",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+        ]
+      ],
+      "normalized_question": "tree of thoughts 主要解决语言模型逐 token 左到右决策的什么局限?",
+      "question": "Tree of Thoughts 主要解决语言模型逐 token 左到右决策的什么局限？",
+      "question_id": "ueq-literature-tree-of-thoughts-motivation",
       "question_types": [
         "synthesis"
       ],
-      "relevant_evidence": {},
-      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-001",
+      "relevant_evidence": {
+        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#tree-of-thoughts-motivation",
       "source_group_ids": [
-        "source-grounded-answer-dev-questions-gaq-001"
+        "paper:arxiv:2305.10601"
       ],
       "split": "test",
-      "stress_category": "internal_missing"
+      "stress_category": "control"
     },
     {
-      "answer_points": [],
-      "facets": [
+      "answer_points": [
         {
-          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
-          "facet_id": "facet-7989da115aa95344",
-          "required": true,
-          "target_evidence_ids": []
+          "description": "把连贯文本思路作为问题求解的中间步骤。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-d2e4fcf45361d93c"
+        },
+        {
+          "description": "比较多条推理路径并自我评估选择。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-c402f7c8e2370aec"
+        },
+        {
+          "description": "必要时进行前瞻或回溯以作出全局选择。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-ba8f27f5fdc347f7"
         }
       ],
-      "knowledge_sufficiency": "insufficient",
-      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-002",
-      "minimum_sufficient_evidence_sets": [],
-      "normalized_question": "比较工具调用 agent 的两种规划方式。",
-      "question": "比较工具调用 Agent 的两种规划方式。",
-      "question_id": "ueq-grounded-answer-dev-questions-gaq-002",
+      "facets": [
+        {
+          "description": "把连贯文本思路作为问题求解的中间步骤。",
+          "evidence_match": "any",
+          "facet_id": "facet-d2e4fcf45361d93c",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        },
+        {
+          "description": "比较多条推理路径并自我评估选择。",
+          "evidence_match": "any",
+          "facet_id": "facet-c402f7c8e2370aec",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        },
+        {
+          "description": "必要时进行前瞻或回溯以作出全局选择。",
+          "evidence_match": "any",
+          "facet_id": "facet-ba8f27f5fdc347f7",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-tree-of-thoughts-search",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+        ]
+      ],
+      "normalized_question": "tree of thoughts 为什么要在多个推理思路之间进行探索?",
+      "question": "Tree of Thoughts 为什么要在多个推理思路之间进行探索？",
+      "question_id": "ueq-literature-tree-of-thoughts-search",
+      "question_types": [
+        "multi_hop"
+      ],
+      "relevant_evidence": {
+        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#tree-of-thoughts-search",
+      "source_group_ids": [
+        "paper:arxiv:2305.10601"
+      ],
+      "split": "test",
+      "stress_category": "multi_hop_gap"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "在连贯思路而非单个 token 的粒度上探索。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-755cbb85e220f210"
+        },
+        {
+          "description": "允许多路径比较、自我评估、前瞻和回溯。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-e66bc77a233f3ced"
+        }
+      ],
+      "facets": [
+        {
+          "description": "在连贯思路而非单个 token 的粒度上探索。",
+          "evidence_match": "any",
+          "facet_id": "facet-755cbb85e220f210",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        },
+        {
+          "description": "允许多路径比较、自我评估、前瞻和回溯。",
+          "evidence_match": "any",
+          "facet_id": "facet-e66bc77a233f3ced",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-tree-of-thoughts-hyphenated",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+        ]
+      ],
+      "normalized_question": "tree-of-thoughts 式搜索如何弥补逐 token 推理的局限?",
+      "question": "Tree-of-Thoughts 式搜索如何弥补逐 token 推理的局限？",
+      "question_id": "ueq-literature-tree-of-thoughts-hyphenated",
       "question_types": [
         "synthesis"
       ],
-      "relevant_evidence": {},
-      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-002",
+      "relevant_evidence": {
+        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#tree-of-thoughts-hyphenated",
       "source_group_ids": [
-        "source-grounded-answer-dev-questions-gaq-002"
+        "paper:arxiv:2305.10601"
       ],
       "split": "test",
-      "stress_category": "internal_missing"
+      "stress_category": "entity_alias"
     },
     {
-      "answer_points": [],
-      "facets": [
+      "answer_points": [
         {
-          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
-          "facet_id": "facet-47d397ad67db88d8",
-          "required": true,
-          "target_evidence_ids": []
+          "description": "Game of 24。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-f922d192a12edc5e"
+        },
+        {
+          "description": "Creative Writing。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-96324e040ca24b34"
+        },
+        {
+          "description": "Mini Crosswords。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-c607a72554a96138"
         }
       ],
-      "knowledge_sufficiency": "insufficient",
-      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-003",
-      "minimum_sufficient_evidence_sets": [],
-      "normalized_question": "说明记忆模块在 agent 中的作用。",
-      "question": "说明记忆模块在 Agent 中的作用。",
-      "question_id": "ueq-grounded-answer-dev-questions-gaq-003",
+      "facets": [
+        {
+          "description": "Game of 24。",
+          "evidence_match": "any",
+          "facet_id": "facet-f922d192a12edc5e",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        },
+        {
+          "description": "Creative Writing。",
+          "evidence_match": "any",
+          "facet_id": "facet-96324e040ca24b34",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        },
+        {
+          "description": "Mini Crosswords。",
+          "evidence_match": "any",
+          "facet_id": "facet-c607a72554a96138",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-tree-of-thoughts-tasks",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+        ]
+      ],
+      "normalized_question": "tree of thoughts 在哪些需要非平凡规划或搜索的任务上进行了实验?",
+      "question": "Tree of Thoughts 在哪些需要非平凡规划或搜索的任务上进行了实验？",
+      "question_id": "ueq-literature-tree-of-thoughts-tasks",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-tree-of-thoughts-tasks",
+      "source_group_ids": [
+        "paper:arxiv:2305.10601"
+      ],
+      "split": "test",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "Tree of Thoughts 的成功率为 74%。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-42b0d785ebeeb69b"
+        },
+        {
+          "description": "GPT-4 Chain-of-Thought 的成功率为 4%。",
+          "evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ],
+          "point_id": "point-1edc218adde2b651"
+        }
+      ],
+      "facets": [
+        {
+          "description": "Tree of Thoughts 的成功率为 74%。",
+          "evidence_match": "any",
+          "facet_id": "facet-42b0d785ebeeb69b",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        },
+        {
+          "description": "GPT-4 Chain-of-Thought 的成功率为 4%。",
+          "evidence_match": "any",
+          "facet_id": "facet-1edc218adde2b651",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-tree-of-thoughts-game24",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+        ]
+      ],
+      "normalized_question": "tree of thoughts 与 gpt-4 chain-of-thought 在 game of 24 上的成功率分别是多少?",
+      "question": "Tree of Thoughts 与 GPT-4 Chain-of-Thought 在 Game of 24 上的成功率分别是多少？",
+      "question_id": "ueq-literature-tree-of-thoughts-game24",
+      "question_types": [
+        "metric",
+        "comparison"
+      ],
+      "relevant_evidence": {
+        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-tree-of-thoughts-game24",
+      "source_group_ids": [
+        "paper:arxiv:2305.10601"
+      ],
+      "split": "test",
+      "stress_category": "comparison_side"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "最大化探索的自动课程。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-ad71442710d77e8e"
+        },
+        {
+          "description": "保存和检索复杂行为的可执行代码技能库。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-514c49e0d8da24e1"
+        },
+        {
+          "description": "结合环境反馈、执行错误和自我验证的迭代提示机制。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-d6414f6f8cf577af"
+        }
+      ],
+      "facets": [
+        {
+          "description": "最大化探索的自动课程。",
+          "evidence_match": "any",
+          "facet_id": "facet-ad71442710d77e8e",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        },
+        {
+          "description": "保存和检索复杂行为的可执行代码技能库。",
+          "evidence_match": "any",
+          "facet_id": "facet-514c49e0d8da24e1",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        },
+        {
+          "description": "结合环境反馈、执行错误和自我验证的迭代提示机制。",
+          "evidence_match": "any",
+          "facet_id": "facet-d6414f6f8cf577af",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-voyager-components",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+        ]
+      ],
+      "normalized_question": "voyager 在 minecraft 中持续学习所依赖的三个核心组件是什么?",
+      "question": "Voyager 在 Minecraft 中持续学习所依赖的三个核心组件是什么？",
+      "question_id": "ueq-literature-voyager-components",
       "question_types": [
         "synthesis"
       ],
-      "relevant_evidence": {},
-      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-003",
+      "relevant_evidence": {
+        "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#voyager-components",
       "source_group_ids": [
-        "source-grounded-answer-dev-questions-gaq-003"
+        "paper:arxiv:2305.16291"
       ],
       "split": "test",
-      "stress_category": "internal_missing"
+      "stress_category": "control"
     },
     {
-      "answer_points": [],
-      "facets": [
+      "answer_points": [
         {
-          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
-          "facet_id": "facet-9facd0de0e8ac334",
-          "required": true,
-          "target_evidence_ids": []
+          "description": "在没有人工干预时持续探索 Minecraft 世界。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-a493fde8aa633a77"
+        },
+        {
+          "description": "不断获得多样技能并作出新发现。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-f491c9b444cfd005"
+        },
+        {
+          "description": "可在新世界复用技能库，从零完成新任务。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-66db2eaf2b2c3856"
         }
       ],
-      "knowledge_sufficiency": "insufficient",
-      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-004",
-      "minimum_sufficient_evidence_sets": [],
-      "normalized_question": "给出论文报告的准确率数值。",
-      "question": "给出论文报告的准确率数值。",
-      "question_id": "ueq-grounded-answer-dev-questions-gaq-004",
+      "facets": [
+        {
+          "description": "在没有人工干预时持续探索 Minecraft 世界。",
+          "evidence_match": "any",
+          "facet_id": "facet-a493fde8aa633a77",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        },
+        {
+          "description": "不断获得多样技能并作出新发现。",
+          "evidence_match": "any",
+          "facet_id": "facet-f491c9b444cfd005",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        },
+        {
+          "description": "可在新世界复用技能库，从零完成新任务。",
+          "evidence_match": "any",
+          "facet_id": "facet-66db2eaf2b2c3856",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-voyager-lifelong-learning",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+        ]
+      ],
+      "normalized_question": "voyager 为什么被称为具身终身学习智能体?",
+      "question": "Voyager 为什么被称为具身终身学习智能体？",
+      "question_id": "ueq-literature-voyager-lifelong-learning",
       "question_types": [
         "synthesis"
       ],
-      "relevant_evidence": {},
-      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-004",
+      "relevant_evidence": {
+        "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#voyager-lifelong-learning",
       "source_group_ids": [
-        "source-grounded-answer-dev-questions-gaq-004"
+        "paper:arxiv:2305.16291"
       ],
       "split": "test",
-      "stress_category": "internal_missing"
+      "stress_category": "control"
     },
     {
-      "answer_points": [],
-      "facets": [
+      "answer_points": [
         {
-          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
-          "facet_id": "facet-2acd8fd055750f5d",
-          "required": true,
-          "target_evidence_ids": []
+          "description": "以不断增长的可执行代码库保存和检索复杂行为。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-8995f344cbb079c7"
+        },
+        {
+          "description": "技能具有时间延展性、可解释性和可组合性。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-c6bc04817e57fe71"
+        },
+        {
+          "description": "技能组合可快速累积能力并缓解灾难性遗忘。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-3eb758d3e1fefcdd"
         }
       ],
-      "knowledge_sufficiency": "insufficient",
-      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-005",
-      "minimum_sufficient_evidence_sets": [],
-      "normalized_question": "哪篇论文首先提出该方法?",
-      "question": "哪篇论文首先提出该方法？",
-      "question_id": "ueq-grounded-answer-dev-questions-gaq-005",
+      "facets": [
+        {
+          "description": "以不断增长的可执行代码库保存和检索复杂行为。",
+          "evidence_match": "any",
+          "facet_id": "facet-8995f344cbb079c7",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        },
+        {
+          "description": "技能具有时间延展性、可解释性和可组合性。",
+          "evidence_match": "any",
+          "facet_id": "facet-c6bc04817e57fe71",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        },
+        {
+          "description": "技能组合可快速累积能力并缓解灾难性遗忘。",
+          "evidence_match": "any",
+          "facet_id": "facet-3eb758d3e1fefcdd",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-voyager-skill-library",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+        ]
+      ],
+      "normalized_question": "voyager 的技能库以什么形式保存能力,并带来哪些性质?",
+      "question": "Voyager 的技能库以什么形式保存能力，并带来哪些性质？",
+      "question_id": "ueq-literature-voyager-skill-library",
       "question_types": [
         "synthesis"
       ],
-      "relevant_evidence": {},
-      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-005",
+      "relevant_evidence": {
+        "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-voyager-skill-library",
       "source_group_ids": [
-        "source-grounded-answer-dev-questions-gaq-005"
+        "paper:arxiv:2305.16291"
       ],
       "split": "test",
-      "stress_category": "internal_missing"
+      "stress_category": "multi_hop_gap"
     },
     {
-      "answer_points": [],
-      "facets": [
+      "answer_points": [
         {
-          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
-          "facet_id": "facet-599f36ca293d5c8c",
-          "required": true,
-          "target_evidence_ids": []
+          "description": "获得 3.3 倍更多的独特物品。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-d566c958aff2c250"
+        },
+        {
+          "description": "行进距离长 2.3 倍。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-c28b07a02f9f6023"
+        },
+        {
+          "description": "关键科技树里程碑解锁快至 15.3 倍。",
+          "evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ],
+          "point_id": "point-aec100e31803b32a"
         }
       ],
-      "knowledge_sufficiency": "insufficient",
-      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-006",
-      "minimum_sufficient_evidence_sets": [],
-      "normalized_question": "证明该架构在所有任务上更好。",
-      "question": "证明该架构在所有任务上更好。",
-      "question_id": "ueq-grounded-answer-dev-questions-gaq-006",
+      "facets": [
+        {
+          "description": "获得 3.3 倍更多的独特物品。",
+          "evidence_match": "any",
+          "facet_id": "facet-d566c958aff2c250",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        },
+        {
+          "description": "行进距离长 2.3 倍。",
+          "evidence_match": "any",
+          "facet_id": "facet-c28b07a02f9f6023",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        },
+        {
+          "description": "关键科技树里程碑解锁快至 15.3 倍。",
+          "evidence_match": "any",
+          "facet_id": "facet-aec100e31803b32a",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-voyager-results",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+        ]
+      ],
+      "normalized_question": "voyager 相比既有最佳方法在 minecraft 中报告了哪些量化提升?",
+      "question": "Voyager 相比既有最佳方法在 Minecraft 中报告了哪些量化提升？",
+      "question_id": "ueq-literature-voyager-results",
+      "question_types": [
+        "metric",
+        "comparison"
+      ],
+      "relevant_evidence": {
+        "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-voyager-results",
+      "source_group_ids": [
+        "paper:arxiv:2305.16291"
+      ],
+      "split": "test",
+      "stress_category": "metric_missing"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "由 8 个不同的交互环境组成。",
+          "evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ],
+          "point_id": "point-78ed26226ea8cc29"
+        },
+        {
+          "description": "评估 LLM 智能体的推理和决策能力。",
+          "evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ],
+          "point_id": "point-0fde563cb4438c4d"
+        }
+      ],
+      "facets": [
+        {
+          "description": "由 8 个不同的交互环境组成。",
+          "evidence_match": "any",
+          "facet_id": "facet-78ed26226ea8cc29",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ]
+        },
+        {
+          "description": "评估 LLM 智能体的推理和决策能力。",
+          "evidence_match": "any",
+          "facet_id": "facet-0fde563cb4438c4d",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-agentbench-scope",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+        ]
+      ],
+      "normalized_question": "agentbench 用什么类型的环境对 llm 智能体进行多维评测?",
+      "question": "AgentBench 用什么类型的环境对 LLM 智能体进行多维评测？",
+      "question_id": "ueq-literature-agentbench-scope",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#agentbench-scope",
+      "source_group_ids": [
+        "paper:arxiv:2308.03688"
+      ],
+      "split": "test",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "推理能力。",
+          "evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ],
+          "point_id": "point-2be4748278ea8c3e"
+        },
+        {
+          "description": "决策能力。",
+          "evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ],
+          "point_id": "point-94098fad41883ead"
+        }
+      ],
+      "facets": [
+        {
+          "description": "推理能力。",
+          "evidence_match": "any",
+          "facet_id": "facet-2be4748278ea8c3e",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ]
+        },
+        {
+          "description": "决策能力。",
+          "evidence_match": "any",
+          "facet_id": "facet-94098fad41883ead",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-agentbench-environment-focus",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+        ]
+      ],
+      "normalized_question": "agentbench 基准的交互环境重点评估智能体的哪些能力?",
+      "question": "AgentBench 基准的交互环境重点评估智能体的哪些能力？",
+      "question_id": "ueq-literature-agentbench-environment-focus",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-agentbench-environment-focus",
+      "source_group_ids": [
+        "paper:arxiv:2308.03688"
+      ],
+      "split": "test",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "评测覆盖 29 个 API 模型和开源模型。",
+          "evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ],
+          "point_id": "point-fa5814cde63e5ca4"
+        },
+        {
+          "description": "顶级商业模型明显强于许多参数不超过 70B 的开源模型。",
+          "evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ],
+          "point_id": "point-12ecd0146908a655"
+        }
+      ],
+      "facets": [
+        {
+          "description": "评测覆盖 29 个 API 模型和开源模型。",
+          "evidence_match": "any",
+          "facet_id": "facet-fa5814cde63e5ca4",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ]
+        },
+        {
+          "description": "顶级商业模型明显强于许多参数不超过 70B 的开源模型。",
+          "evidence_match": "any",
+          "facet_id": "facet-12ecd0146908a655",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-agentbench-model-results",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+        ]
+      ],
+      "normalized_question": "agentbench 评测了多少个模型,商业模型与不超过 70b 的开源模型表现有何差异?",
+      "question": "AgentBench 评测了多少个模型，商业模型与不超过 70B 的开源模型表现有何差异？",
+      "question_id": "ueq-literature-agentbench-model-results",
+      "question_types": [
+        "metric",
+        "comparison"
+      ],
+      "relevant_evidence": {
+        "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-agentbench-model-results",
+      "source_group_ids": [
+        "paper:arxiv:2308.03688"
+      ],
+      "split": "test",
+      "stress_category": "comparison_side"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "长期推理能力不足。",
+          "evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ],
+          "point_id": "point-4dea984c8d8724c5"
+        },
+        {
+          "description": "决策能力不足。",
+          "evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ],
+          "point_id": "point-873a18b89791ac66"
+        },
+        {
+          "description": "指令遵循能力不足。",
+          "evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ],
+          "point_id": "point-0a30d0a975eb2c77"
+        }
+      ],
+      "facets": [
+        {
+          "description": "长期推理能力不足。",
+          "evidence_match": "any",
+          "facet_id": "facet-4dea984c8d8724c5",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ]
+        },
+        {
+          "description": "决策能力不足。",
+          "evidence_match": "any",
+          "facet_id": "facet-873a18b89791ac66",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ]
+        },
+        {
+          "description": "指令遵循能力不足。",
+          "evidence_match": "any",
+          "facet_id": "facet-0a30d0a975eb2c77",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-agentbench-failures",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+        ]
+      ],
+      "normalized_question": "agentbench 识别出的可用 llm 智能体主要失败障碍是什么?",
+      "question": "AgentBench 识别出的可用 LLM 智能体主要失败障碍是什么？",
+      "question_id": "ueq-literature-agentbench-failures",
       "question_types": [
         "synthesis"
       ],
-      "relevant_evidence": {},
-      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-006",
+      "relevant_evidence": {
+        "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-agentbench-failures",
       "source_group_ids": [
-        "source-grounded-answer-dev-questions-gaq-006"
+        "paper:arxiv:2308.03688"
       ],
       "split": "test",
-      "stress_category": "internal_missing"
+      "stress_category": "control"
     },
     {
-      "answer_points": [],
-      "facets": [
+      "answer_points": [
         {
-          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
-          "facet_id": "facet-7e352da139fc2b1a",
-          "required": true,
-          "target_evidence_ids": []
+          "description": "推理。",
+          "evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ],
+          "point_id": "point-0667f8fb47cc54c7"
+        },
+        {
+          "description": "行动。",
+          "evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ],
+          "point_id": "point-97fa91dc11e53ab0"
+        },
+        {
+          "description": "规划。",
+          "evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ],
+          "point_id": "point-8c34b0966c215d19"
         }
       ],
-      "knowledge_sufficiency": "insufficient",
-      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-007",
-      "minimum_sufficient_evidence_sets": [],
-      "normalized_question": "解释两项实验结论之间的冲突。",
-      "question": "解释两项实验结论之间的冲突。",
-      "question_id": "ueq-grounded-answer-dev-questions-gaq-007",
+      "facets": [
+        {
+          "description": "推理。",
+          "evidence_match": "any",
+          "facet_id": "facet-0667f8fb47cc54c7",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ]
+        },
+        {
+          "description": "行动。",
+          "evidence_match": "any",
+          "facet_id": "facet-97fa91dc11e53ab0",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ]
+        },
+        {
+          "description": "规划。",
+          "evidence_match": "any",
+          "facet_id": "facet-8c34b0966c215d19",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-lats-capabilities",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+        ]
+      ],
+      "normalized_question": "language agent tree search 统一了语言智能体的哪些关键能力?",
+      "question": "Language Agent Tree Search 统一了语言智能体的哪些关键能力？",
+      "question_id": "ueq-literature-lats-capabilities",
       "question_types": [
         "synthesis"
       ],
-      "relevant_evidence": {},
-      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-007",
+      "relevant_evidence": {
+        "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754": 3
+      },
+      "source_fixture": "data/evaluation/hybrid_dev_questions.json#lats-capabilities",
       "source_group_ids": [
-        "source-grounded-answer-dev-questions-gaq-007"
+        "paper:arxiv:2310.04406"
       ],
       "split": "test",
-      "stress_category": "internal_missing"
+      "stress_category": "control"
     },
     {
-      "answer_points": [],
-      "facets": [
+      "answer_points": [
         {
-          "description": "该迁移子集不提供可作为内部真值的 Evidence。",
-          "facet_id": "facet-de0426937d3a5a5b",
-          "required": true,
-          "target_evidence_ids": []
+          "description": "把 Monte Carlo Tree Search 集成到语言智能体中。",
+          "evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ],
+          "point_id": "point-bdb63d3cb095b90c"
+        },
+        {
+          "description": "使用由语言模型驱动的价值函数和自我反思进行探索。",
+          "evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ],
+          "point_id": "point-cc8380de46e1d26a"
+        },
+        {
+          "description": "引入环境的外部反馈以形成更审慎、适应性的求解过程。",
+          "evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ],
+          "point_id": "point-acb93e33927b5a8a"
         }
       ],
-      "knowledge_sufficiency": "insufficient",
-      "leakage_group_id": "leak-grounded-answer-dev-questions-gaq-008",
-      "minimum_sufficient_evidence_sets": [],
-      "normalized_question": "检索最新公开论文补充缺失的技能库证据。",
-      "question": "检索最新公开论文补充缺失的技能库证据。",
-      "question_id": "ueq-grounded-answer-dev-questions-gaq-008",
-      "question_types": [
-        "synthesis"
+      "facets": [
+        {
+          "description": "把 Monte Carlo Tree Search 集成到语言智能体中。",
+          "evidence_match": "any",
+          "facet_id": "facet-bdb63d3cb095b90c",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ]
+        },
+        {
+          "description": "使用由语言模型驱动的价值函数和自我反思进行探索。",
+          "evidence_match": "any",
+          "facet_id": "facet-cc8380de46e1d26a",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ]
+        },
+        {
+          "description": "引入环境的外部反馈以形成更审慎、适应性的求解过程。",
+          "evidence_match": "any",
+          "facet_id": "facet-acb93e33927b5a8a",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ]
+        }
       ],
-      "relevant_evidence": {},
-      "source_fixture": "data/evaluation/grounded_answer_dev_questions.json#gaq-008",
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-lats-search-mechanism",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+        ]
+      ],
+      "normalized_question": "lats 如何把树搜索、模型自省和环境反馈结合起来改善决策?",
+      "question": "LATS 如何把树搜索、模型自省和环境反馈结合起来改善决策？",
+      "question_id": "ueq-literature-lats-search-mechanism",
+      "question_types": [
+        "multi_hop"
+      ],
+      "relevant_evidence": {
+        "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-lats-search-mechanism",
       "source_group_ids": [
-        "source-grounded-answer-dev-questions-gaq-008"
+        "paper:arxiv:2310.04406"
       ],
       "split": "test",
-      "stress_category": "internal_missing"
+      "stress_category": "entity_alias"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "编程。",
+          "evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ],
+          "point_id": "point-7ed5c577c3cf918c"
+        },
+        {
+          "description": "交互式问答。",
+          "evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ],
+          "point_id": "point-f952e67befca679d"
+        },
+        {
+          "description": "网页导航。",
+          "evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ],
+          "point_id": "point-58f880be5b3a32de"
+        },
+        {
+          "description": "数学。",
+          "evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ],
+          "point_id": "point-ab7e42cab7fa5e6e"
+        }
+      ],
+      "facets": [
+        {
+          "description": "编程。",
+          "evidence_match": "any",
+          "facet_id": "facet-7ed5c577c3cf918c",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ]
+        },
+        {
+          "description": "交互式问答。",
+          "evidence_match": "any",
+          "facet_id": "facet-f952e67befca679d",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ]
+        },
+        {
+          "description": "网页导航。",
+          "evidence_match": "any",
+          "facet_id": "facet-58f880be5b3a32de",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ]
+        },
+        {
+          "description": "数学。",
+          "evidence_match": "any",
+          "facet_id": "facet-ab7e42cab7fa5e6e",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-lats-domains",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+        ]
+      ],
+      "normalized_question": "lats 在哪些不同领域验证了决策框架的通用性?",
+      "question": "LATS 在哪些不同领域验证了决策框架的通用性？",
+      "question_id": "ueq-literature-lats-domains",
+      "question_types": [
+        "factoid"
+      ],
+      "relevant_evidence": {
+        "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-lats-domains",
+      "source_group_ids": [
+        "paper:arxiv:2310.04406"
+      ],
+      "split": "test",
+      "stress_category": "control"
     }
   ],
   "schema_version": "v1",

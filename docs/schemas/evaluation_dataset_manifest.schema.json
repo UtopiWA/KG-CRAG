@@ -41,10 +41,32 @@
       "title": "Dev Path",
       "type": "string"
     },
+    "evidence_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Evidence Hash",
+      "type": "string"
+    },
+    "evidence_path": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Evidence Path",
+      "type": "string"
+    },
     "evidence_version": {
       "maxLength": 200,
       "minLength": 1,
       "title": "Evidence Version",
+      "type": "string"
+    },
+    "question_sources_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Question Sources Hash",
+      "type": "string"
+    },
+    "question_sources_path": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Question Sources Path",
       "type": "string"
     },
     "review_note": {
@@ -85,6 +107,10 @@
     "dataset_version",
     "corpus_snapshot",
     "evidence_version",
+    "evidence_path",
+    "evidence_hash",
+    "question_sources_path",
+    "question_sources_hash",
     "dev_path",
     "test_path",
     "dev_count",

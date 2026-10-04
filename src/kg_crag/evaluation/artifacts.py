@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -48,6 +49,8 @@ def freeze_development_selection(
     manifest: EvaluationDatasetManifest,
     report: UnifiedEvaluationReport,
     selected_strategy: UnifiedStrategy,
+    version_declarations: Mapping[str, str],
+    thresholds: Mapping[str, str | int | float | bool],
     workspace_root: Path,
 ) -> DevelopmentSelection:
     """一次性写入开发集选择，避免正式测试前继续静默调参。"""
@@ -66,6 +69,8 @@ def freeze_development_selection(
         prompt_hash=report.identity.prompt_hash,
         model_hash=report.identity.model_hash,
         report_hash=canonical_digest(report),
+        version_declarations=dict(version_declarations),
+        thresholds=dict(thresholds),
         frozen_at=datetime.now(UTC),
     )
     atomic_model_write(path, selection, workspace_root=workspace_root)

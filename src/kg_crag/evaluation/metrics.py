@@ -104,6 +104,15 @@ def compute_facet_metrics(
     final = set(observation.final_covered_facet_ids)
     if (initial | final) - known:
         raise ValueError("strategy observation references unknown facet")
+    ranked = set(observation.ranked_evidence_ids)
+    facets_by_id = {item.facet_id: item for item in question.facets}
+    unsupported = {
+        facet_id for facet_id in final if not facets_by_id[facet_id].is_covered_by(ranked)
+    }
+    if unsupported:
+        raise ValueError(
+            f"strategy observation claims facets without required Evidence: {sorted(unsupported)}"
+        )
     required = {item.facet_id for item in question.facets if item.required}
     optional = known - required
     ids = [question.question_id]

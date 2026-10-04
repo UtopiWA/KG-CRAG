@@ -154,7 +154,7 @@ def build_run_identity(
         "dataset_hash": manifest.dataset_hash,
         "split_hash": canonical_digest(question_set),
         "corpus_hash": canonical_digest(manifest.corpus_snapshot),
-        "evidence_hash": canonical_digest(manifest.evidence_version),
+        "evidence_hash": manifest.evidence_hash,
         "index_hash": canonical_digest(version_bindings["index"]),
         "config_hash": canonical_digest(config),
         "strategy_hash": canonical_digest(

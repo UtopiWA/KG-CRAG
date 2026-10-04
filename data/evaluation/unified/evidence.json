@@ -1,0 +1,295 @@
+{
+  "dataset_version": "unified-agent-qa-v4",
+  "evidence_version": "unified-evidence-catalog-v3",
+  "records": [
+    {
+      "content": "Abstract Weintroduceanovelgraph - basedRetrievalAugmentedGeneration ( RAG ) framework specifically designed for the medical domain , calledMedGraphRAG , aimedatenhancing Large Language Model ( LLM ) capabilities for generating evidence - based medical responses , thereby improving safety and reliability when handlingprivatemedicaldata . Graph - based RAG ( GraphRAG ) leveragesLLMstoorganize RAG data into graphs , showing strong potential for gaining holistic insights from longformdocuments . However , itsstandardimplementationisoverlycomplexforgeneral use and lacks the ability to generate evidencebasedresponses , limitingitseffectivenessin themedicalfield . Toextendthecapabilities of GraphRAG to the medical domain , we propose unique Triple Graph Construction and URetrieval techniques over it . In our graph construction , wecreateatriple - linkedstructure that connects user documents to credible medicalsourcesandcontrolledvocabularies . In the retrieval process , we propose U - Retrieval whichcombinesTop - downPreciseRetrieval with Bottom - up Response Refinement to balance global context awareness with precise indexing . These effort enable both source information retrieval and comprehensive response generation . Our approach is validated on 9 medical Q & A benchmarks , 2 health fact - checking benchmarks , and one collected dataset testing long - formgeneration . Theresultsshowthat MedGraphRAG consistently outperforms stateof - the - art models across all benchmarks , while alsoensuringthatresponsesincludecredible sourcedocumentationanddefinitions . Our codeisreleasedat : https : / / github . com / MedicineToken / Medical - Graph - RAG .",
+      "content_hash": "bd69910036799e255c143a2a801d7c6966bf21ab4ffd8302ed9de08f18a3b40d",
+      "evidence_id": "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2",
+      "source_group_id": "paper:arxiv:2408.04187",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-0cdac819fdeb751d/4a558f8f7fd843dcc3dd07f86834792990bc7bedd587ce42bfd171d5dbb46314/chunks.jsonl:4"
+    },
+    {
+      "content": "ABSTRACT Retrieval - Augmented Generation ( RAG ) systems enhance large language models ( LLMs ) by integrating external knowledge sources , enabling more accurate and contextuallyrelevantresponsestailoredtouserneeds . However , existingRAG systemshavesignificantlimitations , includingrelianceonflatdatarepresenta - tions and inadequate contextual awareness , which can lead to fragmented answers that fail to capture complex inter - dependencies . To address these challenges , we proposeLightRAG , whichincorporatesgraphstructuresintotextindexingand retrieval processes . This innovative framework employs a dual - level retrieval sys - tem that enhances comprehensive information retrieval from both low - level and high - level knowledge discovery . Additionally , the integration of graph structures with vector representations facilitates efficient retrieval of related entities and their relationships , significantly improving response times while maintaining contextual relevance . This capability is further enhanced by an incremental update algorithm thatensuresthetimelyintegrationofnewdata , allowingthesystemtoremain effective and responsive in rapidly changing data environments . Extensive experi - mental validation demonstrates considerable improvements in retrieval accuracy and efficiency compared to existing approaches . We have made our LightRAG open - source and available at the link : https : / / github . com / HKUDS / LightRAG . Retrieval - Augmented Generation ( RAG ) systems have been developed to enhance large language models ( LLMs ) byintegratingexternalknowledgesourcesSudhietal . ( 2024 ) ; Esetal . ( 2024 ) ; Salemi & Zamani ( 2024 ) . This innovative integration allows LLMs to generate more accurate and contextually relevant responses , significantly improving their utility in real - world applications . By adapting to specific domain knowledge Tu et al . ( 2024 ) , RAG systems ensure that the information provided is not only pertinent but also tailored to the user ’ s needs . Furthermore , they offer access to up - to - date information Zhao et al . ( 2024 ) , which is crucial in rapidly evolving fields . Chunking plays a vital role in facilitating the retrieval - augmented generation process Lyu et al . ( 2024 ) . By breaking down a large external text corpus into smaller , more manageable segments , chunking significantly enhances the accuracy of information retrieval . This approach allows for more targeted similarity searches , ensuring that the retrieved content is directly relevant to user queries . However , existing RAG systems have key limitations that hinder their performance . First , many methods rely on flat data representations , restricting their ability to understand and retrieve information based on intricate relationships between entities . Second , these systems often lack the contextual awareness needed to maintain coherence across various entities and their interrelations , resulting in responses that may not fully address user queries . For example , consider a user asking , “ How does the rise of electric vehicles influence urban air quality and public transportation infrastructure ? ” Existing RAG methods might retrieve separate documents on electric vehicles , air pollution , and public transportation challenges but struggle to synthesize this information into a cohesive response . They may fail to explain how the adoption of electric vehicles can improve air quality , which in turn In summary , the key contributions of this work are highlighted as follows :",
+      "content_hash": "a931078d37798adf51b1e0cec5adda175122ba891ee6f1143236556e742a3135",
+      "evidence_id": "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f",
+      "source_group_id": "paper:arxiv:2410.05779",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-5813488b61b511ca/ece3a12dff7b34d5cc894049f8811dcc6821efd2ac374879b9d01f985ba2db45/chunks.jsonl:4"
+    },
+    {
+      "content": "ABSTRACT The potential of Large Language Model ( LLM ) as agents has been widely acknowledged recently . Thus , there is an urgent need to quantitatively evaluate LLMs as agents on challenging tasks in interactive environments . We present AGENTBENCH , a multi - dimensional benchmark that consists of 8 distinct environments to assess LLM - as - Agent ’ s reasoning and decision - making abilities . Our extensive test over 29 API - based and open - sourced ( OSS ) LLMs shows that , while top commercial LLMs present a strong ability of acting as agents in complex environments , there is a significant disparity in performance between them and many OSS competitors that are no larger than 70B . We identify the typical reasons of failures in environments and LLMs , showing that poor long - term reasoning , decision - making , and instruction following abilities are the main obstacles for developing usable LLM agents . Improving instruction following and training on high quality multi - round alignment data could improve agent performance . And different from existing assumptions , training on code present ambivalent impacts on different agent tasks . Datasets , environments , and an integrated evaluation package for AGENTBENCH are released at https : / / github . com / THUDM / AgentBench . 4 . 01 3 . 11 2 . 89 2 . 49 2 . 44 2 . 32 1 . 71 1 . 60 1 . 39 1 . 25 gpt - 4 claude - 3 glm - 4 claude - 2 API - based Commercial claude gpt - 3 . 5 - turbo text - davinci - 003 LLMs claude - instant chat - bison - 001 text - davinci - 002 codellama - 34b 0 . 96 0 . 93 0 . 78 0 . 77 vicuna - 13b llama - 2 - 70b llama - 2 - 13b OSS LLMs . . . . . . dolly - 12b chatglm - 6b 0 . 14 0 . 11 0 . 03 Avg : 2 . 32 Avg : 0 . 51 oasst - 12b 0 1 2 3 4 AgentBench Overall Score ( b ) Overall scores of AgentBench across 8 environments . Dashed lines for two LLM types ’ average . Figure 1 : An overview of LLMs on AGENTBENCH . While LLMs begin to manifest their proficiency in LLM - as - Agent , gaps between models and the distance toward practical usability are significant . Intelligent agents and autonomous entities ( Searle , 1970 ; Maes , 1994 ; Wooldridge & Jennings , 1995 ) that are capable of decision - making and action execution in particular environments have been key concepts of artificial intelligence ( AI ) historically . Notwithstanding substantial advancements in deep learning algorithms applied in both computer vision and natural language processing ( NLP ) , their potential for developing efficient and practically usable assisting agents remains",
+      "content_hash": "182c1132f7f1b1945cf6a5a4f37b662a217f0af97fe987a47f092a060631157a",
+      "evidence_id": "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5",
+      "source_group_id": "paper:arxiv:2308.03688",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-d4fa18e119ff6d1b/33b4dc2bde13fc838ac81c8fdb91752d3d7e385378b3d92d03d311fc48097e58/chunks.jsonl:4"
+    },
+    {
+      "content": "Abstract Whilelanguagemodels ( LMs ) haveshownpotentialacrossarangeofdecision - makingtasks , theirrelianceonsimpleactingprocesseslimits their broad deployment as autonomous agents . In thispaper , weintroduceLanguageAgentTree Search ( LATS ) – the first general framework that synergizes the capabilities of LMs in reasoning , acting , and planning . By leveraging the in - context learning ability of LMs , we integrate Monte Carlo Tree Search into LATS to enable LMs as agents , alongwithLM - poweredvaluefunctionsand self - reflections for proficient exploration and enhanced decision - making . A key feature of our approach is the incorporation of an environment for external feedback , which offers a more deliberate and adaptive problem - solving mechanism that surpasses the constraints of existing techniques . Our experimental evaluation across diverse domains , includingprogramming , interactivequestionanswering ( QA ) , web navigation , and math , validates the effectiveness and generality of LATS indecision - makingwhilemaintainingcompetitiveorimprovedreasoningperformance . Notably , LATS achieves state - of - the - art pass @ 1 accuracy ( 92 . 7 % ) for programming on HumanEval with GPT - 4 and demonstrates gradient - free performance ( average score of 75 . 9 ) comparable to gradient - based fine - tuning for web navigation on WebShopwithGPT - 3 . 5 . Codecanbefound at https : / / github . com / lapisrocks / LanguageAgentTreeSearch .",
+      "content_hash": "f91cd4445f72537f3f83ceafded0aee4b48b58cc01fe0c232859ac3f990299d0",
+      "evidence_id": "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754",
+      "source_group_id": "paper:arxiv:2310.04406",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-c6cfbd2994dc0ad9/a7a13f2831de5f807d6d6a26a160311fb327097fb1d3655f328de9680662606d/chunks.jsonl:3"
+    },
+    {
+      "content": "Abstract We introduce VOYAGER , the first LLM - powered embodied lifelong learning agent in Minecraft that continuously explores the world , acquires diverse skills , and makes novel discoveries without human intervention . VOYAGER consists of three key components : 1 ) an automatic curriculum that maximizes exploration , 2 ) an ever - growing skill library of executable code for storing and retrieving complex behaviors , and 3 ) a new iterative prompting mechanism that incorporates environ - ment feedback , execution errors , and self - verification for program improvement . VOYAGER interacts with GPT - 4 via blackbox queries , which bypasses the need for model parameter fine - tuning . The skills developed by VOYAGER are temporally extended , interpretable , and compositional , which compounds the agent ’ s abilities rapidly and alleviates catastrophic forgetting . Empirically , VOYAGER shows strong in - context lifelong learning capability and exhibits exceptional proficiency in playing Minecraft . It obtains 3 . 3 × more unique items , travels 2 . 3 × longer distances , and unlocks key tech tree milestones up to 15 . 3 × faster than prior SOTA . VOYAGER is able to utilize the learned skill library in a new Minecraft world to solve novel tasks from scratch , while other techniques struggle to generalize . Figure 1 : VOYAGER discovers new Minecraft items and skills continually by self - driven exploration , significantly outperforming the baselines . X - axis denotes the number of prompting iterations . Make Crafting Table New Task Combat Zombie Combat Zombie Mine Wood Log Update Exploration Progress Mine Diamond",
+      "content_hash": "1472227f3d2bcb76040994d34f4db0c7d21817a4b36efcc7d51eddfa1e960808",
+      "evidence_id": "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142",
+      "source_group_id": "paper:arxiv:2305.16291",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-b71b1297191d5227/e3d8edc671f91f8b2a5aad48237c8d505c30050edbec22be6413300c13f06258/chunks.jsonl:4"
+    },
+    {
+      "content": "Abstract Theuseofretrieval - augmentedgeneration ( RAG ) toretrieverelevantinforma - tionfromanexternalknowledgesourceenableslargelanguagemodels ( LLMs ) to answer questions over private and / or previously unseen document collections . However , RAGfailsonglobalquestionsdirectedatanentiretextcorpus , such as “ Whatarethemainthemesinthedataset ? ” , sincethisisinherentlyaquery - focusedsummarization ( QFS ) task , ratherthananexplicitretrievaltask . Prior QFSmethods , meanwhile , donotscaletothequantitiesoftextindexedbytyp - icalRAGsystems . Tocombinethestrengthsofthesecontrastingmethods , we proposeGraphRAG , agraph - basedapproachtoquestionansweringoverprivate text corpora that scales with both the generality of user questions and the quantity of source text . Our approach uses an LLM to build a graph index in two stages : first , to derive an entity knowledge graph from the source documents , then to pre - generate community summaries for all groups of closely related entities . Given a question , each community summary is used to generate a partial response , before allpartialresponsesareagainsummarizedinafinalresponsetotheuser . Fora class of global sensemaking questions over datasets in the 1 million token range , weshowthatGraphRAGleadstosubstantialimprovementsoveraconventional RAG baseline for both the comprehensiveness and diversity of generated answers . Retrievalaugmentedgeneration ( RAG ) ( Lewisetal . , 2020 ) isanestablishedapproachtousing LLMstoanswerqueriesbasedondatathatistoolargetocontaininalanguagemodel ’ scontext window , meaning the maximum number of tokens ( units of text ) that can be processed by the LLM at once ( Kuratov et al . , 2024 ; Liu et al . , 2023 ) . In the canonical RAG setup , the system has access to a large external corpus of text records and retrieves a subset of records that are individually relevant to the query and collectively small enough to fit into the context window of the LLM . The LLM then",
+      "content_hash": "f755ad7a8faf44f58ec86c3c2aed572479e027f280691e3e21615257be99f131",
+      "evidence_id": "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455",
+      "source_group_id": "paper:arxiv:2404.16130",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-a8da547bf3cd1097/4dcaaa36ad07073bec6eb698fffa65c3984c4eef643dea5d0b5147d507847a20/chunks.jsonl:6"
+    },
+    {
+      "content": "ABSTRACT Large Language Models ( LLMs ) have significantly advanced artificial intelligence by enabling human - like text generation and natural language understanding . However , their reliance on static training data limits their ability to respond to dynamic , real - time queries , resulting in outdated or inaccurate outputs . Retrieval - Augmented Generation ( RAG ) has emerged as a solution , enhancing LLMs by integrating real - time data retrieval to provide contextually relevant and up - to - date responses . Despite its promise , traditional RAG systems are constrained by static workflows and lack the adaptability required for multi - step reasoning and complex task management . Agentic Retrieval - Augmented Generation ( Agentic RAG ) transcends these limitations by embedding autonomous AI agents into the RAG pipeline . These agents leverage agentic design patterns reflection , planning , tool use , and multi - agent collaboration to dynamically manage retrieval strategies , iteratively refine contextual understanding , and adapt workflows through clearly defined operational structures ranging from sequential steps to adaptive collaboration . This integration enables Agentic RAG systems to deliver unparalleled flexibility , scalability , and context - awareness across diverse applications . This paper presents an analytical survey of Agentic RAG1 systems . It traces the evolution of RAG paradigms , introduces a principled taxonomy of Agentic RAG architectures based on agent cardinality , control structure , autonomy , and knowledge representation , and provides a comparative analysis of design trade - offs across existing frameworks . The survey further examines real - world applications in domains including healthcare , finance , education , and enterprise document processing , and distills practical lessons learned for system designers and practitioners . Finally , it identifies key open research challenges related to evaluation , coordination , memory management , efficiency , and governance , outlining directions for future research . Keywords Large Language Models ( LLMs ) · Artificial Intelligence ( AI ) · Natural Language Understanding · Retrieval - Augmented Generation ( RAG ) · Agentic RAG · Autonomous AI Agents · Reflection · Planning · Tool Use · Multi - Agent Collaboration · Agentic Patterns · Contextual Understanding · Dynamic Adaptability · Scalability · Real - Time Data Retrieval · Taxonomy of Agentic RAG · Healthcare Applications · Finance Applications · Educational Applications · Ethical AI Decision - Making · Performance Optimization · Multi - Step Reasoning 1GitHub link : https : / / github . com / asinghcsu / AgenticRAG - Survey",
+      "content_hash": "7a85f87b0dc32e8bca1d1a0875a3b9c8b6a84b62e5cde8d453bf5bcce05bb345",
+      "evidence_id": "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294",
+      "source_group_id": "paper:arxiv:2501.09136",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-e7743d9bd20b1f78/9bbe0b32ffc7041ecd7b481b63ed6a62fea704512a963f0e44c1f6b5e7bb9629/chunks.jsonl:4"
+    },
+    {
+      "content": "Abstract In order to thrive in hostile and ever - changing natural environments , mammalian brains evolved to store large amounts of knowledge about the world and continually integrate new information while avoiding catastrophic forgetting . Despite their impressive accomplishments , large language models ( LLMs ) , even with retrievalaugmented generation ( RAG ) , still struggle to efficiently and effectively integrate a large amount of new experiences after pre - training . In this work , we introduce HippoRAG , anovelretrievalframeworkinspiredbythehippocampalindexing theory of human long - term memory to enable deeper and more efficient knowledge integration over new experiences . HippoRAG synergistically orchestrates LLMs , knowledge graphs , and the Personalized PageRank algorithm to mimic the different roles of neocortex and hippocampus in human memory . We compare HippoRAG with existing RAG methods on multi - hop question answering ( QA ) and show that our method outperforms the state - of - the - art methods remarkably , by up to 20 % . Single - step retrieval with HippoRAG achieves comparable or better performance than iterative retrieval like IRCoT while being 10 - 20 times cheaper and 6 - 13 times faster , andintegratingHippoRAGintoIRCoTbringsfurthersubstantialgains . Finally , we show that our method can tackle new types of scenarios that are out of reach of existing methods . 1 Millions of years of evolution have led mammalian brains to develop the crucial ability to store large amounts of world knowledge and continuously integrate new experiences without losing previous ones . This exceptional long - term memory system eventually allows us humans to keep vast stores of continuously updating knowledge that forms the basis of our reasoning and decision making [ 19 ] . However , current RAG methods are still unable to help LLMs perform tasks that require integrating new knowledge across passage boundaries since each new passage is encoded in isolation . Many importantreal - worldtasks , suchasscientificliteraturereview , legalcasebriefing , andmedical diagnosis , requireknowledgeintegrationacrosspassagesordocuments . Althoughlesscomplex , Offline Indexing Online Retrieval & % \" & $ ! ' # Current RAG Human Memory \" HippoRAG # $ ! % Figure 1 : Knowledge Integration & RAG . Tasks that require knowledge integration are particularly challenging for current RAG systems . In the above example , we want to find a Stanford professor that does Alzheimer ’ s research from a pool of passages describing potentially thousands Stanford professors and Alzheimer ’ s researchers . Since current methods encode passages in isolation , they would struggle to identify Prof . Thomas unless a passage mentions both characteristics at once . In contrast , most people familiar with this professor would remember him quickly due to our brain ’ s associative memory capabilities , thought to be driven by the index structure depicted in the C - shaped hippocampus above ( in blue ) . Inspired by this mechanism , HippoRAG allows LLMs to build and leverage a similar graph of associations to tackle knowledge integration tasks .",
+      "content_hash": "c19d66598598faf9aed62fd87ef56256980a561244def2e01136b853ea57fd5b",
+      "evidence_id": "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38",
+      "source_group_id": "paper:arxiv:2405.14831",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-8038d9a28660c926/79f0046377ac3d4b1fc7a5dd32727bf33468cc3196ebe448e617b1e5f1cd9df1/chunks.jsonl:5"
+    },
+    {
+      "content": "ABSTRACT Despite the advancements of open - source large language models ( LLMs ) , e . g . , LLaMA , they remain significantly limited in tool - use capabilities , i . e . , using exter - nal tools ( APIs ) to fulfill human instructions . The reason is that current instruction tuning largely focuses on basic language tasks but ignores the tool - use domain . This is in contrast to the excellent tool - use capabilities of state - of - the - art ( SOTA ) closed - source LLMs , e . g . , ChatGPT . To bridge this gap , we introduce ToolLLM , a general tool - use framework encompassing data construction , model training , and evaluation . We first present ToolBench , an instruction - tuning dataset for tool use , which is constructed automatically using ChatGPT . Specifically , the con - struction can be divided into three stages : ( i ) API collection : we collect 16 , 464 real - world RESTful APIs spanning 49 categories from RapidAPI Hub ; ( ii ) instruc - tion generation : we prompt ChatGPT to generate diverse instructions involving these APIs , covering both single - tool and multi - tool scenarios ; ( iii ) solution path annotation : we use ChatGPT to search for a valid solution path ( chain of API calls ) for each instruction . To enhance the reasoning capabilities of LLMs , we develop a novel depth - first search - based decision tree algorithm . It enables LLMs to evaluate multiple reasoning traces and expand the search space . Moreover , to evaluate the tool - use capabilities of LLMs , we develop an automatic evalu - ator : ToolEval . Based on ToolBench , we fine - tune LLaMA to obtain an LLM ToolLLaMA , and equip it with a neural API retriever to recommend appropriate APIs for each instruction . Experiments show that ToolLLaMA demonstrates a remarkable ability to execute complex instructions and generalize to unseen APIs , and exhibits comparable performance to ChatGPT . Our ToolLLaMA also demon - strates strong zero - shot generalization ability in an out - of - distribution tool - use dataset : APIBench . The codes , trained models , and demo are publicly available at https : / / github . com / OpenBMB / ToolBench . Tool learning ( Qin et al . , 2023b ) aims to unleash the power of large language models ( LLMs ) to effec - tively interact with various tools ( APIs ) to accomplish complex tasks . By integrating LLMs with APIs , we can greatly expand their utility and empower them to serve as efficient intermediaries between users and the vast ecosystem of applications . Although open - source LLMs , e . g . , LLaMA ( Touvron et al . , 2023a ) , have achieved versatile capabilities",
+      "content_hash": "8506ea2368b6b35752be6bf3d3b66a9bdedb6c0605d6ac1ae05bf72f9fe45f22",
+      "evidence_id": "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552",
+      "source_group_id": "paper:arxiv:2307.16789",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-9934667ed46dd4d9/9b5599a8989a8700d73804213c1ea62585ffe1a46ce5f9629c362011a98e6962/chunks.jsonl:4"
+    },
+    {
+      "content": "Dec 8 , 2023 ABSTRACT Large Language Models ( LLMs ) generalize well across language tasks , but suffer from hallucinations and uninterpretability , making it difficult to assess their accu - racy without ground - truth . Retrieval - Augmented Generation ( RAG ) models have been proposed to reduce hallucinations and provide provenance for how an an - swer was generated . Applying such models to the scientific literature may enable large - scale , systematic processing of scientific knowledge . We present PaperQA , a RAG agent for answering questions over the scientific literature . PaperQA is an agent that performs information retrieval across full - text scientific articles , as - sesses the relevance of sources and passages , and uses RAG to provide answers . Viewing this agent as a question - answering model , we find it exceeds performance of existing LLMs and LLM agents on current science QA benchmarks . To push the field closer to how humans perform research on scientific literature , we also introduce LitQA , a more complex benchmark that requires retrieval and synthesis of information from full - text scientific papers across the literature . Finally , we demonstrate PaperQA ’ s matches expert human researchers on LitQA . The rate of papers published yearly grows at an exponential rate , with over 5 million academic arti - cles published in 2022 [ 1 ] , and over 200 million articles in total [ 2 ] . The difficulty of navigating this extensive literature means significant scientific findings have gone unnoticed for extended periods [ 3 , 4 , 5 ] . Work in the last 10 years has sought to make the space of literature more manageable for scientists , with the introduction of keyword search systems [ 6 , 7 ] , vector similarity embeddings [ 8 , 9 , 10 , 11 ] and recommender systems [ 12 , 13 ] . The process of scientific discovery from literature is still , however , highly manual .",
+      "content_hash": "f26bf5170d39ee8195fe920ce147504401e8d420f8a476af2a7528381681d98e",
+      "evidence_id": "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff",
+      "source_group_id": "paper:arxiv:2312.07559",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-4a94acbc9b6fb235/725a9463ab31e99753f99c36f23cd2002777024f08518f6d95a8afabcd5a7d97/chunks.jsonl:17"
+    },
+    {
+      "content": "ABSTRACT Remarkable progress has been made on automated problem solving through so - cieties of agents based on large language models ( LLMs ) . Existing LLM - based multi - agent systems can already solve simple dialogue tasks . Solutions to more complex tasks , however , are complicated through logic inconsistencies due to cascading hallucinations caused by naively chaining LLMs . Here we introduce MetaGPT , an innovative meta - programming framework incorporating efficient human workflows into LLM - based multi - agent collaborations . MetaGPT en - codes Standardized Operating Procedures ( SOPs ) into prompt sequences for more streamlined workflows , thus allowing agents with human - like domain expertise to verify intermediate results and reduce errors . MetaGPT utilizes an assembly line paradigm to assign diverse roles to various agents , efficiently breaking down complex tasks into subtasks involving many agents working together . On col - laborative software engineering benchmarks , MetaGPT generates more coherent solutions than previous chat - based multi - agent systems . Our project can be found at https : / / github . com / geekan / MetaGPT . Autonomous agents utilizing Large Language Models ( LLMs ) offer promising opportunities to en - hance and replicate human workflows . In real - world applications , however , existing systems ( Park et al . , 2023 ; Zhuge et al . , 2023 ; Cai et al . , 2023 ; Wang et al . , 2023c ; Li et al . , 2023 ; Du et al . , 2023 ; Liang et al . , 2023 ; Hao et al . , 2023 ; Zhou et al . , 2023b ) tend to oversimplify the complexities . They struggle to achieve effective , coherent , and accurate problem - solving processes , particularly when there is a need for meaningful collaborative interaction ( Chen et al . , 2024 ; Zhang et al . , 2023a ; Dong et al . , 2023 ; Zhou et al . , 2023a ; Qian et al . , 2023 ; Tang et al . , 2023b ; Hong et al . , 2024 ) . Through extensive collaborative practice , humans have developed widely accepted Standardized Operating Procedures ( SOPs ) across various domains ( Belbin , 2012 ; Manifesto , 2001 ; DeMarco & Lister , 2013 ) . These SOPs play a critical role in supporting task decomposition and effective coor - dination . Furthermore , SOPs outline the responsibilities of each team member , while establishing standards for intermediate outputs . Well - defined SOPs improve the consistent and accurate exe - cution of tasks that align with defined roles and quality standards ( Belbin , 2012 ; Manifesto , 2001 ; DeMarco & Lister , 2013 ; Wooldridge & Jennings , 1998 ) . For instance , in a software company , Product Managers analyze competition and user needs to create Product Requirements Documents",
+      "content_hash": "71b68301dacd4ca21d1330dc05e85028f2f93148c4ee613d4b82fd2a418e7a2b",
+      "evidence_id": "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54",
+      "source_group_id": "paper:arxiv:2308.00352",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-9d8eee023d0e4fd5/b9906f38e6d150ae000ef6af2efc6450d3a0b9a26dccc22e821ba1602572a051/chunks.jsonl:4"
+    },
+    {
+      "content": "ABSTRACT Believableproxiesofhumanbehaviorcanempowerinteractive applications ranging from immersive environments to rehearsal spaces for interpersonal communication to prototyping tools . In this paper , we introduce generative agents : computational software agents that simulate believable human behavior . Generative agents wakeup , cookbreakfast , andheadtowork ; artistspaint , while Permission to make digital or hard copies of part or all of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page . Copyrights for third - party components of this work must be honored . For all other uses , contact the owner / author ( s ) . UIST ’ 23 , October 29 - November 1 , 2023 , San Francisco , CA , USA © 2023 Copyright held by the owner / author ( s ) . ACM ISBN 979 - 8 - 4007 - 0132 - 0 / 23 / 10 . https : / / doi . org / 10 . 1145 / 3586183 . 3606763 authors write ; they form opinions , notice each other , and initiate conversations ; they remember and reflect on days past as they plan the next day . To enable generative agents , we describe an architecture that extends a large language model to store a complete record of the agent ’ s experiences using natural language , synthesize those memories over time into higher - level reflections , and retrieve them dynamicallytoplanbehavior . Weinstantiategenerativeagents to populate an interactive sandbox environment inspired by The Sims , where end users can interact with a small town of twenty - five agents using natural language . In an evaluation , these generative agents produce believable individual and emergent social behaviors . For example , starting with only a single user - specified notion that one agent wants to throw a Valentine ’ s Day party , the agents autonomously spread invitations to the party over the next two UIST ’ 23 , October 29 - November 1 , 2023 , San Francisco , CA , USA J . S . Park , J . C . O ’ Brien , C . J . Cai , M . R . Morris , P . Liang , M . S . Bernstein days , make new acquaintances , ask each other out on dates to the party , and coordinate to show up for the party together at the right time . Wedemonstratethroughablationthatthecomponentsof our agent architecture — observation , planning , and reflection — each contribute critically to the believability of agent behavior . By fusing large language models with computational interactive agents , this work introduces architectural and interaction patterns for enabling believable simulations of human behavior .",
+      "content_hash": "8f03805ddc3a8b613d3bdc7c4b009da076687e95ec674408fbb21ebdd257519e",
+      "evidence_id": "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b",
+      "source_group_id": "paper:arxiv:2304.03442",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-6e953134a3c04402/cf516445b819e4b29f85b4ec0c71ebb7cab29546dd26ddc17f3b15e098be998e/chunks.jsonl:9"
+    },
+    {
+      "content": "1 Introduction milestone in AI research . GAIA proposes real - world questions that require a set of fundamental abilities such as reasoning , multi - modality handling , web browsing , and generally tool - use proficiency . GAIA questions are conceptually simple for humans yet challenging for most advanced AIs : we show that human respondents obtain 92 % vs . 15 % for GPT - 4 equipped with plugins . This notable performance disparity contrasts with the recent trend of LLMs outperforming humans on tasks requiring professional skills in e . g . law or chemistry . GAIA ’ s philosophy departs from the current trend in AI benchmarks suggesting to target tasks that are ever more difficult for humans . We posit that the advent of Artificial General Intelligence ( AGI ) hinges on a system ’ s capability to exhibit similar robustness as the average human does on such questions . Using GAIA ’ s methodology , we devise 466 questions and their answer . We release our questions while retaining answers to 300 of them to power a leader - board hereby accessible . Large Language Models ( LLMs ) arguably open the way to general purpose systems . Indeed , the latest among them ( OpenAI , 2023 ; Anthropic , 2023 ; Anil et al . , 2023 ; Touvron et al . , 2023 ) are fluent , knowledgeable , aligned to some extent with human preferences ( Ouyang et al . , 2022 ) , and can be augmented ( Mialon et al . , 2023 ) with tools such as web browsers or code interpreters in a zero or few - shot setting ( Brown et al . , 2020 ) . However , evaluating these systems is an open problem : given their emerging new capabilities , LLMs are regularly breaking AI benchmarks , at an ever - increasing rate ( Kiela et al . , 2023 ) . In search for more challenging benchmarks , current trend suggests to seek tasks that are ever more difficult for humans , and challenge LLMs with more intricate educational assessments , for example in STEM and Law , or target more complex realisations , such as writing a coherent book . But , tasks that are difficult for humans are not necessarily difficult for recent systems : the challenging MMLU or GSM8k benchmarks for example ( Hendrycks et al . , 2021 ; Cobbe et al . , 2021 ) are already close to be solved , 1 due to rapid LLM improvement possibly combined with data contamination . 2 Furthermore , open - ended generation generally requires human or model - based evaluation ( Zheng et al . , 2023 ) . Human evaluation will become less and less feasible when increasing the task complexity , e . g . in terms of output length or required skills : how to evaluate a book generated by an AI ,",
+      "content_hash": "bee65db2a6752637b4ac7491dbafababaa6e0f5100b20fcc82e9bd86f683b263",
+      "evidence_id": "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177",
+      "source_group_id": "paper:arxiv:2311.12983",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-f828b562e56c821d/f151695e98ee9d8efdeae23caaab3f22e2dbec00c19b641b67db78d6a0163521/chunks.jsonl:3"
+    },
+    {
+      "content": "Abstract Therapidadvancementofchat - basedlanguagemodelshasledtoremarkable progress in complex task - solving . However , their success heavily relies on human input to guide the conversation , which can be challenging and time - consuming . This paper explores the potential of building scalable techniques to facilitate au - tonomouscooperationamongcommunicativeagents , andprovidesinsightinto their “ cognitive ” processes . To address the challenges of achieving autonomous cooperation , weproposeanovelcommunicativeagentframeworknamedrole - playing . Our approach involves using inception prompting to guide chat agents toward task completion while maintaining consistency with human intentions . We showcase how role - playing can be used to generate conversational data for studying the behaviors and capabilities of a society of agents , providing a valuable resource for investigating conversational language models . In particular , we conduct com - prehensive studies on instruction - following cooperation in multi - agent settings . Our contributions include introducing a novel communicative agent framework , offering a scalable approach for studying the cooperative behaviors and capabili - ties of multi - agent systems , and open - sourcing our library to support research on communicative agents and beyond : https : / / github . com / camel - ai / camel . - Marvin Minsky , The Society of Mind , p . 308 Confronted with the complexities of real - world tasks , solving them often requires multiple steps . Therapidprogressofchat - basedlarge - scalelanguagemodels ( LLMs ) hasyieldedremarkable achievements in complex task - solving [ 82 , 84 , 116 , 89 , 5 , 10 , 122 , 13 ] . Nevertheless , it is worth notingthattheirsuccessisheavilyreliantonhumaninputtoguidetheconversationintheright direction . This reliance necessitates users to provide relevant and precise prompts based on their intentions and the chat agent ’ s feedback . This can be challenging , time - consuming , and sometimes impossible . Craftingeffectivepromptsoftendemandsadeepunderstandingandexpertiseofa particular domain of knowledge . Consider an individual who lacks trading expertise ; they would find it difficult to create suitable prompts for directing a chat agent to develop a trading application . This predicament is raising a crucial question : can we replace human intervention with an autonomous communicativeagentcapableofsteeringtheconversationtowardtaskcompletionwithminimal human supervision ? To tackle this issue , it is crucial to conduct more research exploring the potential , This paper explores the potential of building scalable techniques to facilitate autonomous cooperation among communicative agents and provide insight into their “ cognitive ” processes . Several challenges arise when asking a society of agents to autonomously cooperate on completing tasks . Examples we encountered in our preliminary analysis include role flipping , assistant repeating instructions , flake replies , and infinite loop of messages . Therefore , it is critical to investigate ways to align these models with human intentions and to explore means enabling their effective cooperation . To address these issues , we propose a novel cooperative agent framework named role - playing to automate cooperation between communicative agents . Specifically , our proposed approach involves using role - playing with inception prompting to autonomously guide the communicative agents toward task completion . Only a preliminary idea is needed from human to guide the conversations toward complex task - solving .",
+      "content_hash": "f818ea8f6535f4e03a9ac4b9afd56119c25e86d25d7e3510f3565fec08d34edf",
+      "evidence_id": "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce",
+      "source_group_id": "paper:arxiv:2303.17760",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-5e96a30b934f8a02/84fa0c2f378ddbc7351fc990bc46ae1c4c5f0d5f821b85600710ea01218d9e2b/chunks.jsonl:5"
+    },
+    {
+      "content": "Abstract Language models are increasingly being deployed for general problem solving across a wide range of tasks , but are still confined to token - level , left - to - right decision - making processes during inference . This means they can fall short in tasks that require exploration , strategic lookahead , or where initial decisions play a pivotal role . To surmount these challenges , we introduce a new framework for language model inference , “ Tree of Thoughts ” ( ToT ) , which generalizes over the popular “ Chain of Thought ” approach to prompting language models , and enables exploration over coherent units of text ( “ thoughts ” ) that serve as intermediate steps toward problem solving . ToT allows LMs to perform deliberate decision making by considering multiple different reasoning paths and self - evaluating choices to decide the next course of action , as well as looking ahead or backtracking when necessary to make global choices . Our experiments show that ToT significantly enhances language models ’ problem - solving abilities on three novel tasks requiring non - trivial planning or search : Game of 24 , Creative Writing , and Mini Crosswords . For instance , in Game of 24 , while GPT - 4 with chain - of - thought prompting only solved 4 % of tasks , our method achieved a success rate of 74 % . Code repo with all prompts : https : / / github . com / princeton - nlp / tree - of - thought - llm . Originally designed to generate text , scaled - up versions of language models ( LMs ) such as GPT [ 25 , 26 , 1 , 23 ] and PaLM [ 5 ] have been shown to be increasingly capable of performing an ever wider range of tasks requiring mathematical , symbolic , commonsense , and knowledge reasoning . It is perhaps surprising that underlying all this progress is still the original autoregressive mechanism for generating text , which makes token - level decisions one by one and in a left - to - right fashion . Is such a simple mechanism sufficient for a LM to be built toward a general problem solver ? If not , what problems would challenge the current paradigm , and what should be alternative mechanisms ? The literature on human cognition provides some clues to answer these questions . Research on “ dual process ” models suggests that people have two modes in which they engage with decisions – a fast , automatic , unconscious mode ( “ System 1 ” ) and a slow , deliberate , conscious mode ( “ System 2 ” ) [ 30 , 31 , 16 , 15 ] . These two modes have previously been connected to a variety of mathematical models used in machine learning . For example , research on reinforcement learning in humans and other animals has explored",
+      "content_hash": "6b153304f7b8421453fd39c1f4bce8e415126bdeaf10ca35a28d89dd407cff46",
+      "evidence_id": "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9",
+      "source_group_id": "paper:arxiv:2305.10601",
+      "source_kind": "chunk",
+      "source_locator": "data/processed/paper-b9e2587557aa1147/34dcc3599de4a67af66d2a6ded4209e8824f60aa748b0d30fbe14591b604458d/chunks.jsonl:5"
+    },
+    {
+      "content": "What accuracy metric is reported for Agent 16? accuracy is 80%.",
+      "content_hash": "36ce7a4942186dae09b880fa8e4296bb2e720089b2483dd6fb6ee1b3f0ac0c61",
+      "evidence_id": "conflict-q16-a",
+      "source_group_id": "paper:paper-q16",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q16/conflict-q16-a"
+    },
+    {
+      "content": "What accuracy metric is reported for Agent 16? accuracy is 90%.",
+      "content_hash": "497c05db05aada7806a1580ac8c742281bcec321529c9a20c0f53db52ed73b59",
+      "evidence_id": "conflict-q16-b",
+      "source_group_id": "paper:paper-q16",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q16/conflict-q16-b"
+    },
+    {
+      "content": "What accuracy metric is reported for Agent 17? accuracy is 80%.",
+      "content_hash": "767c31db137ae6be2c42326f5d5b02b955bd974948c717e06678d8bf37186a5c",
+      "evidence_id": "conflict-q17-a",
+      "source_group_id": "paper:paper-q17",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q17/conflict-q17-a"
+    },
+    {
+      "content": "What accuracy metric is reported for Agent 17? accuracy is 90%.",
+      "content_hash": "c89d494b3c75077371fb8a40e546b50b0d4a6ee87d15ff4c0354633764edca35",
+      "evidence_id": "conflict-q17-b",
+      "source_group_id": "paper:paper-q17",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q17/conflict-q17-b"
+    },
+    {
+      "content": "What accuracy metric is reported for Agent 18? accuracy is 80%.",
+      "content_hash": "1b3525dc74cb1cf5faa44bc5f4187919bdf178c45df4d3aac408bb5cccb79ce8",
+      "evidence_id": "conflict-q18-a",
+      "source_group_id": "paper:paper-q18",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q18/conflict-q18-a"
+    },
+    {
+      "content": "What accuracy metric is reported for Agent 18? accuracy is 90%.",
+      "content_hash": "616586d3b6c5baba7afe40366d583286c8902a07b783b95e4fd6118002d8a6ae",
+      "evidence_id": "conflict-q18-b",
+      "source_group_id": "paper:paper-q18",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q18/conflict-q18-b"
+    },
+    {
+      "content": "What architecture does Agent System 1 use? Agent System 1 uses a planner architecture.",
+      "content_hash": "cb8fe2e58955a04d12fd3db414ee9672791694d4ee3287f75fb22615fc51ba5f",
+      "evidence_id": "target-q01",
+      "source_group_id": "paper:paper-q01",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q01/target-q01"
+    },
+    {
+      "content": "What architecture does Agent System 2 use? Agent System 2 uses a planner architecture.",
+      "content_hash": "4aa569ef1ad86c1bc14581467c5e38d3093f7ff442b50f98dd23c03084907f66",
+      "evidence_id": "target-q02",
+      "source_group_id": "paper:paper-q02",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q02/target-q02"
+    },
+    {
+      "content": "What architecture does Agent System 3 use? Agent System 3 uses a planner architecture.",
+      "content_hash": "522d3182894b9632adefaad934a7007cbfa353ba8df2add9280bf31f83a861f7",
+      "evidence_id": "target-q03",
+      "source_group_id": "paper:paper-q03",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q03/target-q03"
+    },
+    {
+      "content": "Which paper introduces the AlphaAgent 4 entity? Paper 4 introduces AlphaAgent 4.",
+      "content_hash": "70cc0a22cdb31e5c665cab234abb4d5a84651f6b8e4033fa4a5c278f738a6721",
+      "evidence_id": "target-q04",
+      "source_group_id": "paper:paper-q04",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q04/target-q04"
+    },
+    {
+      "content": "Which paper introduces the AlphaAgent 5 entity? Paper 5 introduces AlphaAgent 5.",
+      "content_hash": "dcd719de8dba54279572c82160acd2a177ee7a2f721e06f2fdea24458bd8a6e6",
+      "evidence_id": "target-q05",
+      "source_group_id": "paper:paper-q05",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q05/target-q05"
+    },
+    {
+      "content": "Which paper introduces the AlphaAgent 6 entity? Paper 6 introduces AlphaAgent 6.",
+      "content_hash": "9e478d0857560c08f9909ca0094bb099ddf38321e929ce7c642db65157137993",
+      "evidence_id": "target-q06",
+      "source_group_id": "paper:paper-q06",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q06/target-q06"
+    },
+    {
+      "content": "What multi-hop relationship links Agent 10 and Tool 10? Agent 10 uses an intermediate planner linked to Tool 10.",
+      "content_hash": "bc400897e44f4ebb244680291c16ce2848cdc9192e1a54fd1ca7a7720a7915a3",
+      "evidence_id": "target-q10",
+      "source_group_id": "paper:paper-q10",
+      "source_kind": "graph",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q10/target-q10"
+    },
+    {
+      "content": "What multi-hop relationship links Agent 11 and Tool 11? Agent 11 uses an intermediate planner linked to Tool 11.",
+      "content_hash": "8b1d96f40445dc04a813db0a8c6ce5780437b5d4a4ccdf19e7c5291f4373d59d",
+      "evidence_id": "target-q11",
+      "source_group_id": "paper:paper-q11",
+      "source_kind": "graph",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q11/target-q11"
+    },
+    {
+      "content": "What multi-hop relationship links Agent 12 and Tool 12? Agent 12 uses an intermediate planner linked to Tool 12.",
+      "content_hash": "a1c301749b57d441a6aac5234070addc5a903b805a4ecaebee6f7f6b1e634675",
+      "evidence_id": "target-q12",
+      "source_group_id": "paper:paper-q12",
+      "source_kind": "graph",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q12/target-q12"
+    },
+    {
+      "content": "What accuracy metric is reported for Agent 13? Agent 13 reports an accuracy metric of 83%.",
+      "content_hash": "2ccc5550a6dfed2b378f4c6ba18613453f6aa6babf6f999f2a7ae3b5bcea33f4",
+      "evidence_id": "target-q13",
+      "source_group_id": "paper:paper-q13",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q13/target-q13"
+    },
+    {
+      "content": "What accuracy metric is reported for Agent 14? Agent 14 reports an accuracy metric of 84%.",
+      "content_hash": "e014f1494826d45fb8a79fe67f3fe2e68b8538eb16f27d9d3f224299afd7036d",
+      "evidence_id": "target-q14",
+      "source_group_id": "paper:paper-q14",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q14/target-q14"
+    },
+    {
+      "content": "What accuracy metric is reported for Agent 15? Agent 15 reports an accuracy metric of 85%.",
+      "content_hash": "1440f5b85780c05363d79f30f573544a8f968eb08b6368b5f6955cb2661cca8f",
+      "evidence_id": "target-q15",
+      "source_group_id": "paper:paper-q15",
+      "source_kind": "chunk",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q15/target-q15"
+    },
+    {
+      "content": "What accuracy metric is reported for Agent 16? accuracy is 85%.",
+      "content_hash": "c39869c5aba599db3e839d8485fad945f88c7568988d0e701c013d6722cc192c",
+      "evidence_id": "target-q16",
+      "source_group_id": "paper:paper-q16",
+      "source_kind": "graph",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q16/target-q16"
+    },
+    {
+      "content": "What accuracy metric is reported for Agent 17? accuracy is 85%.",
+      "content_hash": "d3f476ed379af01466d49bb6b23adee4c864b5335b2469237285ba43773ef6dc",
+      "evidence_id": "target-q17",
+      "source_group_id": "paper:paper-q17",
+      "source_kind": "graph",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q17/target-q17"
+    },
+    {
+      "content": "What accuracy metric is reported for Agent 18? accuracy is 85%.",
+      "content_hash": "d8d7e4a9fc986f929e315121da08340949a4335385e699c1737763071c8d4c7c",
+      "evidence_id": "target-q18",
+      "source_group_id": "paper:paper-q18",
+      "source_kind": "graph",
+      "source_locator": "data/evaluation/corrective_dev_questions.json#q18/target-q18"
+    }
+  ],
+  "schema_version": "v1"
+}

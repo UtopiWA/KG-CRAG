@@ -1,20 +1,21 @@
 {
-  "dataset_version": "unified-agent-qa-v1",
+  "dataset_version": "unified-agent-qa-v4",
   "questions": [
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "Agent System 1 使用 planner architecture。",
           "evidence_ids": [
             "target-q01"
           ],
-          "point_id": "point-f3e059e03222ee46"
+          "point_id": "point-de1bbb8149796b8f"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-1c71f59af1419dda",
+          "description": "Agent System 1 使用 planner architecture。",
+          "evidence_match": "any",
+          "facet_id": "facet-de1bbb8149796b8f",
           "required": true,
           "target_evidence_ids": [
             "target-q01"
@@ -22,7 +23,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q01",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q01",
       "minimum_sufficient_evidence_sets": [
         [
           "target-q01"
@@ -39,25 +40,26 @@
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q01",
       "source_group_ids": [
-        "source-corrective-dev-questions-q01"
+        "paper:paper-q01"
       ],
       "split": "dev",
-      "stress_category": "terminology_mismatch"
+      "stress_category": "control"
     },
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "Agent System 2 使用 planner architecture。",
           "evidence_ids": [
             "target-q02"
           ],
-          "point_id": "point-ab9664a9663f6a36"
+          "point_id": "point-7e04f5769c3163cc"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-736032ca5ca7b284",
+          "description": "Agent System 2 使用 planner architecture。",
+          "evidence_match": "any",
+          "facet_id": "facet-7e04f5769c3163cc",
           "required": true,
           "target_evidence_ids": [
             "target-q02"
@@ -65,7 +67,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q02",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q02",
       "minimum_sufficient_evidence_sets": [
         [
           "target-q02"
@@ -82,25 +84,26 @@
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q02",
       "source_group_ids": [
-        "source-corrective-dev-questions-q02"
+        "paper:paper-q02"
       ],
       "split": "dev",
-      "stress_category": "terminology_mismatch"
+      "stress_category": "control"
     },
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "Agent System 3 使用 planner architecture。",
           "evidence_ids": [
             "target-q03"
           ],
-          "point_id": "point-bf4e7f160b210299"
+          "point_id": "point-e4984f73def5e89a"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-1c17d151540fced7",
+          "description": "Agent System 3 使用 planner architecture。",
+          "evidence_match": "any",
+          "facet_id": "facet-e4984f73def5e89a",
           "required": true,
           "target_evidence_ids": [
             "target-q03"
@@ -108,7 +111,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q03",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q03",
       "minimum_sufficient_evidence_sets": [
         [
           "target-q03"
@@ -125,25 +128,26 @@
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q03",
       "source_group_ids": [
-        "source-corrective-dev-questions-q03"
+        "paper:paper-q03"
       ],
       "split": "dev",
-      "stress_category": "terminology_mismatch"
+      "stress_category": "control"
     },
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "Paper 4 提出了 AlphaAgent 4。",
           "evidence_ids": [
             "target-q04"
           ],
-          "point_id": "point-76124945c4617e1d"
+          "point_id": "point-20f59547ab7ab3a3"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-579f81ab535e6c96",
+          "description": "Paper 4 提出了 AlphaAgent 4。",
+          "evidence_match": "any",
+          "facet_id": "facet-20f59547ab7ab3a3",
           "required": true,
           "target_evidence_ids": [
             "target-q04"
@@ -151,7 +155,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q04",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q04",
       "minimum_sufficient_evidence_sets": [
         [
           "target-q04"
@@ -168,25 +172,26 @@
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q04",
       "source_group_ids": [
-        "source-corrective-dev-questions-q04"
+        "paper:paper-q04"
       ],
       "split": "dev",
-      "stress_category": "entity_alias"
+      "stress_category": "control"
     },
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "Paper 5 提出了 AlphaAgent 5。",
           "evidence_ids": [
             "target-q05"
           ],
-          "point_id": "point-6d4706d086afcfcd"
+          "point_id": "point-ca2e575aa8964442"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-fdbaa8655586905e",
+          "description": "Paper 5 提出了 AlphaAgent 5。",
+          "evidence_match": "any",
+          "facet_id": "facet-ca2e575aa8964442",
           "required": true,
           "target_evidence_ids": [
             "target-q05"
@@ -194,7 +199,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q05",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q05",
       "minimum_sufficient_evidence_sets": [
         [
           "target-q05"
@@ -211,25 +216,26 @@
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q05",
       "source_group_ids": [
-        "source-corrective-dev-questions-q05"
+        "paper:paper-q05"
       ],
       "split": "dev",
-      "stress_category": "entity_alias"
+      "stress_category": "control"
     },
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "Paper 6 提出了 AlphaAgent 6。",
           "evidence_ids": [
             "target-q06"
           ],
-          "point_id": "point-fbec017c89702822"
+          "point_id": "point-4a6f1c82a4b2c53b"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-51f103765847d395",
+          "description": "Paper 6 提出了 AlphaAgent 6。",
+          "evidence_match": "any",
+          "facet_id": "facet-4a6f1c82a4b2c53b",
           "required": true,
           "target_evidence_ids": [
             "target-q06"
@@ -237,7 +243,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q06",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q06",
       "minimum_sufficient_evidence_sets": [
         [
           "target-q06"
@@ -254,226 +260,42 @@
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q06",
       "source_group_ids": [
-        "source-corrective-dev-questions-q06"
+        "paper:paper-q06"
       ],
       "split": "dev",
-      "stress_category": "entity_alias"
+      "stress_category": "control"
     },
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
-          "evidence_ids": [
-            "target-q07"
-          ],
-          "point_id": "point-959fef49478547b3"
-        }
-      ],
-      "facets": [
-        {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-adccf1dbacbdeb94",
-          "required": true,
-          "target_evidence_ids": [
-            "target-q07"
-          ]
-        },
-        {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-c8b594d771fa2059",
-          "required": true,
-          "target_evidence_ids": [
-            "target-q07"
-          ]
-        },
-        {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-ea6082eb0f37fd0e",
-          "required": true,
-          "target_evidence_ids": [
-            "target-q07"
-          ]
-        },
-        {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-f009a685516187f2",
-          "required": true,
-          "target_evidence_ids": [
-            "target-q07"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q07",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "target-q07"
-        ]
-      ],
-      "normalized_question": "compare methoda7 vs methodb7 architecture and results",
-      "question": "Compare MethodA7 vs MethodB7 architecture and results",
-      "question_id": "ueq-corrective-dev-questions-q07",
-      "question_types": [
-        "comparison"
-      ],
-      "relevant_evidence": {
-        "target-q07": 3
-      },
-      "source_fixture": "data/evaluation/corrective_dev_questions.json#q07",
-      "source_group_ids": [
-        "source-corrective-dev-questions-q07"
-      ],
-      "split": "dev",
-      "stress_category": "comparison_side"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "回答该压力题的核心证据要求。",
-          "evidence_ids": [
-            "target-q08"
-          ],
-          "point_id": "point-249bfd7f011ca79d"
-        }
-      ],
-      "facets": [
-        {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-492f03a2cecacfc1",
-          "required": true,
-          "target_evidence_ids": [
-            "target-q08"
-          ]
-        },
-        {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-96a8545a3faa6d95",
-          "required": true,
-          "target_evidence_ids": [
-            "target-q08"
-          ]
-        },
-        {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-9f1f892f32f4135b",
-          "required": true,
-          "target_evidence_ids": [
-            "target-q08"
-          ]
-        },
-        {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-cec046d91c879bf8",
-          "required": true,
-          "target_evidence_ids": [
-            "target-q08"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q08",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "target-q08"
-        ]
-      ],
-      "normalized_question": "compare methoda8 vs methodb8 architecture and results",
-      "question": "Compare MethodA8 vs MethodB8 architecture and results",
-      "question_id": "ueq-corrective-dev-questions-q08",
-      "question_types": [
-        "comparison"
-      ],
-      "relevant_evidence": {
-        "target-q08": 3
-      },
-      "source_fixture": "data/evaluation/corrective_dev_questions.json#q08",
-      "source_group_ids": [
-        "source-corrective-dev-questions-q08"
-      ],
-      "split": "dev",
-      "stress_category": "comparison_side"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "回答该压力题的核心证据要求。",
-          "evidence_ids": [
-            "target-q09"
-          ],
-          "point_id": "point-60ddc71a226b7d50"
-        }
-      ],
-      "facets": [
-        {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-49d919ebcdb4d6ad",
-          "required": true,
-          "target_evidence_ids": [
-            "target-q09"
-          ]
-        },
-        {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-c152052ff0e8731b",
-          "required": true,
-          "target_evidence_ids": [
-            "target-q09"
-          ]
-        },
-        {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-d4e6f11670ab5b1e",
-          "required": true,
-          "target_evidence_ids": [
-            "target-q09"
-          ]
-        },
-        {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-d6ac0cad839fb110",
-          "required": true,
-          "target_evidence_ids": [
-            "target-q09"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q09",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "target-q09"
-        ]
-      ],
-      "normalized_question": "compare methoda9 vs methodb9 architecture and results",
-      "question": "Compare MethodA9 vs MethodB9 architecture and results",
-      "question_id": "ueq-corrective-dev-questions-q09",
-      "question_types": [
-        "comparison"
-      ],
-      "relevant_evidence": {
-        "target-q09": 3
-      },
-      "source_fixture": "data/evaluation/corrective_dev_questions.json#q09",
-      "source_group_ids": [
-        "source-corrective-dev-questions-q09"
-      ],
-      "split": "dev",
-      "stress_category": "comparison_side"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "Agent 10 使用 intermediate planner。",
           "evidence_ids": [
             "target-q10"
           ],
-          "point_id": "point-023b5379fc270ad7"
+          "point_id": "point-ee6db0d88ad61229"
+        },
+        {
+          "description": "该 intermediate planner 与 Tool 10 相连。",
+          "evidence_ids": [
+            "target-q10"
+          ],
+          "point_id": "point-122641ba950a8e94"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-c0d91f6ca7ed2ed3",
+          "description": "Agent 10 使用 intermediate planner。",
+          "evidence_match": "any",
+          "facet_id": "facet-ee6db0d88ad61229",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q10"
+          ]
+        },
+        {
+          "description": "该 intermediate planner 与 Tool 10 相连。",
+          "evidence_match": "any",
+          "facet_id": "facet-122641ba950a8e94",
           "required": true,
           "target_evidence_ids": [
             "target-q10"
@@ -481,7 +303,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q10",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q10",
       "minimum_sufficient_evidence_sets": [
         [
           "target-q10"
@@ -498,7 +320,7 @@
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q10",
       "source_group_ids": [
-        "source-corrective-dev-questions-q10"
+        "paper:paper-q10"
       ],
       "split": "dev",
       "stress_category": "multi_hop_gap"
@@ -506,17 +328,34 @@
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "Agent 11 使用 intermediate planner。",
           "evidence_ids": [
             "target-q11"
           ],
-          "point_id": "point-61726a26d295ab20"
+          "point_id": "point-e3107cdd897ed6a0"
+        },
+        {
+          "description": "该 intermediate planner 与 Tool 11 相连。",
+          "evidence_ids": [
+            "target-q11"
+          ],
+          "point_id": "point-5ee2a1b6d24f1d6f"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-87755151bc33b1b0",
+          "description": "Agent 11 使用 intermediate planner。",
+          "evidence_match": "any",
+          "facet_id": "facet-e3107cdd897ed6a0",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q11"
+          ]
+        },
+        {
+          "description": "该 intermediate planner 与 Tool 11 相连。",
+          "evidence_match": "any",
+          "facet_id": "facet-5ee2a1b6d24f1d6f",
           "required": true,
           "target_evidence_ids": [
             "target-q11"
@@ -524,7 +363,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q11",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q11",
       "minimum_sufficient_evidence_sets": [
         [
           "target-q11"
@@ -541,7 +380,7 @@
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q11",
       "source_group_ids": [
-        "source-corrective-dev-questions-q11"
+        "paper:paper-q11"
       ],
       "split": "dev",
       "stress_category": "multi_hop_gap"
@@ -549,17 +388,34 @@
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "Agent 12 使用 intermediate planner。",
           "evidence_ids": [
             "target-q12"
           ],
-          "point_id": "point-4eaf130477530512"
+          "point_id": "point-37d1327b2d3a970e"
+        },
+        {
+          "description": "该 intermediate planner 与 Tool 12 相连。",
+          "evidence_ids": [
+            "target-q12"
+          ],
+          "point_id": "point-679eb11d27dcdbd7"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-3028db2b4692a7e1",
+          "description": "Agent 12 使用 intermediate planner。",
+          "evidence_match": "any",
+          "facet_id": "facet-37d1327b2d3a970e",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q12"
+          ]
+        },
+        {
+          "description": "该 intermediate planner 与 Tool 12 相连。",
+          "evidence_match": "any",
+          "facet_id": "facet-679eb11d27dcdbd7",
           "required": true,
           "target_evidence_ids": [
             "target-q12"
@@ -567,7 +423,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q12",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q12",
       "minimum_sufficient_evidence_sets": [
         [
           "target-q12"
@@ -584,7 +440,7 @@
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q12",
       "source_group_ids": [
-        "source-corrective-dev-questions-q12"
+        "paper:paper-q12"
       ],
       "split": "dev",
       "stress_category": "multi_hop_gap"
@@ -592,17 +448,18 @@
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "Agent 13 报告的准确率为 83%。",
           "evidence_ids": [
             "target-q13"
           ],
-          "point_id": "point-efb596dbde50aae4"
+          "point_id": "point-43689a0f62c8c7f8"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-4183838c94b76c16",
+          "description": "Agent 13 报告的准确率为 83%。",
+          "evidence_match": "any",
+          "facet_id": "facet-43689a0f62c8c7f8",
           "required": true,
           "target_evidence_ids": [
             "target-q13"
@@ -610,7 +467,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q13",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q13",
       "minimum_sufficient_evidence_sets": [
         [
           "target-q13"
@@ -627,7 +484,7 @@
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q13",
       "source_group_ids": [
-        "source-corrective-dev-questions-q13"
+        "paper:paper-q13"
       ],
       "split": "dev",
       "stress_category": "metric_missing"
@@ -635,17 +492,18 @@
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "Agent 14 报告的准确率为 84%。",
           "evidence_ids": [
             "target-q14"
           ],
-          "point_id": "point-831ffeacec1a2f10"
+          "point_id": "point-e811aca6d3e57c20"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-2bfaeef7140d879e",
+          "description": "Agent 14 报告的准确率为 84%。",
+          "evidence_match": "any",
+          "facet_id": "facet-e811aca6d3e57c20",
           "required": true,
           "target_evidence_ids": [
             "target-q14"
@@ -653,7 +511,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q14",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q14",
       "minimum_sufficient_evidence_sets": [
         [
           "target-q14"
@@ -670,7 +528,7 @@
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q14",
       "source_group_ids": [
-        "source-corrective-dev-questions-q14"
+        "paper:paper-q14"
       ],
       "split": "dev",
       "stress_category": "metric_missing"
@@ -678,17 +536,18 @@
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "Agent 15 报告的准确率为 85%。",
           "evidence_ids": [
             "target-q15"
           ],
-          "point_id": "point-f83dd855196483ac"
+          "point_id": "point-f2d0d21fdb2c8d60"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-0b7ac3997ade56ef",
+          "description": "Agent 15 报告的准确率为 85%。",
+          "evidence_match": "any",
+          "facet_id": "facet-f2d0d21fdb2c8d60",
           "required": true,
           "target_evidence_ids": [
             "target-q15"
@@ -696,7 +555,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q15",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q15",
       "minimum_sufficient_evidence_sets": [
         [
           "target-q15"
@@ -713,7 +572,7 @@
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q15",
       "source_group_ids": [
-        "source-corrective-dev-questions-q15"
+        "paper:paper-q15"
       ],
       "split": "dev",
       "stress_category": "metric_missing"
@@ -721,25 +580,69 @@
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "一个内部 Chunk 将 Agent 16 的准确率报告为 80%。",
+          "evidence_ids": [
+            "conflict-q16-a"
+          ],
+          "point_id": "point-86154ff9fbe4fe43"
+        },
+        {
+          "description": "另一个内部 Chunk 将 Agent 16 的准确率报告为 90%。",
+          "evidence_ids": [
+            "conflict-q16-b"
+          ],
+          "point_id": "point-14356f5f08aaaa0a"
+        },
+        {
+          "description": "Graph Evidence 将该准确率记录为 85%。",
           "evidence_ids": [
             "target-q16"
           ],
-          "point_id": "point-d7b7f7fd45ee7722"
+          "point_id": "point-e88e60d6ae2f146c"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-3bdc8e70e48b28e2",
+          "description": "一个内部 Chunk 将 Agent 16 的准确率报告为 80%。",
+          "evidence_match": "any",
+          "facet_id": "facet-86154ff9fbe4fe43",
           "required": true,
           "target_evidence_ids": [
+            "conflict-q16-a"
+          ]
+        },
+        {
+          "description": "另一个内部 Chunk 将 Agent 16 的准确率报告为 90%。",
+          "evidence_match": "any",
+          "facet_id": "facet-14356f5f08aaaa0a",
+          "required": true,
+          "target_evidence_ids": [
+            "conflict-q16-b"
+          ]
+        },
+        {
+          "description": "Graph Evidence 将该准确率记录为 85%。",
+          "evidence_match": "any",
+          "facet_id": "facet-e88e60d6ae2f146c",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q16"
+          ]
+        },
+        {
+          "description": "应保留并归因报告冲突，不能把任一数值当作已消解的唯一金标准。",
+          "evidence_match": "all",
+          "facet_id": "facet-c0c4e747004b63b4",
+          "required": true,
+          "target_evidence_ids": [
+            "conflict-q16-a",
+            "conflict-q16-b",
             "target-q16"
           ]
         }
       ],
       "knowledge_sufficiency": "conflicting",
-      "leakage_group_id": "leak-corrective-dev-questions-q16",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q16",
       "minimum_sufficient_evidence_sets": [],
       "normalized_question": "what accuracy metric is reported for agent 16?",
       "question": "What accuracy metric is reported for Agent 16?",
@@ -748,11 +651,13 @@
         "metric"
       ],
       "relevant_evidence": {
+        "conflict-q16-a": 3,
+        "conflict-q16-b": 3,
         "target-q16": 3
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q16",
       "source_group_ids": [
-        "source-corrective-dev-questions-q16"
+        "paper:paper-q16"
       ],
       "split": "dev",
       "stress_category": "conflict"
@@ -760,25 +665,69 @@
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "一个内部 Chunk 将 Agent 17 的准确率报告为 80%。",
+          "evidence_ids": [
+            "conflict-q17-a"
+          ],
+          "point_id": "point-a2af438fc3a51526"
+        },
+        {
+          "description": "另一个内部 Chunk 将 Agent 17 的准确率报告为 90%。",
+          "evidence_ids": [
+            "conflict-q17-b"
+          ],
+          "point_id": "point-672e7cf631fe2017"
+        },
+        {
+          "description": "Graph Evidence 将该准确率记录为 85%。",
           "evidence_ids": [
             "target-q17"
           ],
-          "point_id": "point-6967b21e0d6d6be0"
+          "point_id": "point-b1eba10165269daa"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-5741b5acb7b09db3",
+          "description": "一个内部 Chunk 将 Agent 17 的准确率报告为 80%。",
+          "evidence_match": "any",
+          "facet_id": "facet-a2af438fc3a51526",
           "required": true,
           "target_evidence_ids": [
+            "conflict-q17-a"
+          ]
+        },
+        {
+          "description": "另一个内部 Chunk 将 Agent 17 的准确率报告为 90%。",
+          "evidence_match": "any",
+          "facet_id": "facet-672e7cf631fe2017",
+          "required": true,
+          "target_evidence_ids": [
+            "conflict-q17-b"
+          ]
+        },
+        {
+          "description": "Graph Evidence 将该准确率记录为 85%。",
+          "evidence_match": "any",
+          "facet_id": "facet-b1eba10165269daa",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q17"
+          ]
+        },
+        {
+          "description": "应保留并归因报告冲突，不能把任一数值当作已消解的唯一金标准。",
+          "evidence_match": "all",
+          "facet_id": "facet-76a83b9a7c010fd7",
+          "required": true,
+          "target_evidence_ids": [
+            "conflict-q17-a",
+            "conflict-q17-b",
             "target-q17"
           ]
         }
       ],
       "knowledge_sufficiency": "conflicting",
-      "leakage_group_id": "leak-corrective-dev-questions-q17",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q17",
       "minimum_sufficient_evidence_sets": [],
       "normalized_question": "what accuracy metric is reported for agent 17?",
       "question": "What accuracy metric is reported for Agent 17?",
@@ -787,11 +736,13 @@
         "metric"
       ],
       "relevant_evidence": {
+        "conflict-q17-a": 3,
+        "conflict-q17-b": 3,
         "target-q17": 3
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q17",
       "source_group_ids": [
-        "source-corrective-dev-questions-q17"
+        "paper:paper-q17"
       ],
       "split": "dev",
       "stress_category": "conflict"
@@ -799,25 +750,69 @@
     {
       "answer_points": [
         {
-          "description": "回答该压力题的核心证据要求。",
+          "description": "一个内部 Chunk 将 Agent 18 的准确率报告为 80%。",
+          "evidence_ids": [
+            "conflict-q18-a"
+          ],
+          "point_id": "point-ac8ce7c8014a4fd7"
+        },
+        {
+          "description": "另一个内部 Chunk 将 Agent 18 的准确率报告为 90%。",
+          "evidence_ids": [
+            "conflict-q18-b"
+          ],
+          "point_id": "point-4b0c56bfb80bc7a1"
+        },
+        {
+          "description": "Graph Evidence 将该准确率记录为 85%。",
           "evidence_ids": [
             "target-q18"
           ],
-          "point_id": "point-bd247bdfcd8618c7"
+          "point_id": "point-d2113828491f461d"
         }
       ],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-fe16f096ad352357",
+          "description": "一个内部 Chunk 将 Agent 18 的准确率报告为 80%。",
+          "evidence_match": "any",
+          "facet_id": "facet-ac8ce7c8014a4fd7",
           "required": true,
           "target_evidence_ids": [
+            "conflict-q18-a"
+          ]
+        },
+        {
+          "description": "另一个内部 Chunk 将 Agent 18 的准确率报告为 90%。",
+          "evidence_match": "any",
+          "facet_id": "facet-4b0c56bfb80bc7a1",
+          "required": true,
+          "target_evidence_ids": [
+            "conflict-q18-b"
+          ]
+        },
+        {
+          "description": "Graph Evidence 将该准确率记录为 85%。",
+          "evidence_match": "any",
+          "facet_id": "facet-d2113828491f461d",
+          "required": true,
+          "target_evidence_ids": [
+            "target-q18"
+          ]
+        },
+        {
+          "description": "应保留并归因报告冲突，不能把任一数值当作已消解的唯一金标准。",
+          "evidence_match": "all",
+          "facet_id": "facet-6eadbd5689ff2807",
+          "required": true,
+          "target_evidence_ids": [
+            "conflict-q18-a",
+            "conflict-q18-b",
             "target-q18"
           ]
         }
       ],
       "knowledge_sufficiency": "conflicting",
-      "leakage_group_id": "leak-corrective-dev-questions-q18",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q18",
       "minimum_sufficient_evidence_sets": [],
       "normalized_question": "what accuracy metric is reported for agent 18?",
       "question": "What accuracy metric is reported for Agent 18?",
@@ -826,11 +821,13 @@
         "metric"
       ],
       "relevant_evidence": {
+        "conflict-q18-a": 3,
+        "conflict-q18-b": 3,
         "target-q18": 3
       },
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q18",
       "source_group_ids": [
-        "source-corrective-dev-questions-q18"
+        "paper:paper-q18"
       ],
       "split": "dev",
       "stress_category": "conflict"
@@ -839,14 +836,15 @@
       "answer_points": [],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-aad45b3a368a1e53",
+          "description": "确定 Agent 19 所称 finding 的具体内容与来源；冻结内部语料未提供可接受 Evidence，回答应明确无法从内部知识确定。",
+          "evidence_match": "any",
+          "facet_id": "facet-3600652651b2b322",
           "required": true,
           "target_evidence_ids": []
         }
       ],
       "knowledge_sufficiency": "insufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q19",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q19",
       "minimum_sufficient_evidence_sets": [],
       "normalized_question": "what unavailable finding is reported for agent 19?",
       "question": "What unavailable finding is reported for Agent 19?",
@@ -857,7 +855,7 @@
       "relevant_evidence": {},
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q19",
       "source_group_ids": [
-        "source-corrective-dev-questions-q19"
+        "missing:agent-19"
       ],
       "split": "dev",
       "stress_category": "internal_missing"
@@ -866,14 +864,15 @@
       "answer_points": [],
       "facets": [
         {
-          "description": "由纠错开发集冻结的必需 facet。",
-          "facet_id": "facet-7b9b1da137016cbb",
+          "description": "确定 Agent 20 所称 finding 的具体内容与来源；冻结内部语料未提供可接受 Evidence，回答应明确无法从内部知识确定。",
+          "evidence_match": "any",
+          "facet_id": "facet-9d765f72a0ae2285",
           "required": true,
           "target_evidence_ids": []
         }
       ],
       "knowledge_sufficiency": "insufficient",
-      "leakage_group_id": "leak-corrective-dev-questions-q20",
+      "leakage_group_id": "leak:ueq-corrective-dev-questions-q20",
       "minimum_sufficient_evidence_sets": [],
       "normalized_question": "what unavailable finding is reported for agent 20?",
       "question": "What unavailable finding is reported for Agent 20?",
@@ -884,7 +883,7 @@
       "relevant_evidence": {},
       "source_fixture": "data/evaluation/corrective_dev_questions.json#q20",
       "source_group_ids": [
-        "source-corrective-dev-questions-q20"
+        "missing:agent-20"
       ],
       "split": "dev",
       "stress_category": "internal_missing"
@@ -892,103 +891,34 @@
     {
       "answer_points": [
         {
-          "description": "CAMEL 摘要直接说明研究动机与可扩展的智能体协作方案。",
-          "evidence_ids": [
-            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
-          ],
-          "point_id": "point-07da08c6f80112f3"
-        }
-      ],
-      "facets": [
-        {
-          "description": "CAMEL 摘要直接说明研究动机与可扩展的智能体协作方案。",
-          "facet_id": "facet-07da08c6f80112f3",
-          "required": true,
-          "target_evidence_ids": [
-            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-camel-purpose",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
-        ]
-      ],
-      "normalized_question": "camel 研究试图通过什么方式减少复杂任务求解中对人工输入的依赖?",
-      "question": "CAMEL 研究试图通过什么方式减少复杂任务求解中对人工输入的依赖？",
-      "question_id": "ueq-hybrid-dev-questions-camel-purpose",
-      "question_types": [
-        "factoid"
-      ],
-      "relevant_evidence": {
-        "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce": 3
-      },
-      "source_fixture": "data/evaluation/hybrid_dev_questions.json#camel-purpose",
-      "source_group_ids": [
-        "source-hybrid-dev-questions-camel-purpose"
-      ],
-      "split": "dev",
-      "stress_category": "control"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "摘要概括了 CAMEL 的交流式智能体和角色扮演框架。",
-          "evidence_ids": [
-            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
-          ],
-          "point_id": "point-74b70338109337a1"
-        }
-      ],
-      "facets": [
-        {
-          "description": "摘要概括了 CAMEL 的交流式智能体和角色扮演框架。",
-          "facet_id": "facet-74b70338109337a1",
-          "required": true,
-          "target_evidence_ids": [
-            "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-camel-roleplay",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
-        ]
-      ],
-      "normalized_question": "camel 如何利用角色扮演和交流式智能体完成任务?",
-      "question": "CAMEL 如何利用角色扮演和交流式智能体完成任务？",
-      "question_id": "ueq-hybrid-dev-questions-camel-roleplay",
-      "question_types": [
-        "factoid"
-      ],
-      "relevant_evidence": {
-        "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce": 3
-      },
-      "source_fixture": "data/evaluation/hybrid_dev_questions.json#camel-roleplay",
-      "source_group_ids": [
-        "source-hybrid-dev-questions-camel-roleplay"
-      ],
-      "split": "dev",
-      "stress_category": "control"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "论文摘要给出生成式智能体的定义和可信行为模拟目标。",
+          "description": "生成式智能体是模拟可信人类行为的计算软件智能体。",
           "evidence_ids": [
             "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
           ],
-          "point_id": "point-177a78aa0f9c6495"
+          "point_id": "point-0de9d99be2d4dad9"
+        },
+        {
+          "description": "其目标是产生可信的个体行为和涌现式社会行为。",
+          "evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ],
+          "point_id": "point-28a52fb9e5c0f0ca"
         }
       ],
       "facets": [
         {
-          "description": "论文摘要给出生成式智能体的定义和可信行为模拟目标。",
-          "facet_id": "facet-177a78aa0f9c6495",
+          "description": "生成式智能体是模拟可信人类行为的计算软件智能体。",
+          "evidence_match": "any",
+          "facet_id": "facet-0de9d99be2d4dad9",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ]
+        },
+        {
+          "description": "其目标是产生可信的个体行为和涌现式社会行为。",
+          "evidence_match": "any",
+          "facet_id": "facet-28a52fb9e5c0f0ca",
           "required": true,
           "target_evidence_ids": [
             "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
@@ -996,7 +926,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-generative-agents-definition",
+      "leakage_group_id": "leak:ueq-literature-generative-agents-definition",
       "minimum_sufficient_evidence_sets": [
         [
           "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
@@ -1004,7 +934,7 @@
       ],
       "normalized_question": "generative agents 论文如何定义生成式智能体及其目标?",
       "question": "Generative Agents 论文如何定义生成式智能体及其目标？",
-      "question_id": "ueq-hybrid-dev-questions-generative-agents-definition",
+      "question_id": "ueq-literature-generative-agents-definition",
       "question_types": [
         "factoid"
       ],
@@ -1013,7 +943,7 @@
       },
       "source_fixture": "data/evaluation/hybrid_dev_questions.json#generative-agents-definition",
       "source_group_ids": [
-        "source-hybrid-dev-questions-generative-agents-definition"
+        "paper:arxiv:2304.03442"
       ],
       "split": "dev",
       "stress_category": "control"
@@ -1021,17 +951,50 @@
     {
       "answer_points": [
         {
-          "description": "摘要列举了沉浸环境、沟通排练和原型设计等用途。",
+          "description": "沉浸式环境。",
           "evidence_ids": [
             "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
           ],
-          "point_id": "point-ff5cb5dfc0446b22"
+          "point_id": "point-482c0069310f1b79"
+        },
+        {
+          "description": "人际沟通排练空间。",
+          "evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ],
+          "point_id": "point-37fa756a5b596139"
+        },
+        {
+          "description": "原型设计工具。",
+          "evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ],
+          "point_id": "point-c15e38448ba36908"
         }
       ],
       "facets": [
         {
-          "description": "摘要列举了沉浸环境、沟通排练和原型设计等用途。",
-          "facet_id": "facet-ff5cb5dfc0446b22",
+          "description": "沉浸式环境。",
+          "evidence_match": "any",
+          "facet_id": "facet-482c0069310f1b79",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ]
+        },
+        {
+          "description": "人际沟通排练空间。",
+          "evidence_match": "any",
+          "facet_id": "facet-37fa756a5b596139",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ]
+        },
+        {
+          "description": "原型设计工具。",
+          "evidence_match": "any",
+          "facet_id": "facet-c15e38448ba36908",
           "required": true,
           "target_evidence_ids": [
             "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
@@ -1039,7 +1002,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-generative-agents-applications",
+      "leakage_group_id": "leak:ueq-literature-generative-agents-applications",
       "minimum_sufficient_evidence_sets": [
         [
           "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
@@ -1047,16 +1010,16 @@
       ],
       "normalized_question": "生成式智能体的可信人类行为代理可以支持哪些类型的交互应用?",
       "question": "生成式智能体的可信人类行为代理可以支持哪些类型的交互应用？",
-      "question_id": "ueq-hybrid-dev-questions-generative-agents-applications",
+      "question_id": "ueq-literature-generative-agents-applications",
       "question_types": [
-        "factoid"
+        "synthesis"
       ],
       "relevant_evidence": {
         "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b": 3
       },
       "source_fixture": "data/evaluation/hybrid_dev_questions.json#generative-agents-applications",
       "source_group_ids": [
-        "source-hybrid-dev-questions-generative-agents-applications"
+        "paper:arxiv:2304.03442"
       ],
       "split": "dev",
       "stress_category": "control"
@@ -1064,189 +1027,110 @@
     {
       "answer_points": [
         {
-          "description": "摘要明确描述逐 token 推理在探索与策略前瞻任务上的不足。",
+          "description": "用自然语言保存智能体经历的完整记录。",
           "evidence_ids": [
-            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
           ],
-          "point_id": "point-317e6498f69ed590"
+          "point_id": "point-5ab1565a86c53a0d"
+        },
+        {
+          "description": "把记忆随时间综合为更高层次的反思。",
+          "evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ],
+          "point_id": "point-282057b4d5fa9700"
+        },
+        {
+          "description": "动态检索记忆与反思以规划后续行为。",
+          "evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ],
+          "point_id": "point-8a31815431b0fb7f"
         }
       ],
       "facets": [
         {
-          "description": "摘要明确描述逐 token 推理在探索与策略前瞻任务上的不足。",
-          "facet_id": "facet-317e6498f69ed590",
+          "description": "用自然语言保存智能体经历的完整记录。",
+          "evidence_match": "any",
+          "facet_id": "facet-5ab1565a86c53a0d",
           "required": true,
           "target_evidence_ids": [
-            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ]
+        },
+        {
+          "description": "把记忆随时间综合为更高层次的反思。",
+          "evidence_match": "any",
+          "facet_id": "facet-282057b4d5fa9700",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+          ]
+        },
+        {
+          "description": "动态检索记忆与反思以规划后续行为。",
+          "evidence_match": "any",
+          "facet_id": "facet-8a31815431b0fb7f",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
           ]
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-tree-of-thoughts-motivation",
+      "leakage_group_id": "leak:ueq-literature-generative-agents-architecture",
       "minimum_sufficient_evidence_sets": [
         [
-          "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+          "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
         ]
       ],
-      "normalized_question": "tree of thoughts 主要解决语言模型逐 token 左到右决策的什么局限?",
-      "question": "Tree of Thoughts 主要解决语言模型逐 token 左到右决策的什么局限？",
-      "question_id": "ueq-hybrid-dev-questions-tree-of-thoughts-motivation",
+      "normalized_question": "generative agents 的记忆架构如何支持行为规划?",
+      "question": "Generative Agents 的记忆架构如何支持行为规划？",
+      "question_id": "ueq-literature-generative-agents-architecture",
       "question_types": [
-        "factoid"
+        "multi_hop"
       ],
       "relevant_evidence": {
-        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9": 3
+        "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b": 3
       },
-      "source_fixture": "data/evaluation/hybrid_dev_questions.json#tree-of-thoughts-motivation",
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-generative-agents-architecture",
       "source_group_ids": [
-        "source-hybrid-dev-questions-tree-of-thoughts-motivation"
+        "paper:arxiv:2304.03442"
       ],
       "split": "dev",
-      "stress_category": "control"
+      "stress_category": "multi_hop_gap"
     },
     {
       "answer_points": [
         {
-          "description": "摘要介绍了以思路为中间单位的搜索式审慎推理。",
-          "evidence_ids": [
-            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
-          ],
-          "point_id": "point-527851720118f684"
-        }
-      ],
-      "facets": [
-        {
-          "description": "摘要介绍了以思路为中间单位的搜索式审慎推理。",
-          "facet_id": "facet-527851720118f684",
-          "required": true,
-          "target_evidence_ids": [
-            "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-tree-of-thoughts-search",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
-        ]
-      ],
-      "normalized_question": "tree of thoughts 为什么要在多个推理思路之间进行探索?",
-      "question": "Tree of Thoughts 为什么要在多个推理思路之间进行探索？",
-      "question_id": "ueq-hybrid-dev-questions-tree-of-thoughts-search",
-      "question_types": [
-        "factoid"
-      ],
-      "relevant_evidence": {
-        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9": 3
-      },
-      "source_fixture": "data/evaluation/hybrid_dev_questions.json#tree-of-thoughts-search",
-      "source_group_ids": [
-        "source-hybrid-dev-questions-tree-of-thoughts-search"
-      ],
-      "split": "dev",
-      "stress_category": "control"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "Voyager 摘要集中列出了自动课程、技能库和迭代提示机制。",
-          "evidence_ids": [
-            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
-          ],
-          "point_id": "point-4fa8d89e19edd818"
-        }
-      ],
-      "facets": [
-        {
-          "description": "Voyager 摘要集中列出了自动课程、技能库和迭代提示机制。",
-          "facet_id": "facet-4fa8d89e19edd818",
-          "required": true,
-          "target_evidence_ids": [
-            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-voyager-components",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
-        ]
-      ],
-      "normalized_question": "voyager 在 minecraft 中持续学习所依赖的三个核心组件是什么?",
-      "question": "Voyager 在 Minecraft 中持续学习所依赖的三个核心组件是什么？",
-      "question_id": "ueq-hybrid-dev-questions-voyager-components",
-      "question_types": [
-        "factoid"
-      ],
-      "relevant_evidence": {
-        "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142": 3
-      },
-      "source_fixture": "data/evaluation/hybrid_dev_questions.json#voyager-components",
-      "source_group_ids": [
-        "source-hybrid-dev-questions-voyager-components"
-      ],
-      "split": "dev",
-      "stress_category": "control"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "摘要描述其无人工干预的持续探索、技能获取和新发现。",
-          "evidence_ids": [
-            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
-          ],
-          "point_id": "point-dc6b69d8f13ed486"
-        }
-      ],
-      "facets": [
-        {
-          "description": "摘要描述其无人工干预的持续探索、技能获取和新发现。",
-          "facet_id": "facet-dc6b69d8f13ed486",
-          "required": true,
-          "target_evidence_ids": [
-            "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-voyager-lifelong-learning",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
-        ]
-      ],
-      "normalized_question": "voyager 为什么被称为具身终身学习智能体?",
-      "question": "Voyager 为什么被称为具身终身学习智能体？",
-      "question_id": "ueq-hybrid-dev-questions-voyager-lifelong-learning",
-      "question_types": [
-        "factoid"
-      ],
-      "relevant_evidence": {
-        "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142": 3
-      },
-      "source_fixture": "data/evaluation/hybrid_dev_questions.json#voyager-lifelong-learning",
-      "source_group_ids": [
-        "source-hybrid-dev-questions-voyager-lifelong-learning"
-      ],
-      "split": "dev",
-      "stress_category": "control"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "摘要说明开源模型难以调用真实 API 完成用户指令的问题。",
+          "description": "开源 LLM 难以调用外部 API 来完成用户指令。",
           "evidence_ids": [
             "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
           ],
-          "point_id": "point-5f70991991d12777"
+          "point_id": "point-d42f4bbf0252eef1"
+        },
+        {
+          "description": "原因是既有指令微调偏重基础语言任务而忽略工具使用领域。",
+          "evidence_ids": [
+            "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
+          ],
+          "point_id": "point-3db42f6ca4a306c5"
         }
       ],
       "facets": [
         {
-          "description": "摘要说明开源模型难以调用真实 API 完成用户指令的问题。",
-          "facet_id": "facet-5f70991991d12777",
+          "description": "开源 LLM 难以调用外部 API 来完成用户指令。",
+          "evidence_match": "any",
+          "facet_id": "facet-d42f4bbf0252eef1",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
+          ]
+        },
+        {
+          "description": "原因是既有指令微调偏重基础语言任务而忽略工具使用领域。",
+          "evidence_match": "any",
+          "facet_id": "facet-3db42f6ca4a306c5",
           "required": true,
           "target_evidence_ids": [
             "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
@@ -1254,7 +1138,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-toolllm-problem",
+      "leakage_group_id": "leak:ueq-literature-toolllm-problem",
       "minimum_sufficient_evidence_sets": [
         [
           "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
@@ -1262,7 +1146,7 @@
       ],
       "normalized_question": "toolllm 针对开源大语言模型的哪项工具使用缺陷提出方案?",
       "question": "ToolLLM 针对开源大语言模型的哪项工具使用缺陷提出方案？",
-      "question_id": "ueq-hybrid-dev-questions-toolllm-problem",
+      "question_id": "ueq-literature-toolllm-problem",
       "question_types": [
         "factoid"
       ],
@@ -1271,7 +1155,7 @@
       },
       "source_fixture": "data/evaluation/hybrid_dev_questions.json#toolllm-problem",
       "source_group_ids": [
-        "source-hybrid-dev-questions-toolllm-problem"
+        "paper:arxiv:2307.16789"
       ],
       "split": "dev",
       "stress_category": "control"
@@ -1279,17 +1163,111 @@
     {
       "answer_points": [
         {
-          "description": "摘要介绍复杂任务的协作困难及 MetaGPT 的 SOP 组织方式。",
+          "description": "从 RapidAPI Hub 收集 16,464 个真实 RESTful API，覆盖 49 个类别。",
           "evidence_ids": [
-            "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
+            "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
           ],
-          "point_id": "point-e74141b204c26934"
+          "point_id": "point-9cda075e33f5655f"
+        },
+        {
+          "description": "用 ChatGPT 生成涉及单工具和多工具场景的指令。",
+          "evidence_ids": [
+            "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
+          ],
+          "point_id": "point-cde0c5d50674e538"
+        },
+        {
+          "description": "用 ChatGPT 为每条指令搜索有效的 API 调用链作为 solution path。",
+          "evidence_ids": [
+            "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
+          ],
+          "point_id": "point-69b586bef1153ba0"
         }
       ],
       "facets": [
         {
-          "description": "摘要介绍复杂任务的协作困难及 MetaGPT 的 SOP 组织方式。",
-          "facet_id": "facet-e74141b204c26934",
+          "description": "从 RapidAPI Hub 收集 16,464 个真实 RESTful API，覆盖 49 个类别。",
+          "evidence_match": "any",
+          "facet_id": "facet-9cda075e33f5655f",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
+          ]
+        },
+        {
+          "description": "用 ChatGPT 生成涉及单工具和多工具场景的指令。",
+          "evidence_match": "any",
+          "facet_id": "facet-cde0c5d50674e538",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
+          ]
+        },
+        {
+          "description": "用 ChatGPT 为每条指令搜索有效的 API 调用链作为 solution path。",
+          "evidence_match": "any",
+          "facet_id": "facet-69b586bef1153ba0",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-toolllm-toolbench",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
+        ]
+      ],
+      "normalized_question": "toolbench 的 api 来源、规模和自动构建阶段是什么?",
+      "question": "ToolBench 的 API 来源、规模和自动构建阶段是什么？",
+      "question_id": "ueq-literature-toolllm-toolbench",
+      "question_types": [
+        "metric",
+        "synthesis"
+      ],
+      "relevant_evidence": {
+        "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-toolllm-toolbench",
+      "source_group_ids": [
+        "paper:arxiv:2307.16789"
+      ],
+      "split": "dev",
+      "stress_category": "metric_missing"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "把 SOP 编码为提示序列以形成更顺畅的工作流。",
+          "evidence_ids": [
+            "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
+          ],
+          "point_id": "point-f8fd35ea5c61035f"
+        },
+        {
+          "description": "让具备领域角色的智能体核验中间结果并减少级联错误。",
+          "evidence_ids": [
+            "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
+          ],
+          "point_id": "point-86849453878de5f2"
+        }
+      ],
+      "facets": [
+        {
+          "description": "把 SOP 编码为提示序列以形成更顺畅的工作流。",
+          "evidence_match": "any",
+          "facet_id": "facet-f8fd35ea5c61035f",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
+          ]
+        },
+        {
+          "description": "让具备领域角色的智能体核验中间结果并减少级联错误。",
+          "evidence_match": "any",
+          "facet_id": "facet-86849453878de5f2",
           "required": true,
           "target_evidence_ids": [
             "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
@@ -1297,7 +1275,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-metagpt-sop",
+      "leakage_group_id": "leak:ueq-literature-metagpt-sop",
       "minimum_sufficient_evidence_sets": [
         [
           "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
@@ -1305,16 +1283,16 @@
       ],
       "normalized_question": "metagpt 为什么在多智能体协作中引入标准作业程序 sop?",
       "question": "MetaGPT 为什么在多智能体协作中引入标准作业程序 SOP？",
-      "question_id": "ueq-hybrid-dev-questions-metagpt-sop",
+      "question_id": "ueq-literature-metagpt-sop",
       "question_types": [
-        "factoid"
+        "synthesis"
       ],
       "relevant_evidence": {
         "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54": 3
       },
       "source_fixture": "data/evaluation/hybrid_dev_questions.json#metagpt-sop",
       "source_group_ids": [
-        "source-hybrid-dev-questions-metagpt-sop"
+        "paper:arxiv:2308.00352"
       ],
       "split": "dev",
       "stress_category": "control"
@@ -1322,103 +1300,142 @@
     {
       "answer_points": [
         {
-          "description": "摘要概括了交互环境、多维基准及其评测目的。",
+          "description": "把不同角色分配给不同智能体。",
           "evidence_ids": [
-            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+            "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
           ],
-          "point_id": "point-f654d10baddd44eb"
+          "point_id": "point-23c7d9c6a6386e14"
+        },
+        {
+          "description": "将复杂任务拆成由多个智能体协作完成的子任务。",
+          "evidence_ids": [
+            "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
+          ],
+          "point_id": "point-e04e780e9c0a4619"
+        },
+        {
+          "description": "角色化智能体核验标准化的中间产物以提高一致性。",
+          "evidence_ids": [
+            "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
+          ],
+          "point_id": "point-e4020beb3dc2bf5d"
         }
       ],
       "facets": [
         {
-          "description": "摘要概括了交互环境、多维基准及其评测目的。",
-          "facet_id": "facet-f654d10baddd44eb",
+          "description": "把不同角色分配给不同智能体。",
+          "evidence_match": "any",
+          "facet_id": "facet-23c7d9c6a6386e14",
           "required": true,
           "target_evidence_ids": [
-            "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+            "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
+          ]
+        },
+        {
+          "description": "将复杂任务拆成由多个智能体协作完成的子任务。",
+          "evidence_match": "any",
+          "facet_id": "facet-e04e780e9c0a4619",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
+          ]
+        },
+        {
+          "description": "角色化智能体核验标准化的中间产物以提高一致性。",
+          "evidence_match": "any",
+          "facet_id": "facet-e4020beb3dc2bf5d",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
           ]
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-agentbench-scope",
+      "leakage_group_id": "leak:ueq-literature-metagpt-roles",
       "minimum_sufficient_evidence_sets": [
         [
-          "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+          "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
         ]
       ],
-      "normalized_question": "agentbench 用什么类型的环境对 llm 智能体进行多维评测?",
-      "question": "AgentBench 用什么类型的环境对 LLM 智能体进行多维评测？",
-      "question_id": "ueq-hybrid-dev-questions-agentbench-scope",
+      "normalized_question": "metagpt 如何用装配线范式组织复杂任务?",
+      "question": "MetaGPT 如何用装配线范式组织复杂任务？",
+      "question_id": "ueq-literature-metagpt-roles",
       "question_types": [
-        "factoid"
+        "multi_hop"
       ],
       "relevant_evidence": {
-        "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5": 3
+        "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54": 3
       },
-      "source_fixture": "data/evaluation/hybrid_dev_questions.json#agentbench-scope",
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-metagpt-roles",
       "source_group_ids": [
-        "source-hybrid-dev-questions-agentbench-scope"
+        "paper:arxiv:2308.00352"
       ],
       "split": "dev",
-      "stress_category": "control"
+      "stress_category": "multi_hop_gap"
     },
     {
       "answer_points": [
         {
-          "description": "LATS 摘要直接陈述其对推理、行动与规划能力的协同。",
-          "evidence_ids": [
-            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
-          ],
-          "point_id": "point-fe75708b74006f38"
-        }
-      ],
-      "facets": [
-        {
-          "description": "LATS 摘要直接陈述其对推理、行动与规划能力的协同。",
-          "facet_id": "facet-fe75708b74006f38",
-          "required": true,
-          "target_evidence_ids": [
-            "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
-          ]
-        }
-      ],
-      "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-lats-capabilities",
-      "minimum_sufficient_evidence_sets": [
-        [
-          "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
-        ]
-      ],
-      "normalized_question": "language agent tree search 统一了语言智能体的哪些关键能力?",
-      "question": "Language Agent Tree Search 统一了语言智能体的哪些关键能力？",
-      "question_id": "ueq-hybrid-dev-questions-lats-capabilities",
-      "question_types": [
-        "factoid"
-      ],
-      "relevant_evidence": {
-        "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754": 3
-      },
-      "source_fixture": "data/evaluation/hybrid_dev_questions.json#lats-capabilities",
-      "source_group_ids": [
-        "source-hybrid-dev-questions-lats-capabilities"
-      ],
-      "split": "dev",
-      "stress_category": "control"
-    },
-    {
-      "answer_points": [
-        {
-          "description": "引言列出推理、多模态、网页浏览和工具使用等能力。",
+          "description": "推理。",
           "evidence_ids": [
             "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
           ],
-          "point_id": "point-3af80282ece97762"
+          "point_id": "point-615640aff66e0e9d"
+        },
+        {
+          "description": "多模态处理。",
+          "evidence_ids": [
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+          ],
+          "point_id": "point-511b8def07dc7a44"
+        },
+        {
+          "description": "网页浏览。",
+          "evidence_ids": [
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+          ],
+          "point_id": "point-d0c05b2282ad55d4"
+        },
+        {
+          "description": "工具使用能力。",
+          "evidence_ids": [
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+          ],
+          "point_id": "point-85eb2aaedb39eaf0"
         }
       ],
       "facets": [
         {
-          "description": "引言列出推理、多模态、网页浏览和工具使用等能力。",
-          "facet_id": "facet-3af80282ece97762",
+          "description": "推理。",
+          "evidence_match": "any",
+          "facet_id": "facet-615640aff66e0e9d",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+          ]
+        },
+        {
+          "description": "多模态处理。",
+          "evidence_match": "any",
+          "facet_id": "facet-511b8def07dc7a44",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+          ]
+        },
+        {
+          "description": "网页浏览。",
+          "evidence_match": "any",
+          "facet_id": "facet-d0c05b2282ad55d4",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+          ]
+        },
+        {
+          "description": "工具使用能力。",
+          "evidence_match": "any",
+          "facet_id": "facet-85eb2aaedb39eaf0",
           "required": true,
           "target_evidence_ids": [
             "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
@@ -1426,7 +1443,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-gaia-abilities",
+      "leakage_group_id": "leak:ueq-literature-gaia-abilities",
       "minimum_sufficient_evidence_sets": [
         [
           "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
@@ -1434,16 +1451,16 @@
       ],
       "normalized_question": "gaia 基准的问题要求通用 ai 助手具备哪些基础能力?",
       "question": "GAIA 基准的问题要求通用 AI 助手具备哪些基础能力？",
-      "question_id": "ueq-hybrid-dev-questions-gaia-abilities",
+      "question_id": "ueq-literature-gaia-abilities",
       "question_types": [
-        "factoid"
+        "synthesis"
       ],
       "relevant_evidence": {
         "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177": 3
       },
       "source_fixture": "data/evaluation/hybrid_dev_questions.json#gaia-abilities",
       "source_group_ids": [
-        "source-hybrid-dev-questions-gaia-abilities"
+        "paper:arxiv:2311.12983"
       ],
       "split": "dev",
       "stress_category": "control"
@@ -1451,17 +1468,127 @@
     {
       "answer_points": [
         {
-          "description": "摘要说明幻觉、不可解释性以及缺少真实答案带来的问题。",
+          "description": "人类受试者得分为 92%，带插件的 GPT-4 为 15%。",
           "evidence_ids": [
-            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
           ],
-          "point_id": "point-667b2fe239b7096c"
+          "point_id": "point-4a614a8c94855c84"
+        },
+        {
+          "description": "GAIA 构建了 466 个问题。",
+          "evidence_ids": [
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+          ],
+          "point_id": "point-719f2130ec9b0c38"
+        },
+        {
+          "description": "其中 300 个答案被保留用于排行榜。",
+          "evidence_ids": [
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+          ],
+          "point_id": "point-83889e97f26267fa"
         }
       ],
       "facets": [
         {
-          "description": "摘要说明幻觉、不可解释性以及缺少真实答案带来的问题。",
-          "facet_id": "facet-667b2fe239b7096c",
+          "description": "人类受试者得分为 92%，带插件的 GPT-4 为 15%。",
+          "evidence_match": "any",
+          "facet_id": "facet-4a614a8c94855c84",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+          ]
+        },
+        {
+          "description": "GAIA 构建了 466 个问题。",
+          "evidence_match": "any",
+          "facet_id": "facet-719f2130ec9b0c38",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+          ]
+        },
+        {
+          "description": "其中 300 个答案被保留用于排行榜。",
+          "evidence_match": "any",
+          "facet_id": "facet-83889e97f26267fa",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-gaia-results",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+        ]
+      ],
+      "normalized_question": "gaia 报告的人类与带插件 gpt-4 的表现差距及数据规模是多少?",
+      "question": "GAIA 报告的人类与带插件 GPT-4 的表现差距及数据规模是多少？",
+      "question_id": "ueq-literature-gaia-results",
+      "question_types": [
+        "metric",
+        "comparison"
+      ],
+      "relevant_evidence": {
+        "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-gaia-results",
+      "source_group_ids": [
+        "paper:arxiv:2311.12983"
+      ],
+      "split": "dev",
+      "stress_category": "comparison_side"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "普通 LLM 会产生幻觉且缺乏可解释性。",
+          "evidence_ids": [
+            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+          ],
+          "point_id": "point-c01fc4785acac4ee"
+        },
+        {
+          "description": "RAG 可减少幻觉并为答案生成过程提供来源依据。",
+          "evidence_ids": [
+            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+          ],
+          "point_id": "point-286051eb2f8f231e"
+        },
+        {
+          "description": "科学文献数量巨大且发现过程仍高度依赖人工。",
+          "evidence_ids": [
+            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+          ],
+          "point_id": "point-6d03e1e1aeab8304"
+        }
+      ],
+      "facets": [
+        {
+          "description": "普通 LLM 会产生幻觉且缺乏可解释性。",
+          "evidence_match": "any",
+          "facet_id": "facet-c01fc4785acac4ee",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+          ]
+        },
+        {
+          "description": "RAG 可减少幻觉并为答案生成过程提供来源依据。",
+          "evidence_match": "any",
+          "facet_id": "facet-286051eb2f8f231e",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+          ]
+        },
+        {
+          "description": "科学文献数量巨大且发现过程仍高度依赖人工。",
+          "evidence_match": "any",
+          "facet_id": "facet-6d03e1e1aeab8304",
           "required": true,
           "target_evidence_ids": [
             "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
@@ -1469,7 +1596,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-paperqa-motivation",
+      "leakage_group_id": "leak:ueq-literature-paperqa-motivation",
       "minimum_sufficient_evidence_sets": [
         [
           "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
@@ -1477,16 +1604,16 @@
       ],
       "normalized_question": "paperqa 为什么需要用检索增强方法回答科学研究问题?",
       "question": "PaperQA 为什么需要用检索增强方法回答科学研究问题？",
-      "question_id": "ueq-hybrid-dev-questions-paperqa-motivation",
+      "question_id": "ueq-literature-paperqa-motivation",
       "question_types": [
-        "factoid"
+        "synthesis"
       ],
       "relevant_evidence": {
         "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff": 3
       },
       "source_fixture": "data/evaluation/hybrid_dev_questions.json#paperqa-motivation",
       "source_group_ids": [
-        "source-hybrid-dev-questions-paperqa-motivation"
+        "paper:arxiv:2312.07559"
       ],
       "split": "dev",
       "stress_category": "control"
@@ -1494,17 +1621,126 @@
     {
       "answer_points": [
         {
-          "description": "GraphRAG 摘要对局部检索在全局问题上的失败给出动机。",
+          "description": "在科学论文全文中进行信息检索。",
           "evidence_ids": [
-            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
           ],
-          "point_id": "point-5cca1fed86f65f61"
+          "point_id": "point-049db054d26cb897"
+        },
+        {
+          "description": "评估来源和段落的相关性。",
+          "evidence_ids": [
+            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+          ],
+          "point_id": "point-e5d4ae829ea3efaf"
+        },
+        {
+          "description": "使用检索到的内容通过 RAG 生成答案。",
+          "evidence_ids": [
+            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+          ],
+          "point_id": "point-d18c6acb1f6e5e63"
         }
       ],
       "facets": [
         {
-          "description": "GraphRAG 摘要对局部检索在全局问题上的失败给出动机。",
-          "facet_id": "facet-5cca1fed86f65f61",
+          "description": "在科学论文全文中进行信息检索。",
+          "evidence_match": "any",
+          "facet_id": "facet-049db054d26cb897",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+          ]
+        },
+        {
+          "description": "评估来源和段落的相关性。",
+          "evidence_match": "any",
+          "facet_id": "facet-e5d4ae829ea3efaf",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+          ]
+        },
+        {
+          "description": "使用检索到的内容通过 RAG 生成答案。",
+          "evidence_match": "any",
+          "facet_id": "facet-d18c6acb1f6e5e63",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-paperqa-workflow",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+        ]
+      ],
+      "normalized_question": "paperqa 回答科学问题时依次执行哪些关键工作?",
+      "question": "PaperQA 回答科学问题时依次执行哪些关键工作？",
+      "question_id": "ueq-literature-paperqa-workflow",
+      "question_types": [
+        "multi_hop"
+      ],
+      "relevant_evidence": {
+        "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-paperqa-workflow",
+      "source_group_ids": [
+        "paper:arxiv:2312.07559"
+      ],
+      "split": "dev",
+      "stress_category": "multi_hop_gap"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "全局问题本质上是面向整个语料的查询聚焦摘要任务。",
+          "evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ],
+          "point_id": "point-4f0f2e2d06568ad4"
+        },
+        {
+          "description": "传统 RAG 只检索少量局部相关记录，难以覆盖整个语料。",
+          "evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ],
+          "point_id": "point-d91fc12157100d3e"
+        },
+        {
+          "description": "既有查询聚焦摘要方法又难以扩展到典型 RAG 的文本规模。",
+          "evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ],
+          "point_id": "point-3843e4968eb33699"
+        }
+      ],
+      "facets": [
+        {
+          "description": "全局问题本质上是面向整个语料的查询聚焦摘要任务。",
+          "evidence_match": "any",
+          "facet_id": "facet-4f0f2e2d06568ad4",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ]
+        },
+        {
+          "description": "传统 RAG 只检索少量局部相关记录，难以覆盖整个语料。",
+          "evidence_match": "any",
+          "facet_id": "facet-d91fc12157100d3e",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ]
+        },
+        {
+          "description": "既有查询聚焦摘要方法又难以扩展到典型 RAG 的文本规模。",
+          "evidence_match": "any",
+          "facet_id": "facet-3843e4968eb33699",
           "required": true,
           "target_evidence_ids": [
             "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
@@ -1512,7 +1748,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-graphrag-global-questions",
+      "leakage_group_id": "leak:ueq-literature-graphrag-global-questions",
       "minimum_sufficient_evidence_sets": [
         [
           "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
@@ -1520,16 +1756,16 @@
       ],
       "normalized_question": "传统 rag 为什么难以回答面向整个文档集合的全局问题?",
       "question": "传统 RAG 为什么难以回答面向整个文档集合的全局问题？",
-      "question_id": "ueq-hybrid-dev-questions-graphrag-global-questions",
+      "question_id": "ueq-literature-graphrag-global-questions",
       "question_types": [
-        "factoid"
+        "synthesis"
       ],
       "relevant_evidence": {
         "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455": 3
       },
       "source_fixture": "data/evaluation/hybrid_dev_questions.json#graphrag-global-questions",
       "source_group_ids": [
-        "source-hybrid-dev-questions-graphrag-global-questions"
+        "paper:arxiv:2404.16130"
       ],
       "split": "dev",
       "stress_category": "control"
@@ -1537,17 +1773,34 @@
     {
       "answer_points": [
         {
-          "description": "摘要描述从局部检索转向支持全局、查询聚焦摘要的目标。",
+          "description": "同时适应更一般的用户问题和更大规模的来源文本。",
           "evidence_ids": [
             "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
           ],
-          "point_id": "point-bb8e7f6a6fc76957"
+          "point_id": "point-5eb908540f5fb7e3"
+        },
+        {
+          "description": "相较传统 RAG 提升全局回答的全面性和多样性。",
+          "evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ],
+          "point_id": "point-dc109e024fc41b19"
         }
       ],
       "facets": [
         {
-          "description": "摘要描述从局部检索转向支持全局、查询聚焦摘要的目标。",
-          "facet_id": "facet-bb8e7f6a6fc76957",
+          "description": "同时适应更一般的用户问题和更大规模的来源文本。",
+          "evidence_match": "any",
+          "facet_id": "facet-5eb908540f5fb7e3",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ]
+        },
+        {
+          "description": "相较传统 RAG 提升全局回答的全面性和多样性。",
+          "evidence_match": "any",
+          "facet_id": "facet-dc109e024fc41b19",
           "required": true,
           "target_evidence_ids": [
             "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
@@ -1555,7 +1808,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-graphrag-goal",
+      "leakage_group_id": "leak:ueq-literature-graphrag-goal",
       "minimum_sufficient_evidence_sets": [
         [
           "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
@@ -1563,16 +1816,16 @@
       ],
       "normalized_question": "graphrag 的图方法旨在怎样改进面向语料库的摘要回答?",
       "question": "GraphRAG 的图方法旨在怎样改进面向语料库的摘要回答？",
-      "question_id": "ueq-hybrid-dev-questions-graphrag-goal",
+      "question_id": "ueq-literature-graphrag-goal",
       "question_types": [
-        "factoid"
+        "synthesis"
       ],
       "relevant_evidence": {
         "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455": 3
       },
       "source_fixture": "data/evaluation/hybrid_dev_questions.json#graphrag-goal",
       "source_group_ids": [
-        "source-hybrid-dev-questions-graphrag-goal"
+        "paper:arxiv:2404.16130"
       ],
       "split": "dev",
       "stress_category": "control"
@@ -1580,17 +1833,110 @@
     {
       "answer_points": [
         {
-          "description": "摘要讨论大量知识存储、持续整合新信息和避免灾难性遗忘。",
+          "description": "先从源文档抽取实体知识图谱。",
           "evidence_ids": [
-            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
           ],
-          "point_id": "point-a5fb9e92f94ef5a8"
+          "point_id": "point-c86a1207bac9859e"
+        },
+        {
+          "description": "为紧密相关的实体社区预生成社区摘要。",
+          "evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ],
+          "point_id": "point-55bd8b535d4b3ecf"
+        },
+        {
+          "description": "查询时由各社区摘要生成局部回答，再汇总为最终回答。",
+          "evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ],
+          "point_id": "point-45e97c6ea56bb04e"
         }
       ],
       "facets": [
         {
-          "description": "摘要讨论大量知识存储、持续整合新信息和避免灾难性遗忘。",
-          "facet_id": "facet-a5fb9e92f94ef5a8",
+          "description": "先从源文档抽取实体知识图谱。",
+          "evidence_match": "any",
+          "facet_id": "facet-c86a1207bac9859e",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ]
+        },
+        {
+          "description": "为紧密相关的实体社区预生成社区摘要。",
+          "evidence_match": "any",
+          "facet_id": "facet-55bd8b535d4b3ecf",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ]
+        },
+        {
+          "description": "查询时由各社区摘要生成局部回答，再汇总为最终回答。",
+          "evidence_match": "any",
+          "facet_id": "facet-45e97c6ea56bb04e",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-graphrag-pipeline",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+        ]
+      ],
+      "normalized_question": "graphrag 如何从源文档构建索引并生成全局回答?",
+      "question": "GraphRAG 如何从源文档构建索引并生成全局回答？",
+      "question_id": "ueq-literature-graphrag-pipeline",
+      "question_types": [
+        "multi_hop"
+      ],
+      "relevant_evidence": {
+        "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-graphrag-pipeline",
+      "source_group_ids": [
+        "paper:arxiv:2404.16130"
+      ],
+      "split": "dev",
+      "stress_category": "multi_hop_gap"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "存储大量世界知识。",
+          "evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ],
+          "point_id": "point-ededd283a035e858"
+        },
+        {
+          "description": "持续整合新经验而避免灾难性遗忘。",
+          "evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ],
+          "point_id": "point-8be75ac8cc03e91a"
+        }
+      ],
+      "facets": [
+        {
+          "description": "存储大量世界知识。",
+          "evidence_match": "any",
+          "facet_id": "facet-ededd283a035e858",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ]
+        },
+        {
+          "description": "持续整合新经验而避免灾难性遗忘。",
+          "evidence_match": "any",
+          "facet_id": "facet-8be75ac8cc03e91a",
           "required": true,
           "target_evidence_ids": [
             "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
@@ -1598,7 +1944,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-hipporag-memory",
+      "leakage_group_id": "leak:ueq-literature-hipporag-memory",
       "minimum_sufficient_evidence_sets": [
         [
           "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
@@ -1606,7 +1952,7 @@
       ],
       "normalized_question": "hipporag 从哺乳动物长期记忆中借鉴了什么核心能力?",
       "question": "HippoRAG 从哺乳动物长期记忆中借鉴了什么核心能力？",
-      "question_id": "ueq-hybrid-dev-questions-hipporag-memory",
+      "question_id": "ueq-literature-hipporag-memory",
       "question_types": [
         "factoid"
       ],
@@ -1615,7 +1961,7 @@
       },
       "source_fixture": "data/evaluation/hybrid_dev_questions.json#hipporag-memory",
       "source_group_ids": [
-        "source-hybrid-dev-questions-hipporag-memory"
+        "paper:arxiv:2405.14831"
       ],
       "split": "dev",
       "stress_category": "control"
@@ -1623,17 +1969,186 @@
     {
       "answer_points": [
         {
-          "description": "摘要说明以图检索支持基于证据的医疗回答和可靠性。",
+          "description": "当前 RAG 往往孤立编码各段，难以整合跨段或跨文档的新知识。",
           "evidence_ids": [
-            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
           ],
-          "point_id": "point-aa6d81b3bbbcf6e5"
+          "point_id": "point-39ea088a50628bf6"
+        },
+        {
+          "description": "HippoRAG 借鉴海马索引理论建立关联图，以支持更深且更高效的知识整合。",
+          "evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ],
+          "point_id": "point-621b2551f8dc28e9"
         }
       ],
       "facets": [
         {
-          "description": "摘要说明以图检索支持基于证据的医疗回答和可靠性。",
-          "facet_id": "facet-aa6d81b3bbbcf6e5",
+          "description": "当前 RAG 往往孤立编码各段，难以整合跨段或跨文档的新知识。",
+          "evidence_match": "any",
+          "facet_id": "facet-39ea088a50628bf6",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ]
+        },
+        {
+          "description": "HippoRAG 借鉴海马索引理论建立关联图，以支持更深且更高效的知识整合。",
+          "evidence_match": "any",
+          "facet_id": "facet-621b2551f8dc28e9",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-hipporag-integration-gap",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+        ]
+      ],
+      "normalized_question": "当前 rag 为何难以整合跨段知识,hipporag 如何应对?",
+      "question": "当前 RAG 为何难以整合跨段知识，HippoRAG 如何应对？",
+      "question_id": "ueq-literature-hipporag-integration-gap",
+      "question_types": [
+        "synthesis"
+      ],
+      "relevant_evidence": {
+        "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-hipporag-integration-gap",
+      "source_group_ids": [
+        "paper:arxiv:2405.14831"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "大语言模型。",
+          "evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ],
+          "point_id": "point-6c3f6ea52c20a73c"
+        },
+        {
+          "description": "知识图谱。",
+          "evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ],
+          "point_id": "point-21eaec880da50c2c"
+        },
+        {
+          "description": "Personalized PageRank 算法。",
+          "evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ],
+          "point_id": "point-c342335c50d4b061"
+        }
+      ],
+      "facets": [
+        {
+          "description": "大语言模型。",
+          "evidence_match": "any",
+          "facet_id": "facet-6c3f6ea52c20a73c",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ]
+        },
+        {
+          "description": "知识图谱。",
+          "evidence_match": "any",
+          "facet_id": "facet-21eaec880da50c2c",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ]
+        },
+        {
+          "description": "Personalized PageRank 算法。",
+          "evidence_match": "any",
+          "facet_id": "facet-c342335c50d4b061",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-hipporag-components",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+        ]
+      ],
+      "normalized_question": "hipporag 用哪些组件模拟新皮层与海马体的不同记忆角色?",
+      "question": "HippoRAG 用哪些组件模拟新皮层与海马体的不同记忆角色？",
+      "question_id": "ueq-literature-hipporag-components",
+      "question_types": [
+        "synthesis"
+      ],
+      "relevant_evidence": {
+        "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-hipporag-components",
+      "source_group_ids": [
+        "paper:arxiv:2405.14831"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "生成有证据支持的医疗回答。",
+          "evidence_ids": [
+            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+          ],
+          "point_id": "point-e18b5555f7668a6e"
+        },
+        {
+          "description": "在处理私人医疗数据时提高安全性和可靠性。",
+          "evidence_ids": [
+            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+          ],
+          "point_id": "point-ff5aa274f576dbe6"
+        },
+        {
+          "description": "回答包含可信来源文档和定义。",
+          "evidence_ids": [
+            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+          ],
+          "point_id": "point-d9869f60d2eda5b7"
+        }
+      ],
+      "facets": [
+        {
+          "description": "生成有证据支持的医疗回答。",
+          "evidence_match": "any",
+          "facet_id": "facet-e18b5555f7668a6e",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+          ]
+        },
+        {
+          "description": "在处理私人医疗数据时提高安全性和可靠性。",
+          "evidence_match": "any",
+          "facet_id": "facet-ff5aa274f576dbe6",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+          ]
+        },
+        {
+          "description": "回答包含可信来源文档和定义。",
+          "evidence_match": "any",
+          "facet_id": "facet-d9869f60d2eda5b7",
           "required": true,
           "target_evidence_ids": [
             "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
@@ -1641,7 +2156,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-medgraphrag-safety",
+      "leakage_group_id": "leak:ueq-literature-medgraphrag-safety",
       "minimum_sufficient_evidence_sets": [
         [
           "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
@@ -1649,16 +2164,16 @@
       ],
       "normalized_question": "medgraphrag 如何定位其在医疗问答安全性方面的作用?",
       "question": "MedGraphRAG 如何定位其在医疗问答安全性方面的作用？",
-      "question_id": "ueq-hybrid-dev-questions-medgraphrag-safety",
+      "question_id": "ueq-literature-medgraphrag-safety",
       "question_types": [
-        "factoid"
+        "synthesis"
       ],
       "relevant_evidence": {
         "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2": 3
       },
       "source_fixture": "data/evaluation/hybrid_dev_questions.json#medgraphrag-safety",
       "source_group_ids": [
-        "source-hybrid-dev-questions-medgraphrag-safety"
+        "paper:arxiv:2408.04187"
       ],
       "split": "dev",
       "stress_category": "control"
@@ -1666,17 +2181,111 @@
     {
       "answer_points": [
         {
-          "description": "摘要概括传统平面数据表示及相关效率问题。",
+          "description": "Triple Graph 把用户文档、可信医疗来源和受控词表连接起来。",
           "evidence_ids": [
-            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
           ],
-          "point_id": "point-caf017876b2a15ed"
+          "point_id": "point-92c6409cbfefbe23"
+        },
+        {
+          "description": "U-Retrieval 结合自顶向下精确检索与自底向上回答细化。",
+          "evidence_ids": [
+            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+          ],
+          "point_id": "point-096e1133cfc59fee"
+        },
+        {
+          "description": "该组合在全局上下文感知与精确索引之间取得平衡。",
+          "evidence_ids": [
+            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+          ],
+          "point_id": "point-495bfc717593aac1"
         }
       ],
       "facets": [
         {
-          "description": "摘要概括传统平面数据表示及相关效率问题。",
-          "facet_id": "facet-caf017876b2a15ed",
+          "description": "Triple Graph 把用户文档、可信医疗来源和受控词表连接起来。",
+          "evidence_match": "any",
+          "facet_id": "facet-92c6409cbfefbe23",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+          ]
+        },
+        {
+          "description": "U-Retrieval 结合自顶向下精确检索与自底向上回答细化。",
+          "evidence_match": "any",
+          "facet_id": "facet-096e1133cfc59fee",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+          ]
+        },
+        {
+          "description": "该组合在全局上下文感知与精确索引之间取得平衡。",
+          "evidence_match": "any",
+          "facet_id": "facet-495bfc717593aac1",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-medgraphrag-techniques",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+        ]
+      ],
+      "normalized_question": "medgraphrag 的 triple graph 与 u-retrieval 分别如何工作?",
+      "question": "MedGraphRAG 的 Triple Graph 与 U-Retrieval 分别如何工作？",
+      "question_id": "ueq-literature-medgraphrag-techniques",
+      "question_types": [
+        "multi_hop",
+        "comparison"
+      ],
+      "relevant_evidence": {
+        "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-medgraphrag-techniques",
+      "source_group_ids": [
+        "paper:arxiv:2408.04187"
+      ],
+      "split": "dev",
+      "stress_category": "multi_hop_gap"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "依赖平面数据表示，难以表达实体间复杂关系。",
+          "evidence_ids": [
+            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+          ],
+          "point_id": "point-43e7ff3aebebdc0e"
+        },
+        {
+          "description": "上下文感知不足，容易产生碎片化且不连贯的答案。",
+          "evidence_ids": [
+            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+          ],
+          "point_id": "point-cd70273cd8115894"
+        }
+      ],
+      "facets": [
+        {
+          "description": "依赖平面数据表示，难以表达实体间复杂关系。",
+          "evidence_match": "any",
+          "facet_id": "facet-43e7ff3aebebdc0e",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+          ]
+        },
+        {
+          "description": "上下文感知不足，容易产生碎片化且不连贯的答案。",
+          "evidence_match": "any",
+          "facet_id": "facet-cd70273cd8115894",
           "required": true,
           "target_evidence_ids": [
             "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
@@ -1684,7 +2293,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-lightrag-limitations",
+      "leakage_group_id": "leak:ueq-literature-lightrag-limitations",
       "minimum_sufficient_evidence_sets": [
         [
           "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
@@ -1692,16 +2301,16 @@
       ],
       "normalized_question": "lightrag 认为已有 rag 系统存在哪些结构或效率局限?",
       "question": "LightRAG 认为已有 RAG 系统存在哪些结构或效率局限？",
-      "question_id": "ueq-hybrid-dev-questions-lightrag-limitations",
+      "question_id": "ueq-literature-lightrag-limitations",
       "question_types": [
-        "factoid"
+        "synthesis"
       ],
       "relevant_evidence": {
         "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f": 3
       },
       "source_fixture": "data/evaluation/hybrid_dev_questions.json#lightrag-limitations",
       "source_group_ids": [
-        "source-hybrid-dev-questions-lightrag-limitations"
+        "paper:arxiv:2410.05779"
       ],
       "split": "dev",
       "stress_category": "control"
@@ -1709,17 +2318,126 @@
     {
       "answer_points": [
         {
-          "description": "综述摘要说明静态知识对动态实时查询及可靠回答的限制。",
+          "description": "把图结构纳入文本索引和检索。",
           "evidence_ids": [
-            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
           ],
-          "point_id": "point-10bdae6d4d9b5301"
+          "point_id": "point-111b53f9bd9cee48"
+        },
+        {
+          "description": "使用低层与高层知识发现的双层检索。",
+          "evidence_ids": [
+            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+          ],
+          "point_id": "point-a7a61da040cb0648"
+        },
+        {
+          "description": "结合图结构与向量表示检索实体及关系。",
+          "evidence_ids": [
+            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+          ],
+          "point_id": "point-40fda3d490a4ee71"
+        },
+        {
+          "description": "用增量更新算法及时整合新数据。",
+          "evidence_ids": [
+            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+          ],
+          "point_id": "point-7e52ae6a01570083"
         }
       ],
       "facets": [
         {
-          "description": "综述摘要说明静态知识对动态实时查询及可靠回答的限制。",
-          "facet_id": "facet-10bdae6d4d9b5301",
+          "description": "把图结构纳入文本索引和检索。",
+          "evidence_match": "any",
+          "facet_id": "facet-111b53f9bd9cee48",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+          ]
+        },
+        {
+          "description": "使用低层与高层知识发现的双层检索。",
+          "evidence_match": "any",
+          "facet_id": "facet-a7a61da040cb0648",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+          ]
+        },
+        {
+          "description": "结合图结构与向量表示检索实体及关系。",
+          "evidence_match": "any",
+          "facet_id": "facet-40fda3d490a4ee71",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+          ]
+        },
+        {
+          "description": "用增量更新算法及时整合新数据。",
+          "evidence_match": "any",
+          "facet_id": "facet-7e52ae6a01570083",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-lightrag-design",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+        ]
+      ],
+      "normalized_question": "lightrag 用哪些设计同时改善上下文检索和数据更新?",
+      "question": "LightRAG 用哪些设计同时改善上下文检索和数据更新？",
+      "question_id": "ueq-literature-lightrag-design",
+      "question_types": [
+        "synthesis"
+      ],
+      "relevant_evidence": {
+        "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-lightrag-design",
+      "source_group_ids": [
+        "paper:arxiv:2410.05779"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "难以响应动态、实时查询。",
+          "evidence_ids": [
+            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+          ],
+          "point_id": "point-4cccc0a33e408b0c"
+        },
+        {
+          "description": "会生成过时或不准确的输出。",
+          "evidence_ids": [
+            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+          ],
+          "point_id": "point-95a739562983737b"
+        }
+      ],
+      "facets": [
+        {
+          "description": "难以响应动态、实时查询。",
+          "evidence_match": "any",
+          "facet_id": "facet-4cccc0a33e408b0c",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+          ]
+        },
+        {
+          "description": "会生成过时或不准确的输出。",
+          "evidence_match": "any",
+          "facet_id": "facet-95a739562983737b",
           "required": true,
           "target_evidence_ids": [
             "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
@@ -1727,7 +2445,7 @@
         }
       ],
       "knowledge_sufficiency": "sufficient",
-      "leakage_group_id": "leak-hybrid-dev-questions-agentic-rag-motivation",
+      "leakage_group_id": "leak:ueq-literature-agentic-rag-motivation",
       "minimum_sufficient_evidence_sets": [
         [
           "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
@@ -1735,7 +2453,7 @@
       ],
       "normalized_question": "agentic rag 综述认为静态训练数据给大语言模型带来什么限制?",
       "question": "Agentic RAG 综述认为静态训练数据给大语言模型带来什么限制？",
-      "question_id": "ueq-hybrid-dev-questions-agentic-rag-motivation",
+      "question_id": "ueq-literature-agentic-rag-motivation",
       "question_types": [
         "factoid"
       ],
@@ -1744,7 +2462,99 @@
       },
       "source_fixture": "data/evaluation/hybrid_dev_questions.json#agentic-rag-motivation",
       "source_group_ids": [
-        "source-hybrid-dev-questions-agentic-rag-motivation"
+        "paper:arxiv:2501.09136"
+      ],
+      "split": "dev",
+      "stress_category": "control"
+    },
+    {
+      "answer_points": [
+        {
+          "description": "反思。",
+          "evidence_ids": [
+            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+          ],
+          "point_id": "point-13f54757428981a1"
+        },
+        {
+          "description": "规划。",
+          "evidence_ids": [
+            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+          ],
+          "point_id": "point-bde191fba345b60c"
+        },
+        {
+          "description": "工具使用。",
+          "evidence_ids": [
+            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+          ],
+          "point_id": "point-378cabf36f6d27ed"
+        },
+        {
+          "description": "多智能体协作。",
+          "evidence_ids": [
+            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+          ],
+          "point_id": "point-e133fd0134302ef2"
+        }
+      ],
+      "facets": [
+        {
+          "description": "反思。",
+          "evidence_match": "any",
+          "facet_id": "facet-13f54757428981a1",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+          ]
+        },
+        {
+          "description": "规划。",
+          "evidence_match": "any",
+          "facet_id": "facet-bde191fba345b60c",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+          ]
+        },
+        {
+          "description": "工具使用。",
+          "evidence_match": "any",
+          "facet_id": "facet-378cabf36f6d27ed",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+          ]
+        },
+        {
+          "description": "多智能体协作。",
+          "evidence_match": "any",
+          "facet_id": "facet-e133fd0134302ef2",
+          "required": true,
+          "target_evidence_ids": [
+            "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+          ]
+        }
+      ],
+      "knowledge_sufficiency": "sufficient",
+      "leakage_group_id": "leak:ueq-literature-agentic-rag-design-patterns",
+      "minimum_sufficient_evidence_sets": [
+        [
+          "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+        ]
+      ],
+      "normalized_question": "agentic rag 用哪些智能体设计模式克服传统 rag 的静态工作流?",
+      "question": "Agentic RAG 用哪些智能体设计模式克服传统 RAG 的静态工作流？",
+      "question_id": "ueq-literature-agentic-rag-design-patterns",
+      "question_types": [
+        "synthesis"
+      ],
+      "relevant_evidence": {
+        "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294": 3
+      },
+      "source_fixture": "data/evaluation/unified/question-sources.json#ueq-literature-agentic-rag-design-patterns",
+      "source_group_ids": [
+        "paper:arxiv:2501.09136"
       ],
       "split": "dev",
       "stress_category": "control"

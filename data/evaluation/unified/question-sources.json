@@ -1,0 +1,548 @@
+{
+  "dataset_version": "unified-agent-qa-v4",
+  "records": [
+    {
+      "evidence_ids": [
+        "target-q01"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q01",
+      "question": "What architecture does Agent System 1 use?",
+      "question_id": "ueq-corrective-dev-questions-q01"
+    },
+    {
+      "evidence_ids": [
+        "target-q02"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q02",
+      "question": "What architecture does Agent System 2 use?",
+      "question_id": "ueq-corrective-dev-questions-q02"
+    },
+    {
+      "evidence_ids": [
+        "target-q03"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q03",
+      "question": "What architecture does Agent System 3 use?",
+      "question_id": "ueq-corrective-dev-questions-q03"
+    },
+    {
+      "evidence_ids": [
+        "target-q04"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q04",
+      "question": "Which paper introduces the AlphaAgent 4 entity?",
+      "question_id": "ueq-corrective-dev-questions-q04"
+    },
+    {
+      "evidence_ids": [
+        "target-q05"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q05",
+      "question": "Which paper introduces the AlphaAgent 5 entity?",
+      "question_id": "ueq-corrective-dev-questions-q05"
+    },
+    {
+      "evidence_ids": [
+        "target-q06"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q06",
+      "question": "Which paper introduces the AlphaAgent 6 entity?",
+      "question_id": "ueq-corrective-dev-questions-q06"
+    },
+    {
+      "evidence_ids": [
+        "target-q10"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q10",
+      "question": "What multi-hop relationship links Agent 10 and Tool 10?",
+      "question_id": "ueq-corrective-dev-questions-q10"
+    },
+    {
+      "evidence_ids": [
+        "target-q11"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q11",
+      "question": "What multi-hop relationship links Agent 11 and Tool 11?",
+      "question_id": "ueq-corrective-dev-questions-q11"
+    },
+    {
+      "evidence_ids": [
+        "target-q12"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q12",
+      "question": "What multi-hop relationship links Agent 12 and Tool 12?",
+      "question_id": "ueq-corrective-dev-questions-q12"
+    },
+    {
+      "evidence_ids": [
+        "target-q13"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q13",
+      "question": "What accuracy metric is reported for Agent 13?",
+      "question_id": "ueq-corrective-dev-questions-q13"
+    },
+    {
+      "evidence_ids": [
+        "target-q14"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q14",
+      "question": "What accuracy metric is reported for Agent 14?",
+      "question_id": "ueq-corrective-dev-questions-q14"
+    },
+    {
+      "evidence_ids": [
+        "target-q15"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q15",
+      "question": "What accuracy metric is reported for Agent 15?",
+      "question_id": "ueq-corrective-dev-questions-q15"
+    },
+    {
+      "evidence_ids": [
+        "conflict-q16-a",
+        "conflict-q16-b",
+        "target-q16"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q16",
+      "question": "What accuracy metric is reported for Agent 16?",
+      "question_id": "ueq-corrective-dev-questions-q16"
+    },
+    {
+      "evidence_ids": [
+        "conflict-q17-a",
+        "conflict-q17-b",
+        "target-q17"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q17",
+      "question": "What accuracy metric is reported for Agent 17?",
+      "question_id": "ueq-corrective-dev-questions-q17"
+    },
+    {
+      "evidence_ids": [
+        "conflict-q18-a",
+        "conflict-q18-b",
+        "target-q18"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q18",
+      "question": "What accuracy metric is reported for Agent 18?",
+      "question_id": "ueq-corrective-dev-questions-q18"
+    },
+    {
+      "evidence_ids": [],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q19",
+      "question": "What unavailable finding is reported for Agent 19?",
+      "question_id": "ueq-corrective-dev-questions-q19"
+    },
+    {
+      "evidence_ids": [],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/corrective_dev_questions.json#q20",
+      "question": "What unavailable finding is reported for Agent 20?",
+      "question_id": "ueq-corrective-dev-questions-q20"
+    },
+    {
+      "evidence_ids": [
+        "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5",
+      "question": "AgentBench 基准的交互环境重点评估智能体的哪些能力？",
+      "question_id": "ueq-literature-agentbench-environment-focus"
+    },
+    {
+      "evidence_ids": [
+        "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5",
+      "question": "AgentBench 识别出的可用 LLM 智能体主要失败障碍是什么？",
+      "question_id": "ueq-literature-agentbench-failures"
+    },
+    {
+      "evidence_ids": [
+        "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5",
+      "question": "AgentBench 评测了多少个模型，商业模型与不超过 70B 的开源模型表现有何差异？",
+      "question_id": "ueq-literature-agentbench-model-results"
+    },
+    {
+      "evidence_ids": [
+        "chunk-533216a1b2f716ddf3e30327e2a021b5c5e57d555ec3cbe7001266f08e4302a5"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#agentbench-scope",
+      "question": "AgentBench 用什么类型的环境对 LLM 智能体进行多维评测？",
+      "question_id": "ueq-literature-agentbench-scope"
+    },
+    {
+      "evidence_ids": [
+        "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294",
+      "question": "Agentic RAG 用哪些智能体设计模式克服传统 RAG 的静态工作流？",
+      "question_id": "ueq-literature-agentic-rag-design-patterns"
+    },
+    {
+      "evidence_ids": [
+        "chunk-9494d8313ef6c0c24ee15e890e0d0ef2b148999cd0bb990c1350ee1ff8281294"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#agentic-rag-motivation",
+      "question": "Agentic RAG 综述认为静态训练数据给大语言模型带来什么限制？",
+      "question_id": "ueq-literature-agentic-rag-motivation"
+    },
+    {
+      "evidence_ids": [
+        "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#camel-acronym-exact",
+      "question": "缩写 CAMEL 对应的智能体协作方法具有什么核心设计？",
+      "question_id": "ueq-literature-camel-acronym-exact"
+    },
+    {
+      "evidence_ids": [
+        "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#camel-purpose",
+      "question": "CAMEL 研究试图通过什么方式减少复杂任务求解中对人工输入的依赖？",
+      "question_id": "ueq-literature-camel-purpose"
+    },
+    {
+      "evidence_ids": [
+        "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce",
+      "question": "CAMEL 的角色扮演框架除完成任务外还能生成什么研究资源？",
+      "question_id": "ueq-literature-camel-research-use"
+    },
+    {
+      "evidence_ids": [
+        "chunk-ed0d660890edc141532bcf65e3a9c3a2a3533e218f5634534b850c791a332fce"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#camel-roleplay",
+      "question": "CAMEL 如何利用角色扮演和交流式智能体完成任务？",
+      "question_id": "ueq-literature-camel-roleplay"
+    },
+    {
+      "evidence_ids": [
+        "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#gaia-abilities",
+      "question": "GAIA 基准的问题要求通用 AI 助手具备哪些基础能力？",
+      "question_id": "ueq-literature-gaia-abilities"
+    },
+    {
+      "evidence_ids": [
+        "chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-d5b20813e84b33e27284aaaa097e8afca2f54f68df1d27ecf596cb0581d5a177",
+      "question": "GAIA 报告的人类与带插件 GPT-4 的表现差距及数据规模是多少？",
+      "question_id": "ueq-literature-gaia-results"
+    },
+    {
+      "evidence_ids": [
+        "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#generative-agents-applications",
+      "question": "生成式智能体的可信人类行为代理可以支持哪些类型的交互应用？",
+      "question_id": "ueq-literature-generative-agents-applications"
+    },
+    {
+      "evidence_ids": [
+        "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b",
+      "question": "Generative Agents 的记忆架构如何支持行为规划？",
+      "question_id": "ueq-literature-generative-agents-architecture"
+    },
+    {
+      "evidence_ids": [
+        "chunk-c31d1b3ba91a88e9ab09166c23ac27d24a6b4af6b0f4e410b12063e10becad7b"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#generative-agents-definition",
+      "question": "Generative Agents 论文如何定义生成式智能体及其目标？",
+      "question_id": "ueq-literature-generative-agents-definition"
+    },
+    {
+      "evidence_ids": [
+        "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#graphrag-global-questions",
+      "question": "传统 RAG 为什么难以回答面向整个文档集合的全局问题？",
+      "question_id": "ueq-literature-graphrag-global-questions"
+    },
+    {
+      "evidence_ids": [
+        "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#graphrag-goal",
+      "question": "GraphRAG 的图方法旨在怎样改进面向语料库的摘要回答？",
+      "question_id": "ueq-literature-graphrag-goal"
+    },
+    {
+      "evidence_ids": [
+        "chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-7cd930ecb34b192fcba96c658559e204e0d73f7e0c729bd88e88e5a522f14455",
+      "question": "GraphRAG 如何从源文档构建索引并生成全局回答？",
+      "question_id": "ueq-literature-graphrag-pipeline"
+    },
+    {
+      "evidence_ids": [
+        "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38",
+      "question": "HippoRAG 用哪些组件模拟新皮层与海马体的不同记忆角色？",
+      "question_id": "ueq-literature-hipporag-components"
+    },
+    {
+      "evidence_ids": [
+        "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38",
+      "question": "当前 RAG 为何难以整合跨段知识，HippoRAG 如何应对？",
+      "question_id": "ueq-literature-hipporag-integration-gap"
+    },
+    {
+      "evidence_ids": [
+        "chunk-9885b758a38e27148bf30ca9207630fc1995048aca2f27fc6eb7a2e1a5f12d38"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#hipporag-memory",
+      "question": "HippoRAG 从哺乳动物长期记忆中借鉴了什么核心能力？",
+      "question_id": "ueq-literature-hipporag-memory"
+    },
+    {
+      "evidence_ids": [
+        "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#lats-capabilities",
+      "question": "Language Agent Tree Search 统一了语言智能体的哪些关键能力？",
+      "question_id": "ueq-literature-lats-capabilities"
+    },
+    {
+      "evidence_ids": [
+        "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754",
+      "question": "LATS 在哪些不同领域验证了决策框架的通用性？",
+      "question_id": "ueq-literature-lats-domains"
+    },
+    {
+      "evidence_ids": [
+        "chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-7a7f4de81adf2cd70f7dd20c59b6d22e5473ac95b273f08659951ccde1762754",
+      "question": "LATS 如何把树搜索、模型自省和环境反馈结合起来改善决策？",
+      "question_id": "ueq-literature-lats-search-mechanism"
+    },
+    {
+      "evidence_ids": [
+        "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f",
+      "question": "LightRAG 用哪些设计同时改善上下文检索和数据更新？",
+      "question_id": "ueq-literature-lightrag-design"
+    },
+    {
+      "evidence_ids": [
+        "chunk-456394fa3a9578ede80c2e422449a9eb163f9948a711f6fdf0c0398b4bf08d2f"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#lightrag-limitations",
+      "question": "LightRAG 认为已有 RAG 系统存在哪些结构或效率局限？",
+      "question_id": "ueq-literature-lightrag-limitations"
+    },
+    {
+      "evidence_ids": [
+        "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#medgraphrag-safety",
+      "question": "MedGraphRAG 如何定位其在医疗问答安全性方面的作用？",
+      "question_id": "ueq-literature-medgraphrag-safety"
+    },
+    {
+      "evidence_ids": [
+        "chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-3b6cd29389004ee34cde9a96b410df2a62690455621b7687c9608e2fbc39c6f2",
+      "question": "MedGraphRAG 的 Triple Graph 与 U-Retrieval 分别如何工作？",
+      "question_id": "ueq-literature-medgraphrag-techniques"
+    },
+    {
+      "evidence_ids": [
+        "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54",
+      "question": "MetaGPT 如何用装配线范式组织复杂任务？",
+      "question_id": "ueq-literature-metagpt-roles"
+    },
+    {
+      "evidence_ids": [
+        "chunk-bb89570bbaacf958d60637ad907dccd529aa18f9fab9a283497ded3994a31b54"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#metagpt-sop",
+      "question": "MetaGPT 为什么在多智能体协作中引入标准作业程序 SOP？",
+      "question_id": "ueq-literature-metagpt-sop"
+    },
+    {
+      "evidence_ids": [
+        "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#paperqa-motivation",
+      "question": "PaperQA 为什么需要用检索增强方法回答科学研究问题？",
+      "question_id": "ueq-literature-paperqa-motivation"
+    },
+    {
+      "evidence_ids": [
+        "chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-b3f5e8f2514d97dec5d917e5740361e3f498cfcbad045c945addb5656fc1cdff",
+      "question": "PaperQA 回答科学问题时依次执行哪些关键工作？",
+      "question_id": "ueq-literature-paperqa-workflow"
+    },
+    {
+      "evidence_ids": [
+        "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#toolllm-problem",
+      "question": "ToolLLM 针对开源大语言模型的哪项工具使用缺陷提出方案？",
+      "question_id": "ueq-literature-toolllm-problem"
+    },
+    {
+      "evidence_ids": [
+        "chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-a69a8299fd42d8553b428fe529dcade7efe2c3907e1ec174943c243ef328a552",
+      "question": "ToolBench 的 API 来源、规模和自动构建阶段是什么？",
+      "question_id": "ueq-literature-toolllm-toolbench"
+    },
+    {
+      "evidence_ids": [
+        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9",
+      "question": "Tree of Thoughts 与 GPT-4 Chain-of-Thought 在 Game of 24 上的成功率分别是多少？",
+      "question_id": "ueq-literature-tree-of-thoughts-game24"
+    },
+    {
+      "evidence_ids": [
+        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#tree-of-thoughts-hyphenated",
+      "question": "Tree-of-Thoughts 式搜索如何弥补逐 token 推理的局限？",
+      "question_id": "ueq-literature-tree-of-thoughts-hyphenated"
+    },
+    {
+      "evidence_ids": [
+        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#tree-of-thoughts-motivation",
+      "question": "Tree of Thoughts 主要解决语言模型逐 token 左到右决策的什么局限？",
+      "question_id": "ueq-literature-tree-of-thoughts-motivation"
+    },
+    {
+      "evidence_ids": [
+        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#tree-of-thoughts-search",
+      "question": "Tree of Thoughts 为什么要在多个推理思路之间进行探索？",
+      "question_id": "ueq-literature-tree-of-thoughts-search"
+    },
+    {
+      "evidence_ids": [
+        "chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-ee356f4b22b0e48fd81d0bdd61201a0a5d78a74225e4c4ef66aedec48ed5a3d9",
+      "question": "Tree of Thoughts 在哪些需要非平凡规划或搜索的任务上进行了实验？",
+      "question_id": "ueq-literature-tree-of-thoughts-tasks"
+    },
+    {
+      "evidence_ids": [
+        "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#voyager-components",
+      "question": "Voyager 在 Minecraft 中持续学习所依赖的三个核心组件是什么？",
+      "question_id": "ueq-literature-voyager-components"
+    },
+    {
+      "evidence_ids": [
+        "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+      ],
+      "origin": "fixture_migration",
+      "origin_locator": "data/evaluation/hybrid_dev_questions.json#voyager-lifelong-learning",
+      "question": "Voyager 为什么被称为具身终身学习智能体？",
+      "question_id": "ueq-literature-voyager-lifelong-learning"
+    },
+    {
+      "evidence_ids": [
+        "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142",
+      "question": "Voyager 相比既有最佳方法在 Minecraft 中报告了哪些量化提升？",
+      "question_id": "ueq-literature-voyager-results"
+    },
+    {
+      "evidence_ids": [
+        "chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142"
+      ],
+      "origin": "chunk_derived",
+      "origin_locator": "evidence:chunk-7bb5df31611f489883655355b26af32847f8e2dce9db34fac7b04da18a731142",
+      "question": "Voyager 的技能库以什么形式保存能力，并带来哪些性质？",
+      "question_id": "ueq-literature-voyager-skill-library"
+    }
+  ],
+  "schema_version": "v1"
+}

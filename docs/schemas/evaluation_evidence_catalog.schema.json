@@ -1,0 +1,96 @@
+{
+  "$defs": {
+    "EvaluationEvidenceRecord": {
+      "additionalProperties": false,
+      "description": "供统一评测标注复核的冻结 Evidence 记录。",
+      "properties": {
+        "content": {
+          "maxLength": 20000,
+          "minLength": 1,
+          "title": "Content",
+          "type": "string"
+        },
+        "content_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Content Hash",
+          "type": "string"
+        },
+        "evidence_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "source_group_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Source Group Id",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "chunk",
+            "graph",
+            "fixture"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "source_locator": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Source Locator",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "source_group_id",
+        "source_kind",
+        "source_locator",
+        "content",
+        "content_hash"
+      ],
+      "title": "EvaluationEvidenceRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "统一题目引用的有界、内容寻址 Evidence 目录。",
+  "properties": {
+    "dataset_version": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Dataset Version",
+      "type": "string"
+    },
+    "evidence_version": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Evidence Version",
+      "type": "string"
+    },
+    "records": {
+      "items": {
+        "$ref": "#/$defs/EvaluationEvidenceRecord"
+      },
+      "maxItems": 200,
+      "minItems": 1,
+      "title": "Records",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "v1",
+      "default": "v1",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "dataset_version",
+    "evidence_version",
+    "records"
+  ],
+  "title": "EvaluationEvidenceCatalog",
+  "type": "object"
+}

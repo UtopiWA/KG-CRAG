@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from datetime import datetime
 from enum import StrEnum
 from typing import Literal
@@ -41,6 +42,16 @@ class KnowledgeSufficiency(StrEnum):
     SUFFICIENT = "sufficient"
     CONFLICTING = "conflicting"
     INSUFFICIENT = "insufficient"
+
+
+class EvidenceMatchMode(StrEnum):
+    ANY = "any"
+    ALL = "all"
+
+
+class EvaluationQuestionOrigin(StrEnum):
+    FIXTURE_MIGRATION = "fixture_migration"
+    CHUNK_DERIVED = "chunk_derived"
 
 
 class UnifiedStrategy(StrEnum):
@@ -85,6 +96,7 @@ class EvaluationFacetTarget(StrictModel):
     description: str = Field(min_length=1, max_length=500)
     required: bool = True
     target_evidence_ids: list[str] = Field(default_factory=list, max_length=20)
+    evidence_match: EvidenceMatchMode = EvidenceMatchMode.ANY
 
     @field_validator("target_evidence_ids")
     @classmethod
@@ -92,6 +104,16 @@ class EvaluationFacetTarget(StrictModel):
         if len(value) != len(set(value)):
             raise ValueError("facet target evidence IDs must be unique")
         return value
+
+    def is_covered_by(self, evidence_ids: set[str]) -> bool:
+        """按 facet 声明的任一/全部语义判断 Evidence 覆盖。"""
+
+        targets = set(self.target_evidence_ids)
+        if not targets:
+            return False
+        if self.evidence_match is EvidenceMatchMode.ALL:
+            return targets <= evidence_ids
+        return bool(targets & evidence_ids)
 
 
 class UnifiedEvaluationQuestion(StrictModel):
@@ -176,7 +198,7 @@ class UnifiedEvaluationQuestion(StrictModel):
             if any(not item.target_evidence_ids for item in required):
                 raise ValueError("required facets need target evidence")
             for evidence_set in self.minimum_sufficient_evidence_sets:
-                if any(not set(item.target_evidence_ids) & set(evidence_set) for item in required):
+                if any(not item.is_covered_by(set(evidence_set)) for item in required):
                     raise ValueError("minimum sufficient set does not cover every required facet")
         return self
 
@@ -197,11 +219,81 @@ class UnifiedQuestionSet(StrictModel):
         return self
 
 
+class EvaluationEvidenceRecord(StrictModel):
+    """供统一评测标注复核的冻结 Evidence 记录。"""
+
+    evidence_id: str = Field(min_length=1, max_length=200)
+    source_group_id: str = Field(min_length=1, max_length=128)
+    source_kind: Literal["chunk", "graph", "fixture"]
+    source_locator: str = Field(min_length=1, max_length=500)
+    content: str = Field(min_length=1, max_length=20_000)
+    content_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
+
+    @model_validator(mode="after")
+    def content_matches_hash(self) -> EvaluationEvidenceRecord:
+        actual = hashlib.sha256(self.content.encode()).hexdigest()
+        if actual != self.content_hash:
+            raise ValueError("evaluation Evidence content hash drifted")
+        return self
+
+
+class EvaluationEvidenceCatalog(StrictModel):
+    """统一题目引用的有界、内容寻址 Evidence 目录。"""
+
+    schema_version: Literal["v1"] = "v1"
+    dataset_version: str = Field(min_length=1, max_length=100)
+    evidence_version: str = Field(min_length=1, max_length=200)
+    records: list[EvaluationEvidenceRecord] = Field(min_length=1, max_length=200)
+
+    @model_validator(mode="after")
+    def evidence_ids_are_unique(self) -> EvaluationEvidenceCatalog:
+        identifiers = [item.evidence_id for item in self.records]
+        if len(identifiers) != len(set(identifiers)):
+            raise ValueError("evaluation Evidence IDs must be unique")
+        return self
+
+
+class EvaluationQuestionSourceRecord(StrictModel):
+    """当前题目文本的直接来源及其上游派生依据。"""
+
+    question_id: str = Field(pattern=r"^ueq-[a-z0-9-]{3,120}$")
+    question: str = Field(min_length=1, max_length=4000)
+    origin: EvaluationQuestionOrigin
+    origin_locator: str = Field(min_length=1, max_length=500)
+    evidence_ids: list[str] = Field(default_factory=list, max_length=20)
+
+    @field_validator("evidence_ids")
+    @classmethod
+    def evidence_ids_are_unique(cls, value: list[str]) -> list[str]:
+        if len(value) != len(set(value)):
+            raise ValueError("question source Evidence IDs must be unique")
+        return value
+
+
+class EvaluationQuestionSourceCatalog(StrictModel):
+    """统一题目的冻结直接来源目录。"""
+
+    schema_version: Literal["v1"] = "v1"
+    dataset_version: str = Field(min_length=1, max_length=100)
+    records: list[EvaluationQuestionSourceRecord] = Field(min_length=1, max_length=100)
+
+    @model_validator(mode="after")
+    def question_ids_are_unique(self) -> EvaluationQuestionSourceCatalog:
+        identifiers = [item.question_id for item in self.records]
+        if len(identifiers) != len(set(identifiers)):
+            raise ValueError("evaluation question source IDs must be unique")
+        return self
+
+
 class EvaluationDatasetManifest(StrictModel):
     schema_version: Literal["v1"] = "v1"
     dataset_version: str = Field(min_length=1, max_length=100)
     corpus_snapshot: str = Field(min_length=1, max_length=200)
     evidence_version: str = Field(min_length=1, max_length=200)
+    evidence_path: str = Field(min_length=1, max_length=300)
+    evidence_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
+    question_sources_path: str = Field(min_length=1, max_length=300)
+    question_sources_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
     dev_path: str = Field(min_length=1, max_length=300)
     test_path: str = Field(min_length=1, max_length=300)
     dev_count: int = Field(ge=40, le=50)
@@ -402,6 +494,8 @@ class DevelopmentSelection(StrictModel):
     prompt_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
     model_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
     report_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
+    version_declarations: dict[str, str] = Field(min_length=1, max_length=20)
+    thresholds: dict[str, str | int | float | bool] = Field(min_length=1, max_length=20)
     frozen_at: datetime
 
 

@@ -39,6 +39,10 @@
           "title": "Description",
           "type": "string"
         },
+        "evidence_match": {
+          "$ref": "#/$defs/EvidenceMatchMode",
+          "default": "any"
+        },
         "facet_id": {
           "pattern": "^facet-[a-f0-9]{16}$",
           "title": "Facet Id",
@@ -71,6 +75,14 @@
         "test"
       ],
       "title": "EvaluationSplit",
+      "type": "string"
+    },
+    "EvidenceMatchMode": {
+      "enum": [
+        "any",
+        "all"
+      ],
+      "title": "EvidenceMatchMode",
       "type": "string"
     },
     "KnowledgeSufficiency": {

@@ -1,0 +1,26 @@
+{
+  "config_hash": "cf3c2e829b3b6c84c143ccdb1e1ce3de1abfb0806c1fcf45025254816706d5cf",
+  "dataset_hash": "b2e5a93a0b500cf3d965077b339b12ef173f746649009067a21c43c12bea6ba3",
+  "dataset_version": "unified-agent-qa-v4",
+  "frozen_at": "2026-10-04T16:35:31.702307Z",
+  "model_hash": "ca05842e6610ea2f309f2e14f7bc1b567d9b6b686b29cb5478d21bcfb138fe49",
+  "prompt_hash": "6959fb8f993b4302dffbbd7b5edfd9a346f0228b29d4fb68485d5598962c9062",
+  "report_hash": "16b328aa695d7d2492fa023f9fcfe3d6cfa0cf8f47e65222adc0db7785e9f614",
+  "selected_strategy": "facet_corrective",
+  "thresholds": {
+    "max_candidates_per_question": 50,
+    "max_loops_per_question": 2,
+    "near_duplicate_threshold": 0.92,
+    "top_k": 10,
+    "with_judge": false
+  },
+  "version_declarations": {
+    "index": "local-bundle-ed1d9059-51809a40",
+    "judge": "judge-disabled",
+    "metric": "unified-metrics-v1",
+    "model": "no-model",
+    "observation_hash": "1e1849a8215f7485643a03dd0bc3702c1187dba8b0599245c6000caff6aa0922",
+    "prompt": "no-prompt",
+    "strategy": "local-observation-v1"
+  }
+}

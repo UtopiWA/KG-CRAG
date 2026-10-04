@@ -221,7 +221,7 @@ python scripts/evaluate_grounded_answer.py --online --confirm --limit 5
 
 ## 统一评测与可观测性
 
-迭代 7 将既有评测 fixture 迁移为 60 题统一候选集（40 dev、20 test），统一记录问题类型、答案要点、必需/可选 facet、最小充分 Evidence、压力类型和知识充分性。候选集已通过自动校验但仍待人工逐题复核；复核前只能校验数据或运行明确标记的离线 fixture 回放，不访问 LLM、Web、Qdrant 或 Neo4j：
+迭代 7 将具有语义真值的纠错 fixture 与冻结论文 Chunk 迁移为 60 题 v4 统一集（40 dev、20 test），统一记录问题类型、具体答案要点、必需/可选 facet、最小充分 Evidence、压力类型和知识充分性。`evidence.json` 保存可核验正文和内容哈希，`question-sources.json` 区分原题迁移与 Chunk 派生命题，论文级来源组阻止同一论文跨 dev/test。当前 v4 已于 2026-10-04 完成 dev/test 全量人工复核并通过自动校验；正式测试仍须在开发选择冻结后显式执行且同版本最多一次：
 
 ```powershell
 # 数据迁移默认 dry-run；冻结数据已存在时不会静默覆盖
@@ -237,6 +237,20 @@ python scripts/evaluate_unified.py --fixture-mode --selected-answer-strategy fac
 ```
 
 真实策略应先通过 `UnifiedEvaluationRunner` 适配器或 `StrategyObservationSet` 发布完整三策略观察，再由 `--observations <file>` 生成可比较报告。开发选择只能由非 fixture 的 dev 报告一次性冻结；正式 test 还要求 `--confirm-test-run`，每个数据集版本只允许一次且不能携带调参/选策略参数。Judge 默认关闭，只能用于已选系统、显式预算确认和最多 50 个预声明回答，结果不覆盖人工真值。详细契约、产物和恢复方式见 `docs/evaluation_observability.md`。
+
+冻结 v4 开发集可使用本地观察入口：论文题实际查询 BGE-M3 内存 Dense、SQLite Sparse 和处理后语料内存 Graph，合成纠错题则显式标记为冻结受控回放。该入口禁止 LLM、Web 和隐式模型联网探测，也不依赖 Qdrant、Neo4j 或 Docker：
+
+```powershell
+python scripts/collect_unified_observations.py --dry-run
+python scripts/collect_unified_observations.py
+python scripts/evaluate_unified.py --observations data/evaluation/results/unified/observations/dev-v4-local.json --index-version local-bundle-ed1d9059-51809a40 --strategy-version local-observation-v1
+```
+
+当前 v4 开发矩阵已冻结 `facet_corrective`；选择记录同时保存数据/报告哈希、观察哈希、版本声明及关键阈值。观察文件与报告位于 Git 忽略的结果目录，`development-selection.json` 是正式 test 的可提交门禁。
+
+如需复核入选策略的零 token 抽取式回答代理，可在上述评测命令后增加 `--selected-answer-strategy facet_corrective --extractive-answer-validation`。它只核算 Top-8 Evidence 对冻结答案要点和引用的支持，不等同于自然语言生成质量；当前 Judge 保持未启用。
+
+仅在用户明确确认消耗一次性正式 test 后，先执行 `python scripts/collect_unified_observations.py --split test --confirm-test-observation`；它会读取冻结选择并只为入选策略准备抽取式回答。随后以同一观察文件执行 `python scripts/evaluate_unified.py --split test --observations data/evaluation/results/unified/observations/test-v4-local.json --index-version local-bundle-ed1d9059-51809a40 --strategy-version local-observation-v1 --confirm-test-run`。任一步发现已有同版本正式锁都会拒绝继续。
 
 ## 项目结构
 

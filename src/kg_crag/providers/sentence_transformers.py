@@ -35,12 +35,14 @@ class SentenceTransformerEmbeddingProvider:
         *,
         dimensions: int,
         normalize: bool,
+        local_files_only: bool = False,
         model_factory: Callable[..., SentenceModel] | None = None,
     ) -> None:
         self.model_name = model_name
         self.revision = revision
         self.dimensions = dimensions
         self.normalize = normalize
+        self.local_files_only = local_files_only
         self._model_factory = model_factory
         self._model: SentenceModel | None = None
 
@@ -54,7 +56,11 @@ class SentenceTransformerEmbeddingProvider:
                 factory: Callable[..., SentenceModel] = SentenceTransformer
             else:
                 factory = self._model_factory
-            self._model = factory(self.model_name, revision=self.revision)
+            kwargs: dict[str, str | bool] = {"revision": self.revision}
+            if self.local_files_only:
+                # 离线实验必须禁止库在模型已缓存时仍发起远端版本探测。
+                kwargs["local_files_only"] = True
+            self._model = factory(self.model_name, **kwargs)
         except Exception as error:
             raise KGCRAGError(
                 ErrorDetail(
