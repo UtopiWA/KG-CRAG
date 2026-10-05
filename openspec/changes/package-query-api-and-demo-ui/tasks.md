@@ -23,7 +23,7 @@
 - [x] 3.5 保留 `/health` 存活兼容行为并新增 `/ready` 依赖状态，验证响应不泄漏连接串、路径、密钥或内部异常
 - [x] 3.6 增加统一异常映射、请求 ID、中间件超时和协作式取消，验证超时/断开后不继续触发 LLM、Web 或摄取副作用
 
-## 4. 最小演示界面
+## 4. 阶段性 Streamlit 回放界面
 
 - [x] 4.1 将 Streamlit 声明为 `demo` 可选依赖并建立独立 UI 入口，验证核心包在未安装该依赖时仍可导入和测试
 - [x] 4.2 实现只通过 HTTP API 查询的单页界面，展示答案、引用、来源类型、facet 覆盖、路由、纠错动作、预算和停止原因
@@ -45,4 +45,28 @@
 - [x] 6.3 更新 `README.md` 和运行文档，说明安装、profile、环境变量、持久化、资源观测、故障排查、回放边界及正式测试禁令
 - [x] 6.4 更新根目录 `PROJECT_MAP.md` 的 API、UI、回放、容器与文档路径，复核文件树和模块职责与实际实现一致
 - [x] 6.5 运行 `pytest -W error`、`ruff check .`、`ruff format --check .`、`mypy`、schema 快照检查和 `docker compose config --quiet`
-- [x] 6.6 运行 `openspec validate package-query-api-and-demo-ui --strict`，确认规格、实现、测试和文档一致后再勾选全部任务；保持迭代 7 的正式测试任务未完成
+- [x] 6.6 运行阶段一的 OpenSpec strict validation，确认回放 API、Streamlit 阶段产物、测试和文档一致；保持迭代 7 的正式测试任务未完成
+
+## 7. 任意问题真实工作流
+
+- [ ] 7.1 扩展查询公共契约和配置，加入按请求控制 Web/Trace、语料与索引身份、真实模式预算及惰性组件状态，并同步 schema 快照
+- [ ] 7.2 实现 `LiveQueryApplicationService` 工厂，复用已有 facet、Hybrid、纠错和 grounded answer 入口装配真实路径，不在应用层重写评分或决策
+- [ ] 7.3 让无预置 question ID 的任意合法问题进入真实路径，覆盖内部充分、纠错后充分、内部缺失和依赖失败，并禁止按问题文本自动匹配回放
+- [ ] 7.4 按请求接入可选 Graph 与受控 Web，验证 Graph 未启用不阻塞 Dense/Sparse，Web 只在内部不足且显式允许时触发
+- [ ] 7.5 为模型、索引和存储增加惰性装配、身份检查、健康状态和取消传播，确保未选择的重组件不加载且所有循环/调用/Token 受既有硬上限约束
+- [ ] 7.6 使用替身完成任意问题路径的确定性集成测试，再以少量非 fixture 开发问题执行受控真实烟雾测试；不得读取统一评测 test split 或写正式锁
+
+## 8. Gradio 对话界面
+
+- [ ] 8.1 将 `demo` 可选依赖和 UI 入口从 Streamlit 迁移到 Gradio，在等价验收后删除旧 Streamlit 代码和依赖
+- [ ] 8.2 实现 GPT 式聊天气泡、问题输入、发送、停止、清空和示例问题，并保证会话历史默认只用于展示、不隐式作为下一轮上下文
+- [ ] 8.3 为每轮回答实现引用、来源、facet、路由/纠错、预算、停止原因和 Trace 的折叠诊断区，清楚标记实时与回放
+- [ ] 8.4 暴露是否允许 Web、是否返回 Trace 和实时/回放等有限控制，验证界面不能提交 Prompt、阈值、任意路由或工具名
+- [ ] 8.5 使用 Mock HTTP 客户端测试历史、清空、停止、安全错误与请求载荷，并完成一次本地浏览器烟雾验收
+
+## 9. 重新验收与交付
+
+- [ ] 9.1 更新 Compose 的 Gradio 健康检查、profile 和资源预设，验证最小实时组合及回放降级组合均可解析和按需启动
+- [ ] 9.2 更新 `README.md`、`docs/application.md`、依赖说明、schema 和根目录 `PROJECT_MAP.md`，明确任意问题语义、单轮会话边界和真实/回放启动步骤
+- [ ] 9.3 运行 `pytest -W error`、`ruff check .`、`ruff format --check .`、`mypy`、schema 检查、`docker compose config --quiet` 与 OpenSpec strict validation
+- [ ] 9.4 复核真实烟雾测试的 Trace、引用、资源用量和保守停止结果，确认未消费正式 test 后再将 change 恢复为 Complete

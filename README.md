@@ -56,6 +56,8 @@ kg-crag-ui
 
 迭代 08 提供 `/v1/queries`、`/v1/documents/{paper_id}`、`/v1/ingestion/runs` 和 `/v1/traces/{trace_id}`。公共模型拒绝未知字段，统一错误响应只包含稳定错误码、安全消息、`request_id` 与可重试状态；API/UI 不重写检索、充分性或纠错逻辑。
 
+当前已实现的是固定回放和阶段性 Streamlit 界面；任意问题真实工作流与 Gradio GPT 式界面已经纳入当前 OpenSpec change 的待办，在完成前不得把实时模式描述为可用。
+
 默认进程仅加载 `demo-replay-v1` 的三个脱敏案例：证据充分、纠错补全和保守停止。所有回放都显式标记为非实时、非正式实验结果；实时工作流未装配或依赖失败时返回 503，不会静默回退。容器也必须显式选择 profile：
 
 ```powershell

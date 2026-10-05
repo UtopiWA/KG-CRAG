@@ -2,6 +2,8 @@
 
 迭代 08 把既有科研问答能力包装为严格、可诊断的应用边界。API 和界面不实现检索、充分性或纠错规则；真实工作流通过 `ApplicationService` 注入，默认启动只加载三个脱敏回放案例，不连接 LLM、Web、Qdrant 或 Neo4j。
 
+> 当前实现状态：FastAPI、三个回放案例和阶段性 Streamlit 单页界面已经完成；任意问题的真实工作流尚未默认装配。进行中的 `package-query-api-and-demo-ui` change 已重新打开，后续将装配真实查询并以 Gradio GPT 式界面替换 Streamlit。在对应任务完成前，本页以下命令只代表现有回放能力，不应描述为完整在线问答。
+
 ## 本地启动
 
 安装演示依赖后分别启动 API 和 UI：
