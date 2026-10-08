@@ -115,9 +115,17 @@ async def _run(argv: list[str] | None = None) -> int:
     await sparse_store.ensure_index(identity)
     settings = Settings()
     vector_store = build_vector_store(config.dense, settings)
-    embedding = build_embedding_service(config.dense, workspace_root=PROJECT_ROOT)
+    embedding = build_embedding_service(
+        config.dense,
+        workspace_root=PROJECT_ROOT,
+        settings=settings,
+    )
     reranker = (
-        CrossEncoderReranker(config.reranker, workspace_root=PROJECT_ROOT)
+        CrossEncoderReranker(
+            config.reranker,
+            workspace_root=PROJECT_ROOT,
+            local_files_only=settings.model_local_files_only,
+        )
         if config.reranker.enabled
         else None
     )

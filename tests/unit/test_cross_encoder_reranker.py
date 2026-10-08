@@ -1,5 +1,6 @@
 """Cross-Encoder 的惰性加载、整批校验和稳定排序测试。"""
 
+import os
 from pathlib import Path
 
 import pytest
@@ -65,6 +66,10 @@ async def test_cross_encoder_is_lazy_bounded_stable_and_preserves_input(tmp_path
     assert created[0]["device"] == "cpu"
     assert Path(str(created[0]["cache_dir"])).is_relative_to(tmp_path)
 
+    fake.scores = [0.8]
+    await reranker.warmup()
+    assert fake.calls[-1][0] == (("scientific question", "scientific evidence"),)
+
 
 @pytest.mark.parametrize("scores", [[0.1], [0.1, float("nan")], [[0.1, 0.2], [0.3]]])
 async def test_cross_encoder_rejects_incomplete_or_invalid_batch(
@@ -92,3 +97,29 @@ async def test_cross_encoder_sanitizes_loading_and_inference_errors(tmp_path: Pa
     rendered = str(captured.value)
     assert "private query" not in rendered
     assert str(tmp_path) not in rendered
+
+
+async def test_cross_encoder_can_forbid_remote_model_resolution(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    created: list[dict[str, object]] = []
+    fake = FakeCrossEncoder([0.5])
+    monkeypatch.delenv("HF_HUB_OFFLINE", raising=False)
+    monkeypatch.delenv("TRANSFORMERS_OFFLINE", raising=False)
+
+    def factory(_model: str, **kwargs: object) -> FakeCrossEncoder:
+        created.append(kwargs)
+        return fake
+
+    reranker = CrossEncoderReranker(
+        RerankerConfig(max_candidates=1, top_k=1),
+        workspace_root=tmp_path,
+        local_files_only=True,
+        model_factory=factory,
+    )
+    await reranker.warmup()
+
+    assert created[0]["local_files_only"] is True
+    assert os.environ["HF_HUB_OFFLINE"] == "1"
+    assert os.environ["TRANSFORMERS_OFFLINE"] == "1"

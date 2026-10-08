@@ -1,5 +1,8 @@
 """真实 Provider 边界的离线替身测试。"""
 
+import asyncio
+import os
+import threading
 from types import SimpleNamespace
 
 import pytest
@@ -95,8 +98,12 @@ async def test_sentence_transformer_maps_load_and_dimension_failures() -> None:
         await wrong.embed(["input"])
 
 
-async def test_sentence_transformer_can_forbid_remote_model_resolution() -> None:
+async def test_sentence_transformer_can_forbid_remote_model_resolution(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     created: list[dict[str, object]] = []
+    monkeypatch.delenv("HF_HUB_OFFLINE", raising=False)
+    monkeypatch.delenv("TRANSFORMERS_OFFLINE", raising=False)
 
     def factory(name: str, **kwargs: object) -> FakeSentenceModel:
         created.append({"name": name, **kwargs})
@@ -112,10 +119,45 @@ async def test_sentence_transformer_can_forbid_remote_model_resolution() -> None
     )
     await provider.embed(["input"])
     assert created == [{"name": "model", "revision": "revision", "local_files_only": True}]
+    assert os.environ["HF_HUB_OFFLINE"] == "1"
+    assert os.environ["TRANSFORMERS_OFFLINE"] == "1"
+
+
+async def test_sentence_transformer_uses_configured_cache_without_blocking_loop(
+    tmp_path: object,
+) -> None:
+    started = threading.Event()
+    release = threading.Event()
+    created: list[dict[str, object]] = []
+
+    def factory(name: str, **kwargs: object) -> FakeSentenceModel:
+        created.append({"name": name, **kwargs})
+        started.set()
+        release.wait(timeout=1)
+        return FakeSentenceModel()
+
+    provider = SentenceTransformerEmbeddingProvider(
+        "model",
+        "revision",
+        dimensions=2,
+        normalize=True,
+        cache_folder=tmp_path,
+        model_factory=factory,
+    )
+    task = asyncio.create_task(provider.embed(["input"]))
+    assert await asyncio.to_thread(started.wait, 1) is True
+    assert task.done() is False
+    release.set()
+    await task
+
+    assert created[0]["cache_folder"] == str(tmp_path)
 
 
 async def test_openai_compatible_provider_success_and_safe_errors() -> None:
-    response = SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content="answer"))])
+    response = SimpleNamespace(
+        choices=[SimpleNamespace(message=SimpleNamespace(content="answer"))],
+        usage=SimpleNamespace(prompt_tokens=12, completion_tokens=3),
+    )
     completions = FakeCompletions(response=response)
     provider = OpenAICompatibleLLMProvider(
         "model",
@@ -124,6 +166,20 @@ async def test_openai_compatible_provider_success_and_safe_errors() -> None:
     )
     assert await provider.generate("private prompt") == "answer"
     assert completions.calls[0]["temperature"] == 0.0
+    generation = await provider.generate_with_usage("private prompt")
+    assert generation.content == "answer"
+    assert generation.input_tokens == 12
+    assert generation.output_tokens == 3
+
+    low_reasoning_completions = FakeCompletions(response=response)
+    low_reasoning = OpenAICompatibleLLMProvider(
+        "model",
+        api_key=None,
+        reasoning_effort="low",
+        client=FakeClient(low_reasoning_completions),
+    )
+    await low_reasoning.generate("short extraction")
+    assert low_reasoning_completions.calls[0]["reasoning_effort"] == "low"
 
     timeout = TimeoutError("leaked bearer token and private prompt")
     failing = OpenAICompatibleLLMProvider(
@@ -148,4 +204,5 @@ async def test_openai_compatible_provider_rejects_empty_response() -> None:
     )
     with pytest.raises(KGCRAGError, match="request failed") as error:
         await provider.generate("prompt")
-    assert error.value.detail.retryable is False
+    assert error.value.detail.retryable is True
+    assert error.value.detail.context["error_type"] == "EmptyResponseError"

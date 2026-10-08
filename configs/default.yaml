@@ -24,12 +24,12 @@ corrective_workflow:
     confidence_threshold: 0.75
     max_facets: 12
     max_description_chars: 300
-    allow_llm: false
+    allow_llm: true
   coverage:
     version: coverage-v3
     min_support: 0.45
     min_sources: 1
-    max_selected_evidence: 8
+    max_selected_evidence: 12
     max_evidence_chars: 4000
   actions:
     catalog_version: actions-v1
@@ -72,9 +72,9 @@ grounded_answer:
     checker_version: answer-checker-v1
     policy_version: answer-policy-v1
   generation:
-    max_selected_evidence: 8
+    max_selected_evidence: 12
     max_chars_per_evidence: 2000
-    max_context_chars: 12000
+    max_context_chars: 16000
     max_response_chars: 3000
     max_claims: 30
   critic:
@@ -105,8 +105,8 @@ grounded_answer:
     critic_calls: 1
     web_calls: 1
     reflection_rounds: 1
-    input_tokens: 9000
-    output_tokens: 3000
+    input_tokens: 8800
+    output_tokens: 3200
     web_results: 5
     context_chars: 16000
     external_context_chars: 8000

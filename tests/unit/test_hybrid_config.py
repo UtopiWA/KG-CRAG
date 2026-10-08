@@ -28,7 +28,9 @@ def test_hybrid_config_preserves_dense_loader_and_pins_resources() -> None:
     assert hybrid.reranker.model == "BAAI/bge-reranker-base"
     assert hybrid.reranker.device == "cpu"
     assert hybrid.reranker.max_candidates == 20
-    assert hybrid.reranker.top_k == 8
+    assert hybrid.fusion.final_top_k == 16
+    assert hybrid.reranker.top_k == 12
+    assert hybrid.hybrid.max_output == 12
     evaluation = load_hybrid_evaluation_config(PROJECT_ROOT / "configs" / "evaluation.yaml")
     assert evaluation.strategies == ["dense", "sparse", "rrf", "weighted", "fusion_rerank"]
     assert evaluation.smoke_questions == 5

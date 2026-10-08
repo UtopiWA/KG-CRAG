@@ -55,7 +55,7 @@ async def _run(argv: list[str] | None = None) -> int:
     try:
         pipeline = DenseIndexPipeline(
             config,
-            build_embedding_service(config, workspace_root=PROJECT_ROOT),
+            build_embedding_service(config, workspace_root=PROJECT_ROOT, settings=settings),
             store,
             workspace_root=PROJECT_ROOT,
         )

@@ -58,6 +58,23 @@ def test_actual_ingestion_model_requires_confirmation_and_unique_ids() -> None:
         IngestionRunRequest(paper_ids=["paper-a", "paper-a"])
 
 
+def test_query_controls_are_bounded_by_mode() -> None:
+    live = QueryRequest(
+        question="一个没有预置 ID 的问题",
+        mode=ApplicationMode.LIVE,
+        allow_web=True,
+        include_trace=True,
+    )
+    assert live.replay_case_id is None
+    assert live.allow_web is True
+    with pytest.raises(ValidationError, match="allow_web is only valid"):
+        QueryRequest(
+            question="固定回放",
+            mode=ApplicationMode.REPLAY,
+            allow_web=True,
+        )
+
+
 @pytest.mark.asyncio
 async def test_document_service_returns_metadata_and_ids_without_chunk_text(tmp_path: Path) -> None:
     paper_id = "arxiv:demo"

@@ -144,7 +144,7 @@ async def test_hybrid_reranks_bounded_candidates_and_falls_back_explicitly() -> 
     service = _service(dense, sparse, _config(reranker=True), reranker=reranker)
     result = await service.retrieve("query")
     assert len(reranker.calls) == 1
-    assert reranker.calls[0].top_k == 8
+    assert reranker.calls[0].top_k == 12
     assert all(item.ranks.rerank is not None for item in result.evidence)
 
     class FailingReranker(MockReranker):

@@ -22,16 +22,24 @@ def build_embedding_service(
     config: DenseRAGConfig,
     *,
     workspace_root: Path,
+    settings: Settings | None = None,
 ) -> EmbeddingService:
     """按锁定的模型与 revision 创建惰性 Embedding 服务。"""
 
     if config.embedding.provider != "sentence-transformers":
         raise ValueError(f"unsupported embedding provider: {config.embedding.provider}")
+    model_cache_root: Path | None = None
+    if settings is not None:
+        model_cache_root = Path(settings.model_cache_root)
+        if not model_cache_root.is_absolute():
+            model_cache_root = workspace_root / model_cache_root
     provider = SentenceTransformerEmbeddingProvider(
         config.embedding.model,
         config.embedding.revision,
         dimensions=config.embedding.dimensions,
         normalize=config.embedding.normalize,
+        local_files_only=settings.model_local_files_only if settings is not None else False,
+        cache_folder=model_cache_root,
     )
     return EmbeddingService(provider, config.embedding, workspace_root=workspace_root)
 

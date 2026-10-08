@@ -164,6 +164,22 @@ class InMemorySparseStore:
             if chunk.paper_id == paper_id
         }
 
+    async def paper_context(self, paper_id: str, *, limit: int) -> list[Evidence]:
+        if not paper_id.strip() or limit <= 0 or limit > 20:
+            raise _invalid_parameter("invalid paper context request")
+        chunks = sorted(
+            (item for item in self._records.values() if item.paper_id == paper_id),
+            key=lambda item: (
+                0
+                if "abstract" in (item.section or "").casefold()
+                or item.text.lstrip().casefold().startswith("abstract")
+                else 1,
+                item.ordinal,
+                item.chunk_id,
+            ),
+        )[:limit]
+        return [_to_context_evidence(self.identity.index_version, chunk) for chunk in chunks]
+
 
 def _bm25_scores(
     documents: list[Chunk], query_tokens: tuple[str, ...]
@@ -236,6 +252,24 @@ def _to_evidence(index_version: str, chunk: Chunk, score: float, rank: int) -> E
             "index_version": index_version,
             "content_hash": chunk.content_hash,
             "processing_version": chunk.processing_version,
+        },
+    )
+
+
+def _to_context_evidence(index_version: str, chunk: Chunk) -> Evidence:
+    return Evidence(
+        evidence_id=f"paper-context:{index_version}:{chunk.chunk_id}",
+        content=chunk.text,
+        source_type=EvidenceSourceType.CHUNK,
+        source_id=chunk.chunk_id,
+        paper_id=chunk.paper_id,
+        location=EvidenceLocation(section=chunk.section, page=chunk.page_start),
+        external=False,
+        metadata={
+            "index_version": index_version,
+            "content_hash": chunk.content_hash,
+            "processing_version": chunk.processing_version,
+            "paper_context_expansion": True,
         },
     )
 

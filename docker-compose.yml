@@ -13,6 +13,7 @@ services:
     environment:
       KG_CRAG_API_HOST: 0.0.0.0
       KG_CRAG_REPLAY_FIXTURE_PATH: src/kg_crag/application/replay_cases.json
+      KG_CRAG_ENABLE_LIVE_QUERY: "${KG_CRAG_ENABLE_LIVE_QUERY:-false}"
     ports:
       - "${KG_CRAG_API_PORT:-8000}:8000"
     mem_limit: 2g
@@ -33,14 +34,16 @@ services:
         required: false
     environment:
       KG_CRAG_UI_API_BASE_URL: http://api:8000
+      KG_CRAG_UI_HOST: 0.0.0.0
+      KG_CRAG_UI_PORT: 7860
     ports:
-      - "${KG_CRAG_UI_PORT:-8501}:8501"
+      - "${KG_CRAG_UI_PORT:-7860}:7860"
     mem_limit: 1g
     depends_on:
       api:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health', timeout=3)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:7860/', timeout=3)"]
       interval: 10s
       timeout: 5s
       retries: 10

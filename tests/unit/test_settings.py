@@ -14,6 +14,12 @@ def test_settings_defaults_are_valid() -> None:
     assert settings.neo4j_uri == "bolt://localhost:7687"
     assert settings.application_memory_target_mb == 10_240
     assert settings.application_memory_hard_limit_mb == 12_288
+    assert settings.api_request_timeout_seconds == 120
+    assert settings.llm_max_output_tokens == 1600
+    assert settings.llm_reasoning_effort == "provider-default"
+    assert settings.live_enable_answer_critic is False
+    assert settings.live_paper_context_limit == 5
+    assert settings.model_local_files_only is True
 
 
 @pytest.mark.parametrize("port", [0, 65536])

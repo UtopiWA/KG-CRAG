@@ -16,6 +16,20 @@ from kg_crag.models import (
 )
 
 _NUMBER = re.compile(r"(?<![\w.])-?\d+(?:\.\d+)?(?:\s*%)?")
+_ABSTENTION = re.compile(
+    r"(?:暂无|没有|缺少|不足).{0,12}(?:可信|可靠|充分|足够|安全).{0,12}(?:结论|证据|信息)"
+    r"|无法.{0,16}(?:回答|判断|确定|得出)"
+    r"|cannot.{0,16}(?:answer|determine|conclude)"
+    r"|insufficient\s+(?:evidence|information)"
+    r"|not\s+enough\s+(?:evidence|information)",
+    re.IGNORECASE,
+)
+
+
+def _is_abstention(text: str) -> bool:
+    """识别把系统证据边界误写成事实答案的常见拒答表述。"""
+
+    return bool(_ABSTENTION.search(" ".join(text.split())))
 
 
 def deterministic_check(
@@ -30,7 +44,13 @@ def deterministic_check(
     findings: list[AnswerFinding] = []
     external = externally_covered_facet_ids or set()
     required = {item.facet_id for item in facets if item.required}
-    claimed_facets = {facet_id for item in candidate.claims for facet_id in item.facet_ids}
+    abstaining_claim_ids = {item.claim_id for item in candidate.claims if _is_abstention(item.text)}
+    claimed_facets = {
+        facet_id
+        for item in candidate.claims
+        if item.claim_type is not ClaimType.UNCERTAIN and item.claim_id not in abstaining_claim_ids
+        for facet_id in item.facet_ids
+    }
     missing = required - claimed_facets - external
     if missing:
         findings.append(
@@ -40,6 +60,16 @@ def deterministic_check(
                 facet_ids=sorted(missing),
             )
         )
+    for claim in candidate.claims:
+        if claim.claim_id in abstaining_claim_ids and claim.facet_ids:
+            findings.append(
+                AnswerFinding(
+                    code=AnswerCheckCode.ABSTENTION,
+                    reason="an abstention cannot satisfy a required answer facet",
+                    claim_ids=[claim.claim_id],
+                    facet_ids=claim.facet_ids,
+                )
+            )
     for claim in candidate.claims:
         if _NUMBER.search(claim.text) and not claim.citation_ids:
             findings.append(
@@ -68,10 +98,11 @@ def deterministic_check(
         item.code in {AnswerCheckCode.UNKNOWN_CITATION, AnswerCheckCode.UNCITED_NUMBER}
         for item in findings
     )
-    acceptable = complete and conflicts_handled and citations_supported
+    faithful = not abstaining_claim_ids
+    acceptable = complete and faithful and conflicts_handled and citations_supported
     return AnswerEvaluation(
         complete=complete,
-        faithful=True,
+        faithful=faithful,
         citations_supported=citations_supported,
         conflicts_handled=conflicts_handled,
         attribution_correct=True,

@@ -12,6 +12,16 @@
   },
   "additionalProperties": false,
   "properties": {
+    "allow_web": {
+      "default": false,
+      "title": "Allow Web",
+      "type": "boolean"
+    },
+    "include_trace": {
+      "default": false,
+      "title": "Include Trace",
+      "type": "boolean"
+    },
     "mode": {
       "$ref": "#/$defs/ApplicationMode",
       "default": "replay"

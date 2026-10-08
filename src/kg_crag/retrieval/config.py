@@ -243,7 +243,7 @@ class RerankerConfig(StrictModel):
     batch_size: int = Field(default=8, ge=1, le=32)
     max_batch_size: int = Field(default=16, ge=1, le=32)
     max_candidates: int = Field(default=20, ge=1, le=20)
-    top_k: int = Field(default=8, ge=1, le=8)
+    top_k: int = Field(default=8, ge=1, le=20)
 
     @model_validator(mode="after")
     def limits_are_consistent(self) -> RerankerConfig:

@@ -109,7 +109,7 @@ fusion:
   rrf_k: 60
   dense_weight: 0.5
   sparse_weight: 0.5
-  final_top_k: 10
+  final_top_k: 16
 
 reranker:
   enabled: true
@@ -120,11 +120,11 @@ reranker:
   batch_size: 8
   max_batch_size: 16
   max_candidates: 20
-  top_k: 8
+  top_k: 12
 
 hybrid:
   allow_partial: true
   allow_rerank_fallback: true
   deduplicate_by_paper: false
-  max_output: 8
+  max_output: 12
   output_root: data/processed/hybrid-query-runs

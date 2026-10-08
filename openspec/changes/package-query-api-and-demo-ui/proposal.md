@@ -16,7 +16,7 @@
 
 ## Non-goals
 
-- 不新增或重写 Dense、Sparse、Graph、Web、Agent、充分性判断或回答生成逻辑。
+- 不另建一套 Dense、Sparse、Graph、Web、Agent、充分性判断或回答生成逻辑；真实链路验收发现的既有契约缺陷可以在原模块修正并补充对应 capability delta。
 - 不执行迭代 7 的一次性正式测试，不使用测试集调试 API 或界面。
 - 不提供公网部署、多租户、账户权限、分布式任务队列或生产级高可用能力。
 - 不允许界面以自由文本控制内部路由、阈值、Prompt 或工具调用。
@@ -40,11 +40,12 @@
 
 ### Modified Capabilities
 
-无。本 change 复用现有能力的公共契约，不修改检索、纠错、回答、评测或 Trace 的领域语义。
+- `evidence-sufficiency-corrective-workflow`：冲突必须绑定同一可比命题，普通正文中的无关数字或否定词不得产生阻塞冲突。
+- `grounded-reflection-web-fallback`：回答生成失败必须分类诊断，Provider 实际用量与保守估算必须区分，并把回答阶段的最终纠错状态交给应用层。
 
 ## Impact
 
-- 主要影响 `src/kg_crag/api/`、新增的应用服务适配层和 `ui/`，以及公共 schema、配置、Compose、测试和运行文档。
+- 主要影响 `src/kg_crag/api/`、应用服务适配层和 `ui/`，以及回答解析、冲突检测、公共 schema、配置、Compose、测试和运行文档。
 - 依赖 `foundation-contracts`、`grounded-reflection-web-fallback` 及其他已归档检索能力；迭代 7 的评测 change 可保持未归档，二者不共享正式测试产物。
 - Gradio 应作为可选依赖安装，默认单元测试不启动服务器、数据库、模型或网络请求；已有 Streamlit 阶段产物在 Gradio 等价验收后移除。
 - 主要风险是公共响应泄漏内部状态、API 与工作流重复、容器常驻资源过高和回放结果被误认为实时结果；通过严格投影、单一应用服务边界、profile/硬上限和显式模式标签控制。

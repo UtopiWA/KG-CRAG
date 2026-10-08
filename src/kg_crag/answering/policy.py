@@ -52,6 +52,15 @@ def decide_reflection(
             action, reason = ReflectionAction.CONSERVATIVE_STOP, "web_unavailable"
     elif evaluation is not None and evaluation.acceptable:
         action, reason = ReflectionAction.ACCEPT, "all_checks_passed"
+    elif (
+        candidate is not None
+        and evaluation is not None
+        and any(item.code is AnswerCheckCode.ABSTENTION for item in evaluation.findings)
+    ):
+        # 已有引用与 facet 绑定可安全复用时，先要求模型提取证据中的答案，
+        # 避免把一次格式正确但语义拒答的输出误当成检索缺失。
+        action, reason = ReflectionAction.REGENERATE, "abstention_must_be_rewritten"
+        estimate = AnswerBudgetUsage(reflection_rounds=1)
     elif missing_facet_ids and internal_can_retrieve:
         action, reason = ReflectionAction.RERETRIEVE, "required_facet_missing"
         estimate = AnswerBudgetUsage(reflection_rounds=1)
@@ -59,7 +68,12 @@ def decide_reflection(
         candidate is not None
         and evaluation is not None
         and any(
-            item.code in {AnswerCheckCode.UNSUPPORTED, AnswerCheckCode.WRONG_ATTRIBUTION}
+            item.code
+            in {
+                AnswerCheckCode.ABSTENTION,
+                AnswerCheckCode.UNSUPPORTED,
+                AnswerCheckCode.WRONG_ATTRIBUTION,
+            }
             for item in evaluation.findings
         )
     ):

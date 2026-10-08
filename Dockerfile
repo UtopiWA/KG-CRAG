@@ -13,5 +13,5 @@ RUN python -m pip install --upgrade pip && python -m pip install ".[demo]"
 RUN useradd --create-home --uid 10001 appuser
 USER appuser
 
-EXPOSE 8000 8501
+EXPOSE 8000 7860
 CMD ["kg-crag-api"]

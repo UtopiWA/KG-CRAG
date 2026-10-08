@@ -83,7 +83,11 @@ def test_answer_config_defaults_and_hard_bounds() -> None:
     assert config.enabled is False
     assert config.web.enabled is False
     assert config.web.provider == "disabled"
+    assert config.generation.max_selected_evidence == 12
+    assert config.generation.max_context_chars == 16_000
     assert config.budget.answer_calls == 2
+    assert config.budget.input_tokens == 8800
+    assert config.budget.output_tokens == 3200
     assert config.budget.input_tokens + config.budget.output_tokens == 12_000
     with pytest.raises(ValidationError, match="non-disabled"):
         GroundedAnswerConfig.model_validate(

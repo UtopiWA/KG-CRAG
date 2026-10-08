@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import asyncio
 import math
+import threading
 from collections.abc import Callable
 from pathlib import Path
 from typing import Protocol, cast
 
 from kg_crag.errors import KGCRAGError
 from kg_crag.models import ErrorCode, ErrorDetail, Evidence
+from kg_crag.providers.local_models import enforce_local_model_resolution
 from kg_crag.retrieval.config import RerankerConfig
 
 
@@ -32,6 +34,7 @@ class CrossEncoderReranker:
         config: RerankerConfig,
         *,
         workspace_root: Path,
+        local_files_only: bool = False,
         model_factory: Callable[..., CrossEncoderModel] | None = None,
     ) -> None:
         self.config = config
@@ -39,8 +42,10 @@ class CrossEncoderReranker:
         self.cache_root = Path(config.cache_root)
         if not self.cache_root.is_absolute():
             self.cache_root = (self.workspace_root / self.cache_root).resolve()
+        self.local_files_only = local_files_only
         self._model_factory = model_factory
         self._model: CrossEncoderModel | None = None
+        self._load_lock = threading.Lock()
 
     @property
     def model_loaded(self) -> bool:
@@ -49,21 +54,29 @@ class CrossEncoderReranker:
     def _load(self) -> CrossEncoderModel:
         if self._model is not None:
             return self._model
-        try:
-            if self._model_factory is None:
-                from sentence_transformers import CrossEncoder
+        with self._load_lock:
+            if self._model is not None:
+                return self._model
+            try:
+                enforce_local_model_resolution(self.local_files_only)
+                if self._model_factory is None:
+                    from sentence_transformers import CrossEncoder
 
-                factory: Callable[..., CrossEncoderModel] = CrossEncoder
-            else:
-                factory = self._model_factory
-            self._model = factory(
-                self.config.model,
-                revision=self.config.revision,
-                device=self.config.device,
-                cache_dir=str(self.cache_root),
-            )
-        except Exception as error:
-            raise _reranker_error("reranker model could not be loaded", retryable=True) from error
+                    factory: Callable[..., CrossEncoderModel] = CrossEncoder
+                else:
+                    factory = self._model_factory
+                kwargs: dict[str, str | bool] = {
+                    "revision": self.config.revision,
+                    "device": self.config.device,
+                    "cache_dir": str(self.cache_root),
+                }
+                if self.local_files_only:
+                    kwargs["local_files_only"] = True
+                self._model = factory(self.config.model, **kwargs)
+            except Exception as error:
+                raise _reranker_error(
+                    "reranker model could not be loaded", retryable=True
+                ) from error
         return self._model
 
     async def rerank(
@@ -83,7 +96,8 @@ class CrossEncoderReranker:
         if not candidates:
             return []
         pairs = [(normalized, item.content) for item in candidates]
-        model = self._load()
+        # 权重解析和首次下载都可能很慢，不能阻塞 FastAPI 的事件循环与超时。
+        model = await asyncio.to_thread(self._load)
         try:
             raw = await asyncio.to_thread(
                 model.predict,
@@ -117,6 +131,21 @@ class CrossEncoderReranker:
             copied.ranks.rerank = rank
             results.append(copied)
         return results
+
+    async def warmup(self) -> None:
+        """提前加载权重并执行一个最小批次，消除首次真实重排的冷启动。"""
+
+        model = await asyncio.to_thread(self._load)
+        raw = await asyncio.to_thread(
+            model.predict,
+            [("scientific question", "scientific evidence")],
+            batch_size=1,
+            show_progress_bar=False,
+            convert_to_numpy=False,
+        )
+        scores = _to_scores(raw)
+        if len(scores) != 1 or not math.isfinite(scores[0]):
+            raise _reranker_error("reranker warmup returned an invalid score", retryable=True)
 
 
 def _to_scores(raw: object) -> list[float]:

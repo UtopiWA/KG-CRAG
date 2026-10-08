@@ -117,6 +117,22 @@ class QdrantVectorStore:
         except Exception as error:
             raise self._translate(error, "Qdrant collection could not be prepared") from error
 
+    async def ensure_existing_collection(self) -> None:
+        """实时查询只验证既有集合，绝不因一次请求隐式创建空索引。"""
+
+        try:
+            if not await self._client.collection_exists(self.collection_name):
+                raise _store_error(
+                    "Qdrant collection is not initialized",
+                    retryable=False,
+                    context={"collection": self.collection_name},
+                )
+            await self._validate_identity()
+        except KGCRAGError:
+            raise
+        except Exception as error:
+            raise self._translate(error, "Qdrant collection could not be validated") from error
+
     async def _validate_identity(self) -> None:
         records = await self._client.retrieve(
             self.collection_name,

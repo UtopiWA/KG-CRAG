@@ -94,6 +94,10 @@
           "title": "Stopped",
           "type": "boolean"
         },
+        "token_usage_source": {
+          "$ref": "#/$defs/TokenUsageSource",
+          "default": "none"
+        },
         "tool_calls": {
           "default": 0,
           "maximum": 100,
@@ -232,6 +236,14 @@
     "FacetSummary": {
       "additionalProperties": false,
       "properties": {
+        "conflict_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Conflict Ids",
+          "type": "array"
+        },
         "evidence_ids": {
           "items": {
             "type": "string"
@@ -251,6 +263,19 @@
           "minLength": 1,
           "title": "Label",
           "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "maxLength": 300,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
         },
         "status": {
           "$ref": "#/$defs/FacetStatus"
@@ -273,6 +298,57 @@
         "web"
       ],
       "title": "PublicSourceType",
+      "type": "string"
+    },
+    "RuntimeIdentitySummary": {
+      "additionalProperties": false,
+      "description": "公开运行身份只包含可复现版本，不包含路径或连接信息。",
+      "properties": {
+        "corpus_snapshot": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Corpus Snapshot",
+          "type": "string"
+        },
+        "dense_version": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Dense Version",
+          "type": "string"
+        },
+        "graph_version": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph Version"
+        },
+        "sparse_version": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sparse Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "corpus_snapshot",
+        "dense_version",
+        "sparse_version"
+      ],
+      "title": "RuntimeIdentitySummary",
+      "type": "object"
+    },
+    "TokenUsageSource": {
+      "enum": [
+        "none",
+        "actual",
+        "estimated",
+        "mixed"
+      ],
+      "title": "TokenUsageSource",
       "type": "string"
     }
   },
@@ -353,6 +429,17 @@
       "maxItems": 10,
       "title": "Retrieval Path",
       "type": "array"
+    },
+    "runtime_identity": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RuntimeIdentitySummary"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     },
     "schema_version": {
       "const": "v1",

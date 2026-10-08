@@ -24,14 +24,28 @@ class Settings(BaseSettings):
     log_level: str = Field(default="INFO", min_length=1)
     api_host: str = Field(default="127.0.0.1", min_length=1)
     api_port: int = Field(default=8000, ge=1, le=65535)
-    api_request_timeout_seconds: float = Field(default=30.0, gt=0, le=120)
+    api_request_timeout_seconds: float = Field(default=120.0, gt=0, le=120)
     api_max_trace_events: int = Field(default=100, ge=1, le=200)
     api_max_pdf_bytes: int = Field(default=52_428_800, ge=1024, le=104_857_600)
     replay_fixture_path: str = Field(
         default="src/kg_crag/application/replay_cases.json",
         min_length=1,
     )
+    enable_live_query: bool = False
+    live_retrieval_config_path: str = Field(default="configs/retrieval.yaml", min_length=1)
+    live_workflow_config_path: str = Field(default="configs/default.yaml", min_length=1)
+    live_sparse_index_version: str | None = Field(default=None, pattern=r"^[a-f0-9]{64}$")
+    live_corpus_snapshot: str | None = Field(default=None, pattern=r"^[a-f0-9]{64}$")
+    live_preload_models: bool = False
+    live_enable_graph: bool = False
+    live_enable_reranker: bool = True
+    live_enable_answer_critic: bool = False
+    live_paper_context_limit: int = Field(default=5, ge=1, le=10)
+    llm_max_output_tokens: int = Field(default=1600, ge=128, le=4000)
+    llm_reasoning_effort: Literal["provider-default", "low", "high", "max"] = "provider-default"
     ui_api_base_url: str = Field(default="http://127.0.0.1:8000", min_length=1)
+    ui_host: str = Field(default="127.0.0.1", min_length=1)
+    ui_port: int = Field(default=7860, ge=1, le=65535)
     application_memory_target_mb: int = Field(default=10_240, ge=1024, le=10_240)
     application_memory_hard_limit_mb: int = Field(default=12_288, ge=1024, le=12_288)
     qdrant_url: str = Field(default="http://localhost:6333", min_length=1)
@@ -54,6 +68,7 @@ class Settings(BaseSettings):
     reranker_revision: str = Field(default="2cfc18c9415c912f9d8155881c133215df768a70", min_length=1)
     reranker_device: str = Field(default="cpu", pattern=r"^(cpu|cuda(?::[0-9]+)?)$")
     model_cache_root: str = Field(default="data/processed/model-cache", min_length=1)
+    model_local_files_only: bool = True
     web_search_provider: Literal["disabled", "mock", "recorded", "tavily"] = "disabled"
     web_search_api_key: str | None = None
     web_search_timeout_seconds: float = Field(default=15.0, gt=0, le=60)
@@ -92,10 +107,12 @@ class Settings(BaseSettings):
             raise ValueError("ui_api_base_url must be an HTTP(S) URL with a host")
         return value.rstrip("/")
 
-    @field_validator("replay_fixture_path")
+    @field_validator(
+        "replay_fixture_path", "live_retrieval_config_path", "live_workflow_config_path"
+    )
     @classmethod
-    def replay_fixture_path_is_workspace_relative(cls, value: str) -> str:
-        """回放文件必须由工作区内的稳定相对路径定位。"""
+    def application_paths_are_workspace_relative(cls, value: str) -> str:
+        """应用配置文件必须由工作区内的稳定相对路径定位。"""
 
         path = PurePath(value)
         if path.is_absolute() or ".." in path.parts:

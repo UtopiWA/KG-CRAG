@@ -111,6 +111,22 @@ async def test_sqlite_sync_search_filter_and_pagination(tmp_path: Path) -> None:
     assert [item.source_id for item in filtered] == ["c-b"]
 
 
+async def test_sqlite_paper_context_reads_frozen_chunks_abstract_first(tmp_path: Path) -> None:
+    identity = _identity()
+    store = SQLiteSparseStore(tmp_path / "index.sqlite3", identity)
+    await store.ensure_index(identity)
+    methods = _chunk("methods", "p1", "Method details.").model_copy(update={"ordinal": 1})
+    abstract = _chunk("abstract", "p1", "Abstract Direct answer.").model_copy(
+        update={"section": "Abstract", "ordinal": 2}
+    )
+    await store.sync_paper("p1", [methods, abstract])
+
+    context = await store.paper_context("p1", limit=1)
+
+    assert [item.source_id for item in context] == ["abstract"]
+    assert context[0].metadata["paper_context_expansion"] is True
+
+
 async def test_sqlite_sync_rolls_back_whole_paper_on_write_failure(tmp_path: Path) -> None:
     identity = _identity()
 

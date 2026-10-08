@@ -87,6 +87,8 @@ def test_config_hard_limits_paths_and_repository_file() -> None:
     config = load_corrective_workflow_config(Path("configs/default.yaml"))
     assert config.budget.retrieval_rounds == 2
     assert config.budget.llm_calls == 4
+    assert config.facets.allow_llm is True
+    assert config.coverage.max_selected_evidence == 12
     with pytest.raises(ValidationError):
         CorrectiveWorkflowConfig.model_validate(
             {**config.model_dump(), "budget": {**config.budget.model_dump(), "llm_calls": 5}}

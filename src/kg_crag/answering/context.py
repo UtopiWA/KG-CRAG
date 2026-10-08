@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from enum import StrEnum
 from typing import Any
 
 from pydantic import Field, ValidationError
@@ -33,6 +34,43 @@ class _GeneratedClaim(StrictModel):
 class _GeneratedAnswer(StrictModel):
     claims: list[_GeneratedClaim] = Field(min_length=1, max_length=100)
     confidence: float = Field(ge=0.0, le=1.0)
+
+
+class AnswerResponseFailure(StrEnum):
+    """可安全写入 Trace 的回答响应失败分类。"""
+
+    RESPONSE_TOO_LARGE = "response_too_large"
+    INVALID_JSON = "invalid_json"
+    INVALID_SCHEMA = "invalid_schema"
+    TOO_MANY_CLAIMS = "too_many_claims"
+    DUPLICATE_IDENTIFIER = "duplicate_identifier"
+    UNKNOWN_CITATION = "unknown_citation"
+    UNKNOWN_FACET = "unknown_facet"
+    UNSUPPORTED_FACET_BINDING = "unsupported_facet_binding"
+    NEW_FACT_BINDING = "new_fact_binding"
+
+
+class AnswerResponseError(ValueError):
+    """保留有限失败类别，但不携带模型原文。"""
+
+    def __init__(self, category: AnswerResponseFailure) -> None:
+        self.category = category
+        messages = {
+            AnswerResponseFailure.RESPONSE_TOO_LARGE: "answer response exceeds size limit",
+            AnswerResponseFailure.INVALID_JSON: "answer response is not valid JSON",
+            AnswerResponseFailure.INVALID_SCHEMA: "answer response has invalid schema",
+            AnswerResponseFailure.TOO_MANY_CLAIMS: "answer contains too many claims",
+            AnswerResponseFailure.DUPLICATE_IDENTIFIER: "answer identifiers must be unique",
+            AnswerResponseFailure.UNKNOWN_CITATION: "answer contains an unknown citation",
+            AnswerResponseFailure.UNKNOWN_FACET: "answer contains an unknown facet",
+            AnswerResponseFailure.UNSUPPORTED_FACET_BINDING: (
+                "claim facet is not supported by its cited Evidence"
+            ),
+            AnswerResponseFailure.NEW_FACT_BINDING: (
+                "regenerated answer introduces a new fact binding"
+            ),
+        }
+        super().__init__(messages[category])
 
 
 @dataclass(frozen=True)
@@ -130,13 +168,25 @@ def parse_grounded_answer(
     """拒绝上下文外引用、facet 错配和重生成新增事实绑定。"""
 
     if len(raw) > config.max_response_chars:
-        raise ValueError("answer response exceeds the configured size limit")
+        raise AnswerResponseError(AnswerResponseFailure.RESPONSE_TOO_LARGE)
+    normalized = raw.strip()
+    # 只容忍单层 Markdown JSON 围栏，围栏内仍执行完整 Schema 与绑定校验。
+    if normalized.startswith("```") and normalized.endswith("```"):
+        first_newline = normalized.find("\n")
+        if first_newline > 0:
+            language = normalized[3:first_newline].strip().casefold()
+            if language in {"", "json"}:
+                normalized = normalized[first_newline + 1 : -3].strip()
     try:
-        payload = _GeneratedAnswer.model_validate(json.loads(raw))
-    except (json.JSONDecodeError, ValidationError) as error:
-        raise ValueError("answer response is not valid structured output") from error
+        decoded = json.loads(normalized)
+    except json.JSONDecodeError as error:
+        raise AnswerResponseError(AnswerResponseFailure.INVALID_JSON) from error
+    try:
+        payload = _GeneratedAnswer.model_validate(decoded)
+    except ValidationError as error:
+        raise AnswerResponseError(AnswerResponseFailure.INVALID_SCHEMA) from error
     if len(payload.claims) > config.max_claims:
-        raise ValueError("answer contains too many claims")
+        raise AnswerResponseError(AnswerResponseFailure.TOO_MANY_CLAIMS)
     by_id = {item.citation_id: item for item in bindings}
     known_facets = {item.facet_id for item in facets}
     claims: list[GroundedClaim] = []
@@ -145,19 +195,19 @@ def parse_grounded_answer(
         citation_ids = list(dict.fromkeys(item.citation_ids))
         facet_ids = list(dict.fromkeys(item.facet_ids))
         if citation_ids != item.citation_ids or facet_ids != item.facet_ids:
-            raise ValueError("answer identifiers must be unique")
+            raise AnswerResponseError(AnswerResponseFailure.DUPLICATE_IDENTIFIER)
         if set(citation_ids) - set(by_id):
-            raise ValueError("answer contains an unknown citation")
+            raise AnswerResponseError(AnswerResponseFailure.UNKNOWN_CITATION)
         if set(facet_ids) - known_facets:
-            raise ValueError("answer contains an unknown facet")
+            raise AnswerResponseError(AnswerResponseFailure.UNKNOWN_FACET)
         supported_facets = {
             facet_id for citation_id in citation_ids for facet_id in by_id[citation_id].facet_ids
         }
         if item.claim_type is not ClaimType.UNCERTAIN and not set(facet_ids) <= supported_facets:
-            raise ValueError("claim facet is not supported by its cited Evidence")
+            raise AnswerResponseError(AnswerResponseFailure.UNSUPPORTED_FACET_BINDING)
         binding_key = (tuple(sorted(citation_ids)), tuple(sorted(facet_ids)))
         if allowed_binding_sets is not None and binding_key not in allowed_binding_sets:
-            raise ValueError("regenerated answer introduces a new fact binding")
+            raise AnswerResponseError(AnswerResponseFailure.NEW_FACT_BINDING)
         claim_payload = {
             "text": " ".join(item.text.split()),
             "claim_type": item.claim_type.value,

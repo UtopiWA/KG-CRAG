@@ -254,6 +254,37 @@ class SQLiteSparseStore:
         finally:
             connection.close()
 
+    async def paper_context(self, paper_id: str, *, limit: int) -> list[Evidence]:
+        """从当前冻结索引读取论文上下文，摘要优先且不执行无界 FTS 查询。"""
+
+        if not paper_id.strip() or limit <= 0 or limit > 20:
+            raise _store_error(ErrorCode.VALIDATION, "invalid paper context request")
+        connection = self._connect_verified()
+        try:
+            rows = connection.execute(
+                """
+                SELECT chunk_id, paper_id, section, page_start, text, content_hash,
+                       processing_version
+                FROM chunks
+                WHERE paper_id = ?
+                ORDER BY
+                    CASE
+                        WHEN lower(COALESCE(section, '')) LIKE '%abstract%'
+                          OR lower(ltrim(text)) LIKE 'abstract%' THEN 0
+                        ELSE 1
+                    END,
+                    ordinal ASC,
+                    chunk_id ASC
+                LIMIT ?
+                """,
+                (paper_id, limit),
+            ).fetchall()
+            return [_row_to_context_evidence(self.identity.index_version, row) for row in rows]
+        except sqlite3.DatabaseError as error:
+            raise _store_error(ErrorCode.DATA, "sparse paper context lookup failed") from error
+        finally:
+            connection.close()
+
     def _write_chunk(self, connection: sqlite3.Connection, chunk: Chunk) -> None:
         connection.execute(
             """
@@ -435,6 +466,24 @@ def _row_to_evidence(index_version: str, row: sqlite3.Row, rank: int) -> Evidenc
             "index_version": index_version,
             "content_hash": row["content_hash"],
             "processing_version": row["processing_version"],
+        },
+    )
+
+
+def _row_to_context_evidence(index_version: str, row: sqlite3.Row) -> Evidence:
+    return Evidence(
+        evidence_id=f"paper-context:{index_version}:{row['chunk_id']}",
+        content=row["text"],
+        source_type=EvidenceSourceType.CHUNK,
+        source_id=row["chunk_id"],
+        paper_id=row["paper_id"],
+        location=EvidenceLocation(section=row["section"], page=row["page_start"]),
+        external=False,
+        metadata={
+            "index_version": index_version,
+            "content_hash": row["content_hash"],
+            "processing_version": row["processing_version"],
+            "paper_context_expansion": True,
         },
     )
 

@@ -72,7 +72,7 @@ async def _run(argv: list[str] | None = None) -> int:
     store = build_vector_store(config, settings)
     try:
         await store.ensure_collection()
-        embedding = build_embedding_service(config, workspace_root=PROJECT_ROOT)
+        embedding = build_embedding_service(config, workspace_root=PROJECT_ROOT, settings=settings)
         service = build_dense_rag_service(
             config,
             settings,

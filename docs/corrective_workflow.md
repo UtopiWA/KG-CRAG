@@ -2,7 +2,9 @@
 
 ## 公共语义
 
-`EvidenceRequirement` 把问题拆成可机器验证的 facet。`CoverageMatrix` 对每个 facet—Evidence 组合记录匹配、支撑强度、来源质量、依据和冲突；外部或无法由当前语料复核的 Evidence 不计内部覆盖。只有全部必需 facet 达到最小来源数和支撑阈值、且没有阻断冲突时，`SufficiencyAssessment.sufficient` 才为真。
+`EvidenceRequirement` 把问题拆成可机器验证的 facet。`CoverageMatrix` 对每个 facet—Evidence 组合记录匹配、支撑强度、来源质量、依据和冲突；外部或无法由当前语料复核的 Evidence 不计内部覆盖。只有全部必需 facet 达到最小来源数和支撑阈值、且没有阻断冲突时，`SufficiencyAssessment.sufficient` 才为真。冲突必须比较同一命题：显式值需共享 `normalized_value_key`，文本数值比较只适用于指标 facet；普通正文中的年份、编号、其他实验数字或无关否定词不构成阻断冲突。
+
+论文实体问题先用问题中的显式拉丁实体名锚定候选论文，再允许同论文中省略简称的摘要或续接 Chunk 参与覆盖。实时应用会从本次运行已经锁定版本的 SQLite Sparse 索引读取首个锚定论文至多 3 个摘要优先片段，不扫描 `data/processed`，也不会混入索引快照之外的新数据。选证据时优先采用该论文上下文及重排、融合和路由排名，并在 `max_selected_evidence` 上限内保留多个匹配片段，而不是让一个只出现实体名的附录页独占回答上下文；稳定 Chunk 来源仍可由 Evidence 回溯。
 
 旧 `RouteDecision` 和 `RetrievalEvaluation` 保持兼容，但新条件边不读取它们的自由文本理由或缺失描述。
 

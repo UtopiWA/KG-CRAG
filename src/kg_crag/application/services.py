@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import uuid
 from collections.abc import Awaitable, Callable
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol
 
@@ -24,6 +25,7 @@ from kg_crag.models import (
     CitationSummary,
     ComponentReadiness,
     ComponentStatus,
+    CorrectionRunResult,
     DocumentSummary,
     FacetStatus,
     FacetSummary,
@@ -36,6 +38,8 @@ from kg_crag.models import (
     QueryRequest,
     QueryResponse,
     ReadinessResponse,
+    RuntimeIdentitySummary,
+    TokenUsageSource,
     TraceEventSummary,
     TraceSummary,
 )
@@ -85,6 +89,27 @@ class ApplicationService(Protocol):
     async def readiness(self) -> ReadinessResponse: ...
 
 
+class LiveQueryService(Protocol):
+    async def query(self, request: QueryRequest, *, request_id: str) -> QueryResponse: ...
+
+    def trace(self, trace_id: str, *, max_events: int) -> TraceSummary | None: ...
+
+    def start_preload(self) -> None: ...
+
+    async def shutdown(self) -> None: ...
+
+    def readiness(self) -> ComponentReadiness: ...
+
+
+@dataclass(frozen=True)
+class LiveQueryExecution:
+    """保留领域结果与纠错状态，供公共层做无损摘要投影。"""
+
+    answer: GroundedAnswerResult
+    correction: CorrectionRunResult
+    runtime_identity: RuntimeIdentitySummary
+
+
 def _source_channels(evidence: Evidence | None, *, external: bool) -> list[PublicSourceType]:
     """依据已有 Evidence 排名字段投影来源，不重新判断检索结果。"""
 
@@ -105,13 +130,18 @@ class GroundedAnswerQueryAdapter:
 
     def __init__(
         self,
-        run: Callable[[str], Awaitable[GroundedAnswerResult]],
+        run: Callable[[QueryRequest], Awaitable[GroundedAnswerResult | LiveQueryExecution]],
     ) -> None:
         self._run = run
         self._traces: dict[str, TraceSummary] = {}
 
-    async def query(self, question: str, *, request_id: str) -> QueryResponse:
-        result = await self._run(question)
+    async def query(self, request: QueryRequest, *, request_id: str) -> QueryResponse:
+        execution = await self._run(request)
+        result = execution.answer if isinstance(execution, LiveQueryExecution) else execution
+        correction = execution.correction if isinstance(execution, LiveQueryExecution) else None
+        runtime_identity = (
+            execution.runtime_identity if isinstance(execution, LiveQueryExecution) else None
+        )
         evidence_by_id = {
             item.evidence_id: item
             for item in [*result.internal_evidence, *result.external_evidence]
@@ -139,40 +169,33 @@ class GroundedAnswerQueryAdapter:
             for item in result.citations
         ]
         missing = set(result.missing_required_facet_ids)
-        covered = {
-            facet_id
-            for claim in result.claims
-            for facet_id in claim.facet_ids
-            if facet_id not in missing
-        }
-        facets = [
-            FacetSummary(
-                facet_id=facet_id,
-                label="工作流返回的证据 facet",
-                status=FacetStatus.COVERED,
-                evidence_ids=[],
-            )
-            for facet_id in sorted(covered)
-        ] + [
-            FacetSummary(
-                facet_id=facet_id,
-                label="工作流报告的缺失 facet",
-                status=FacetStatus.MISSING,
-                evidence_ids=[],
-            )
-            for facet_id in sorted(missing)
-        ]
-        # 纠错动作位于内部结果中；GroundedAnswerResult 只保留最终预算与 Trace，
-        # 因此这里不从 Trace 文本反推动作，缺失时保持空列表。
-        actions: list[ActionSummary] = []
+        facets = self._project_facets(result, correction, missing)
+        actions = self._project_actions(result, correction)
         internal = result.budget.internal.used
         answer = result.budget.answer.used
+        model_usage_events = [
+            item
+            for item in result.trace
+            if item.event in {"answer_generated", "answer_generation_failed"}
+            and "usage_estimated" in item.details
+        ]
+        estimated_flags = [bool(item.details["usage_estimated"]) for item in model_usage_events]
+        estimated_flags.extend([True] * (internal.llm_calls + answer.critic_calls))
+        if not estimated_flags:
+            token_usage_source = TokenUsageSource.NONE
+        elif all(estimated_flags):
+            token_usage_source = TokenUsageSource.ESTIMATED
+        elif any(estimated_flags):
+            token_usage_source = TokenUsageSource.MIXED
+        else:
+            token_usage_source = TokenUsageSource.ACTUAL
         budget = ApplicationBudgetSummary(
             tool_calls=internal.retrieval_rounds,
             model_calls=internal.llm_calls + answer.answer_calls + answer.critic_calls,
             web_calls=answer.web_calls,
             input_tokens=internal.input_tokens + answer.input_tokens,
             output_tokens=internal.output_tokens + answer.output_tokens,
+            token_usage_source=token_usage_source,
             elapsed_ms=internal.latency_ms + answer.latency_ms,
             stopped=result.stop_reason.value != "accepted",
             stop_reason=result.stop_reason.value,
@@ -188,6 +211,7 @@ class GroundedAnswerQueryAdapter:
             retrieval_path=[item.value for item in result.retrieval_path],
             budget=budget,
             stop_reason=result.stop_reason.value,
+            runtime_identity=runtime_identity,
         )
         self._traces[result.trace_id] = TraceSummary(
             trace_id=result.trace_id,
@@ -204,6 +228,131 @@ class GroundedAnswerQueryAdapter:
             ],
         )
         return response
+
+    @staticmethod
+    def _project_facets(
+        result: GroundedAnswerResult,
+        correction: CorrectionRunResult | None,
+        missing: set[str],
+    ) -> list[FacetSummary]:
+        if result.requirements:
+            assessments = {item.facet_id: item for item in result.facet_assessments}
+            external_evidence_by_facet = {
+                requirement.facet_id: [
+                    item.evidence_id
+                    for item in result.external_coverage
+                    if item.facet_id == requirement.facet_id and item.matched
+                ]
+                for requirement in result.requirements
+            }
+            conflicts_by_facet = {
+                requirement.facet_id: [
+                    item
+                    for item in result.conflicts
+                    if item.facet_id == requirement.facet_id and item.blocking
+                ]
+                for requirement in result.requirements
+            }
+            return [
+                FacetSummary(
+                    facet_id=requirement.facet_id,
+                    label=requirement.description,
+                    status=(
+                        FacetStatus.CONFLICTING
+                        if conflicts_by_facet[requirement.facet_id]
+                        else FacetStatus.MISSING
+                        if requirement.facet_id in missing
+                        else FacetStatus.COVERED
+                    ),
+                    evidence_ids=list(
+                        dict.fromkeys(
+                            [
+                                *(
+                                    assessments[requirement.facet_id].evidence_ids
+                                    if requirement.facet_id in assessments
+                                    else []
+                                ),
+                                *external_evidence_by_facet[requirement.facet_id],
+                            ]
+                        )
+                    )[:20],
+                    reason=(
+                        "blocking_conflict"
+                        if conflicts_by_facet[requirement.facet_id]
+                        else "external_coverage"
+                        if external_evidence_by_facet[requirement.facet_id]
+                        and requirement.facet_id not in missing
+                        else assessments[requirement.facet_id].reason
+                        if requirement.facet_id in assessments
+                        else None
+                    ),
+                    conflict_ids=[
+                        item.conflict_id for item in conflicts_by_facet[requirement.facet_id]
+                    ],
+                )
+                for requirement in result.requirements
+            ]
+        if correction is None:
+            covered = {
+                facet_id
+                for claim in result.claims
+                for facet_id in claim.facet_ids
+                if facet_id not in missing
+            }
+            return [
+                FacetSummary(
+                    facet_id=facet_id,
+                    label="工作流返回的证据 facet",
+                    status=FacetStatus.COVERED,
+                )
+                for facet_id in sorted(covered)
+            ] + [
+                FacetSummary(
+                    facet_id=facet_id,
+                    label="工作流报告的缺失 facet",
+                    status=FacetStatus.MISSING,
+                )
+                for facet_id in sorted(missing)
+            ]
+        matrix = correction.state.coverage_matrix
+        evidence_by_facet = {
+            facet.facet_id: [
+                item.evidence_id
+                for item in (matrix.entries if matrix else [])
+                if item.facet_id == facet.facet_id and item.matched
+            ][:20]
+            for facet in correction.state.facets
+        }
+        return [
+            FacetSummary(
+                facet_id=facet.facet_id,
+                label=facet.description,
+                status=(FacetStatus.MISSING if facet.facet_id in missing else FacetStatus.COVERED),
+                evidence_ids=evidence_by_facet[facet.facet_id],
+            )
+            for facet in correction.state.facets
+        ]
+
+    @staticmethod
+    def _project_actions(
+        result: GroundedAnswerResult,
+        correction: CorrectionRunResult | None,
+    ) -> list[ActionSummary]:
+        history = result.internal_actions or (
+            correction.state.action_history if correction is not None else []
+        )
+        if not history:
+            return []
+        return [
+            ActionSummary(
+                sequence=index,
+                action=item.request.action.value,
+                reason="工作流选择的有界纠错动作",
+                target_facet_ids=item.request.target_facet_ids,
+                status=item.status.value,
+            )
+            for index, item in enumerate(history, start=1)
+        ]
 
     def trace(self, trace_id: str, *, max_events: int) -> TraceSummary | None:
         trace = self._traces.get(trace_id)
@@ -440,12 +589,24 @@ class DefaultApplicationService:
         replay: ReplayCatalog,
         documents: LocalDocumentService,
         ingestion: LocalIngestionService,
-        live_query: GroundedAnswerQueryAdapter | None = None,
+        live_query: LiveQueryService | None = None,
     ) -> None:
         self.replay = replay
         self.documents = documents
         self.ingestion = ingestion
         self.live_query = live_query
+
+    def startup(self) -> None:
+        """API 启动时只触发显式配置的后台模型预热。"""
+
+        if self.live_query is not None:
+            self.live_query.start_preload()
+
+    async def shutdown(self) -> None:
+        """关闭应用时取消仍在排队的预热任务。"""
+
+        if self.live_query is not None:
+            await self.live_query.shutdown()
 
     async def query(self, request: QueryRequest, *, request_id: str) -> QueryResponse:
         if request.mode is ApplicationMode.REPLAY:
@@ -457,7 +618,7 @@ class DefaultApplicationService:
                 status_code=503,
                 retryable=True,
             )
-        return await self.live_query.query(request.question, request_id=request_id)
+        return await self.live_query.query(request, request_id=request_id)
 
     async def get_document(self, paper_id: str) -> DocumentSummary:
         return await self.documents.get(paper_id)
@@ -485,6 +646,16 @@ class DefaultApplicationService:
 
     async def readiness(self) -> ReadinessResponse:
         live = self.live_query is not None
+        live_component = (
+            self.live_query.readiness()
+            if self.live_query is not None
+            else ComponentReadiness(
+                component="live_query",
+                status=ComponentStatus.READY if live else ComponentStatus.DEGRADED,
+                required=False,
+                message="实时工作流已装配。" if live else "当前仅提供回放和本地产物能力。",
+            )
+        )
         components = [
             ComponentReadiness(
                 component="api",
@@ -498,12 +669,7 @@ class DefaultApplicationService:
                 required=True,
                 message=f"固定回放已加载: {self.replay.version}",
             ),
-            ComponentReadiness(
-                component="live_query",
-                status=ComponentStatus.READY if live else ComponentStatus.DEGRADED,
-                required=False,
-                message="实时工作流已装配。" if live else "当前仅提供回放和本地产物能力。",
-            ),
+            live_component,
             ComponentReadiness(
                 component="graph",
                 status=ComponentStatus.DISABLED,
@@ -511,11 +677,21 @@ class DefaultApplicationService:
                 message="Graph 是可选工具，由实时工作流 profile 决定是否启用。",
             ),
         ]
+        live_ready = live_component.status is ComponentStatus.READY
+        overall_status = (
+            ComponentStatus.WARMING
+            if live_component.status is ComponentStatus.WARMING
+            else ComponentStatus.READY
+            if live_ready
+            else ComponentStatus.DEGRADED
+        )
         return ReadinessResponse(
-            status=ComponentStatus.READY if live else ComponentStatus.DEGRADED,
+            status=overall_status,
             version=__version__,
             available_modes=(
-                [ApplicationMode.REPLAY, ApplicationMode.LIVE] if live else [ApplicationMode.REPLAY]
+                [ApplicationMode.REPLAY, ApplicationMode.LIVE]
+                if live_ready
+                else [ApplicationMode.REPLAY]
             ),
             components=components,
         )
@@ -525,11 +701,16 @@ def build_default_application_service(
     settings: Settings,
     *,
     workspace_root: Path = PROJECT_ROOT,
-    live_query: GroundedAnswerQueryAdapter | None = None,
+    live_query: LiveQueryService | None = None,
 ) -> DefaultApplicationService:
     """只装配轻量本地服务；真实模型和数据库保持惰性、显式注入。"""
 
     replay_path = workspace_root / settings.replay_fixture_path
+    if live_query is None and settings.enable_live_query:
+        # 局部导入打破服务投影与实时装配之间的依赖环；工厂本身仍不加载模型。
+        from kg_crag.application.live import build_live_query_service
+
+        live_query = build_live_query_service(settings, workspace_root=workspace_root)
     return DefaultApplicationService(
         replay=ReplayCatalog(replay_path),
         documents=LocalDocumentService(workspace_root / "data" / "processed"),

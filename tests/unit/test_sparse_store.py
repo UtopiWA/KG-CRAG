@@ -79,6 +79,20 @@ async def test_memory_sparse_store_replaces_stale_records_and_filters() -> None:
     assert (await store.record_state("p1"))["c2"].processing_version == "v2"
 
 
+async def test_memory_paper_context_is_abstract_first_and_bounded() -> None:
+    store = InMemorySparseStore()
+    methods = _chunk("methods", "p1", "Method details.").model_copy(update={"ordinal": 1})
+    abstract = _chunk("abstract", "p1", "Abstract Direct answer.").model_copy(
+        update={"section": "Abstract", "ordinal": 2}
+    )
+    await store.sync_paper("p1", [methods, abstract])
+
+    context = await store.paper_context("p1", limit=1)
+
+    assert [item.source_id for item in context] == ["abstract"]
+    assert context[0].metadata["paper_context_expansion"] is True
+
+
 async def test_memory_sparse_store_rejects_invalid_operations_atomically() -> None:
     store = InMemorySparseStore(max_top_k=2)
     original = _chunk("c1", "p1", "stable content")

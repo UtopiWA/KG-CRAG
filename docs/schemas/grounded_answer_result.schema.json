@@ -1,5 +1,235 @@
 {
   "$defs": {
+    "ActionEstimate": {
+      "additionalProperties": false,
+      "properties": {
+        "candidates": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Candidates",
+          "type": "integer"
+        },
+        "context_chars": {
+          "default": 0,
+          "maximum": 1000000,
+          "minimum": 0,
+          "title": "Context Chars",
+          "type": "integer"
+        },
+        "expected_required_facet_gain": {
+          "default": 0.0,
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "title": "Expected Required Facet Gain",
+          "type": "number"
+        },
+        "input_tokens": {
+          "default": 0,
+          "maximum": 20000,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "default": 0,
+          "maximum": 3600000,
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "llm_calls": {
+          "default": 0,
+          "maximum": 4,
+          "minimum": 0,
+          "title": "Llm Calls",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "maximum": 20000,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "retrieval_rounds": {
+          "default": 0,
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Retrieval Rounds",
+          "type": "integer"
+        },
+        "subquestions": {
+          "default": 0,
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Subquestions",
+          "type": "integer"
+        }
+      },
+      "title": "ActionEstimate",
+      "type": "object"
+    },
+    "ActionRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/CorrectionAction"
+        },
+        "action_id": {
+          "pattern": "^action-[a-f0-9]{16}$",
+          "title": "Action Id",
+          "type": "string"
+        },
+        "filters": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "maxProperties": 10,
+          "title": "Filters",
+          "type": "object"
+        },
+        "max_candidates": {
+          "default": 20,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Max Candidates",
+          "type": "integer"
+        },
+        "max_hops": {
+          "default": 1,
+          "maximum": 3,
+          "minimum": 1,
+          "title": "Max Hops",
+          "type": "integer"
+        },
+        "query": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Query",
+          "type": "string"
+        },
+        "subqueries": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 3,
+          "title": "Subqueries",
+          "type": "array"
+        },
+        "target_facet_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Target Facet Ids",
+          "type": "array"
+        },
+        "top_k": {
+          "default": 10,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "action_id",
+        "action",
+        "target_facet_ids",
+        "query"
+      ],
+      "title": "ActionRequest",
+      "type": "object"
+    },
+    "ActionResult": {
+      "additionalProperties": false,
+      "properties": {
+        "actual_usage": {
+          "$ref": "#/$defs/BudgetUsage"
+        },
+        "diagnostics": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Diagnostics",
+          "type": "object"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "estimated_usage": {
+          "$ref": "#/$defs/ActionEstimate"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "maxItems": 100,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "request": {
+          "$ref": "#/$defs/ActionRequest"
+        },
+        "status": {
+          "$ref": "#/$defs/ActionStatus"
+        }
+      },
+      "required": [
+        "request",
+        "status",
+        "estimated_usage",
+        "actual_usage"
+      ],
+      "title": "ActionResult",
+      "type": "object"
+    },
+    "ActionStatus": {
+      "enum": [
+        "succeeded",
+        "empty",
+        "failed",
+        "cache_hit"
+      ],
+      "title": "ActionStatus",
+      "type": "string"
+    },
     "AnswerBudgetLedger": {
       "additionalProperties": false,
       "properties": {
@@ -48,7 +278,7 @@
           "type": "integer"
         },
         "input_tokens": {
-          "default": 9000,
+          "default": 8800,
           "maximum": 12000,
           "minimum": 0,
           "title": "Input Tokens",
@@ -62,7 +292,7 @@
           "type": "integer"
         },
         "output_tokens": {
-          "default": 3000,
+          "default": 3200,
           "maximum": 12000,
           "minimum": 0,
           "title": "Output Tokens",
@@ -179,6 +409,7 @@
         "uncited_number",
         "blocking_conflict",
         "incomplete",
+        "abstention",
         "unsupported",
         "wrong_attribution",
         "critic_failed"
@@ -549,6 +780,41 @@
       "title": "CombinedBudgetSummary",
       "type": "object"
     },
+    "ConditionKind": {
+      "enum": [
+        "terms",
+        "entity",
+        "paper",
+        "evidence_type",
+        "graph_path",
+        "numeric"
+      ],
+      "title": "ConditionKind",
+      "type": "string"
+    },
+    "ConflictKind": {
+      "enum": [
+        "discrete",
+        "numeric",
+        "negation",
+        "unknown_unit"
+      ],
+      "title": "ConflictKind",
+      "type": "string"
+    },
+    "CorrectionAction": {
+      "enum": [
+        "dense",
+        "sparse",
+        "hybrid",
+        "graph",
+        "rewrite",
+        "decompose",
+        "adjust"
+      ],
+      "title": "CorrectionAction",
+      "type": "string"
+    },
     "ErrorCode": {
       "description": "供调用方稳定分支的错误代码。",
       "enum": [
@@ -693,6 +959,58 @@
       "title": "Evidence",
       "type": "object"
     },
+    "EvidenceConflict": {
+      "additionalProperties": false,
+      "properties": {
+        "blocking": {
+          "default": true,
+          "title": "Blocking",
+          "type": "boolean"
+        },
+        "conflict_id": {
+          "pattern": "^conflict-[a-f0-9]{16}$",
+          "title": "Conflict Id",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 2,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "facet_id": {
+          "pattern": "^facet-[a-f0-9]{16}$",
+          "title": "Facet Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ConflictKind"
+        },
+        "reason": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "review_required": {
+          "default": false,
+          "title": "Review Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "conflict_id",
+        "facet_id",
+        "kind",
+        "evidence_ids",
+        "reason"
+      ],
+      "title": "EvidenceConflict",
+      "type": "object"
+    },
     "EvidenceLocation": {
       "additionalProperties": false,
       "properties": {
@@ -797,6 +1115,82 @@
         }
       },
       "title": "EvidenceRanks",
+      "type": "object"
+    },
+    "EvidenceRequirement": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "$ref": "#/$defs/SatisfactionCondition"
+        },
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "description": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "expected_evidence_types": {
+          "items": {
+            "$ref": "#/$defs/EvidenceSourceType"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Expected Evidence Types",
+          "type": "array"
+        },
+        "facet_id": {
+          "pattern": "^facet-[a-f0-9]{16}$",
+          "title": "Facet Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/FacetKind"
+        },
+        "question_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Question Id",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "source": {
+          "$ref": "#/$defs/RequirementSource",
+          "default": "rule"
+        },
+        "target_entity": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Entity"
+        }
+      },
+      "required": [
+        "facet_id",
+        "question_id",
+        "kind",
+        "description",
+        "expected_evidence_types",
+        "condition"
+      ],
+      "title": "EvidenceRequirement",
       "type": "object"
     },
     "EvidenceScores": {
@@ -921,6 +1315,64 @@
       ],
       "title": "ExternalFacetCoverage",
       "type": "object"
+    },
+    "FacetAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "facet_id": {
+          "pattern": "^facet-[a-f0-9]{16}$",
+          "title": "Facet Id",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        },
+        "satisfied": {
+          "title": "Satisfied",
+          "type": "boolean"
+        },
+        "support_strength": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Support Strength",
+          "type": "number"
+        }
+      },
+      "required": [
+        "facet_id",
+        "required",
+        "satisfied",
+        "reason"
+      ],
+      "title": "FacetAssessment",
+      "type": "object"
+    },
+    "FacetKind": {
+      "enum": [
+        "content",
+        "entity",
+        "relationship",
+        "comparison",
+        "metric",
+        "multi_hop"
+      ],
+      "title": "FacetKind",
+      "type": "string"
     },
     "FindingSeverity": {
       "enum": [
@@ -1060,6 +1512,14 @@
       "title": "GroundedClaim",
       "type": "object"
     },
+    "RequirementSource": {
+      "enum": [
+        "rule",
+        "llm"
+      ],
+      "title": "RequirementSource",
+      "type": "string"
+    },
     "RetrievalStrategy": {
       "enum": [
         "dense",
@@ -1070,6 +1530,86 @@
       ],
       "title": "RetrievalStrategy",
       "type": "string"
+    },
+    "SatisfactionCondition": {
+      "additionalProperties": false,
+      "description": "仅包含可由 Evidence 字段验证的满足条件。",
+      "properties": {
+        "entity_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Entity Ids",
+          "type": "array"
+        },
+        "evidence_types": {
+          "items": {
+            "$ref": "#/$defs/EvidenceSourceType"
+          },
+          "maxItems": 3,
+          "title": "Evidence Types",
+          "type": "array"
+        },
+        "kind": {
+          "$ref": "#/$defs/ConditionKind"
+        },
+        "max_hops": {
+          "anyOf": [
+            {
+              "maximum": 3,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Hops"
+        },
+        "min_term_matches": {
+          "default": 1,
+          "maximum": 20,
+          "minimum": 1,
+          "title": "Min Term Matches",
+          "type": "integer"
+        },
+        "paper_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Paper Ids",
+          "type": "array"
+        },
+        "terms": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Terms",
+          "type": "array"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 32,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "SatisfactionCondition",
+      "type": "object"
     },
     "StopReason": {
       "enum": [
@@ -1187,6 +1727,14 @@
       "title": "Confidence",
       "type": "number"
     },
+    "conflicts": {
+      "items": {
+        "$ref": "#/$defs/EvidenceConflict"
+      },
+      "maxItems": 100,
+      "title": "Conflicts",
+      "type": "array"
+    },
     "errors": {
       "items": {
         "$ref": "#/$defs/ErrorDetail"
@@ -1222,6 +1770,14 @@
       "title": "External Evidence",
       "type": "array"
     },
+    "facet_assessments": {
+      "items": {
+        "$ref": "#/$defs/FacetAssessment"
+      },
+      "maxItems": 20,
+      "title": "Facet Assessments",
+      "type": "array"
+    },
     "finished_at": {
       "format": "date-time",
       "title": "Finished At",
@@ -1229,6 +1785,14 @@
     },
     "identity": {
       "$ref": "#/$defs/AnswerRunIdentity"
+    },
+    "internal_actions": {
+      "items": {
+        "$ref": "#/$defs/ActionResult"
+      },
+      "maxItems": 2,
+      "title": "Internal Actions",
+      "type": "array"
     },
     "internal_evidence": {
       "items": {
@@ -1254,6 +1818,14 @@
       "minLength": 1,
       "title": "Question",
       "type": "string"
+    },
+    "requirements": {
+      "items": {
+        "$ref": "#/$defs/EvidenceRequirement"
+      },
+      "maxItems": 20,
+      "title": "Requirements",
+      "type": "array"
     },
     "retrieval_path": {
       "items": {

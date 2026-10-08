@@ -13,8 +13,7 @@ from kg_crag.correction.policy import choose_action
 from kg_crag.correction.requirements import (
     RequirementCache,
     RequirementProvider,
-    analyze_question,
-    generate_requirements,
+    generate_budgeted_requirements,
 )
 from kg_crag.correction.sufficiency import assess_sufficiency
 from kg_crag.models import (
@@ -73,43 +72,37 @@ def _trace(
 
 async def requirements_node(state: AgentState, deps: WorkflowDependencies) -> AgentState:
     current = correction_state_from_agent(state)
-    analysis = analyze_question(current.question_id, current.question)
-    will_call_provider = bool(
-        deps.config.facets.allow_llm
-        and deps.requirement_provider is not None
-        and (analysis.complex or analysis.confidence < deps.config.facets.confidence_threshold)
-    )
-    manager = BudgetManager(current.budget)
-    reservation_token: str | None = None
-    if will_call_provider:
-        reservation_token = manager.reserve(
-            BudgetUsage(
-                llm_calls=1,
-                input_tokens=4000,
-                output_tokens=2000,
-                context_chars=10_000,
-                latency_ms=5000,
-            )
+    if current.facets:
+        # 实时应用会在首轮检索前冻结 facet；工作流复用它们，避免重复调用模型。
+        facet_sources = sorted({item.source.value for item in current.facets})
+        return _validated_update(
+            current,
+            trace=_trace(
+                current,
+                "requirements",
+                "requirements_generated",
+                {
+                    "count": len(current.facets),
+                    "source": "+".join(facet_sources) + "_precomputed",
+                    "llm_calls": current.budget.used.llm_calls,
+                    "llm_input_count": current.budget.used.input_tokens,
+                    "llm_output_count": current.budget.used.output_tokens,
+                },
+            ),
         )
-        if reservation_token is None:
-            return finalize_invalid(current, "requirement provider exceeds remaining budget")
-    facets, usage, source = await generate_requirements(
+    facets, budget, source = await generate_budgeted_requirements(
         current.question_id,
         current.question,
         deps.config.facets,
+        current.budget,
         provider=deps.requirement_provider,
         system_prompt=deps.requirement_prompt,
         cache=deps.requirement_cache,
     )
-    if reservation_token is not None:
-        if source == "rule_fallback":
-            manager.settle(reservation_token, failed=True)
-        else:
-            manager.settle(reservation_token, usage)
     return _validated_update(
         current,
         facets=facets,
-        budget=manager.ledger,
+        budget=budget,
         trace=_trace(
             current,
             "requirements",
@@ -117,9 +110,9 @@ async def requirements_node(state: AgentState, deps: WorkflowDependencies) -> Ag
             {
                 "count": len(facets),
                 "source": source,
-                "llm_calls": manager.ledger.used.llm_calls,
-                "llm_input_count": manager.ledger.used.input_tokens,
-                "llm_output_count": manager.ledger.used.output_tokens,
+                "llm_calls": budget.used.llm_calls,
+                "llm_input_count": budget.used.input_tokens,
+                "llm_output_count": budget.used.output_tokens,
             },
         ),
     )

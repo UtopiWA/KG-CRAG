@@ -5,7 +5,8 @@ from __future__ import annotations
 import asyncio
 import re
 import uuid
-from collections.abc import Awaitable
+from collections.abc import AsyncIterator, Awaitable
+from contextlib import asynccontextmanager
 from typing import Annotated, TypeVar
 
 from fastapi import FastAPI, Path, Request, Response
@@ -75,7 +76,20 @@ def create_app(
 
     runtime_settings = settings or get_settings()
     runtime_service = service or build_default_application_service(runtime_settings)
-    application = FastAPI(title="KG-CRAG API", version=__version__)
+
+    @asynccontextmanager
+    async def lifespan(_application: FastAPI) -> AsyncIterator[None]:
+        startup = getattr(runtime_service, "startup", None)
+        if callable(startup):
+            startup()
+        try:
+            yield
+        finally:
+            shutdown = getattr(runtime_service, "shutdown", None)
+            if callable(shutdown):
+                await shutdown()
+
+    application = FastAPI(title="KG-CRAG API", version=__version__, lifespan=lifespan)
     application.state.application_service = runtime_service
     application.state.settings = runtime_settings
 

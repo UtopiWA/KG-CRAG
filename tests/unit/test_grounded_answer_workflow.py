@@ -18,6 +18,7 @@ from kg_crag.correction.coverage import build_coverage_matrix
 from kg_crag.correction.executor import ActionExecutor, RetrieverTool
 from kg_crag.correction.identity import build_run_identity
 from kg_crag.correction.sufficiency import assess_sufficiency
+from kg_crag.errors import KGCRAGError
 from kg_crag.models import (
     AnswerCheckCode,
     AnswerFinding,
@@ -28,6 +29,8 @@ from kg_crag.models import (
     CorrectionAction,
     CorrectionRunResult,
     CorrectionState,
+    ErrorCode,
+    ErrorDetail,
     Evidence,
     EvidenceRequirement,
     EvidenceSourceType,
@@ -38,7 +41,7 @@ from kg_crag.models import (
     StopResult,
     WebSourceType,
 )
-from kg_crag.providers import MockSearchProvider
+from kg_crag.providers import LLMGeneration, MockSearchProvider
 from kg_crag.retrieval.mock import MockRetriever
 from kg_crag.workflow.answer import run_grounded_answer_workflow
 from kg_crag.workflow.answer_artifacts import AnswerCheckpointStore
@@ -62,6 +65,54 @@ class QueueLLM:
         if not self.responses:
             raise AssertionError("unexpected LLM call")
         return self.responses.pop(0)
+
+
+class UsageQueueLLM(QueueLLM):
+    async def generate_with_usage(
+        self,
+        prompt: str,
+        *,
+        system_prompt: str | None = None,
+        temperature: float = 0.0,
+    ) -> LLMGeneration:
+        content = await self.generate(
+            prompt,
+            system_prompt=system_prompt,
+            temperature=temperature,
+        )
+        return LLMGeneration(content=content, input_tokens=120, output_tokens=40)
+
+
+class RetryableQueueLLM(QueueLLM):
+    def __init__(self, responses: list[str]) -> None:
+        super().__init__(responses)
+        self.failed_once = False
+        # 与实时 GLM Provider 的单次输出上限一致，防止测试绕过真实预算约束。
+        self.max_output_tokens = 1600
+
+    async def generate(
+        self,
+        prompt: str,
+        *,
+        system_prompt: str | None = None,
+        temperature: float = 0.0,
+    ) -> str:
+        if not self.failed_once:
+            self.failed_once = True
+            self.calls.append(prompt)
+            raise KGCRAGError(
+                ErrorDetail(
+                    code=ErrorCode.EXTERNAL_SERVICE,
+                    message="temporary provider failure",
+                    retryable=True,
+                    context={"status": 503, "error_type": "ServiceUnavailable"},
+                )
+            )
+        return await super().generate(
+            prompt,
+            system_prompt=system_prompt,
+            temperature=temperature,
+        )
 
 
 class StubCritic:
@@ -293,6 +344,66 @@ async def test_disabled_workflow_returns_conservative_result_without_calls() -> 
 
 
 @pytest.mark.asyncio
+async def test_generation_failure_is_classified_without_exposing_raw_response() -> None:
+    correction = _correction(StopReason.SUFFICIENT, evidence=[_evidence()])
+    result = await run_grounded_answer_workflow(correction, _deps(QueueLLM(["not-json"])))
+
+    assert result.stop_reason is AnswerStopReason.GENERATION_FAILED
+    assert result.errors[-1].context == {"failure_category": "invalid_json"}
+    failure = next(item for item in result.trace if item.event == "answer_generation_failed")
+    assert failure.details["failure_category"] == "invalid_json"
+    assert failure.details["usage_estimated"] is True
+    assert "not-json" not in result.model_dump_json()
+
+
+@pytest.mark.asyncio
+async def test_retryable_provider_failure_gets_one_traceable_retry() -> None:
+    correction = _correction(StopReason.SUFFICIENT, evidence=[_evidence()])
+    llm = RetryableQueueLLM([_answer_json()])
+
+    result = await run_grounded_answer_workflow(correction, _deps(llm))
+
+    assert result.stop_reason is AnswerStopReason.ACCEPTED
+    assert len(llm.calls) == 2
+    assert any(item.event == "answer_generation_retry_scheduled" for item in result.trace)
+    failures = [item for item in result.trace if item.event == "answer_generation_failed"]
+    assert failures[0].details["provider_status"] == 503
+    assert failures[0].details["retryable"] is True
+
+
+@pytest.mark.asyncio
+async def test_abstention_claim_is_regenerated_instead_of_accepted() -> None:
+    correction = _correction(StopReason.SUFFICIENT, evidence=[_evidence()])
+    refusal = _answer_json("暂无可安全陈述的结论。")
+    llm = QueueLLM([refusal, _answer_json()])
+
+    result = await run_grounded_answer_workflow(correction, _deps(llm))
+
+    assert result.stop_reason is AnswerStopReason.ACCEPTED
+    assert "skill library" in result.answer
+    assert len(llm.calls) == 2
+    decisions = [
+        item.details.get("action") for item in result.trace if item.event == "reflection_decided"
+    ]
+    assert decisions == ["regenerate", "accept"]
+
+
+@pytest.mark.asyncio
+async def test_provider_actual_usage_replaces_character_estimate() -> None:
+    correction = _correction(StopReason.SUFFICIENT, evidence=[_evidence()])
+    result = await run_grounded_answer_workflow(
+        correction,
+        _deps(UsageQueueLLM([_answer_json()])),
+    )
+
+    assert result.stop_reason is AnswerStopReason.ACCEPTED
+    assert result.budget.answer.used.input_tokens == 120
+    assert result.budget.answer.used.output_tokens == 40
+    generated = next(item for item in result.trace if item.event == "answer_generated")
+    assert generated.details["usage_estimated"] is False
+
+
+@pytest.mark.asyncio
 async def test_web_only_triggers_for_internal_knowledge_missing() -> None:
     correction = _correction(StopReason.INTERNAL_KNOWLEDGE_MISSING)
     llm = QueueLLM([_answer_json()])
@@ -384,6 +495,31 @@ async def test_reretrieval_reuses_internal_executor_and_original_budget() -> Non
     assert result.stop_reason is AnswerStopReason.ACCEPTED
     assert result.budget.internal.used.retrieval_rounds == 2
     assert len(retriever.calls) == 1
+
+
+@pytest.mark.asyncio
+async def test_unsuccessful_reretrieval_does_not_spend_answer_generation_call() -> None:
+    correction = _correction(StopReason.NO_POSITIVE_GAIN, retrieval_round=1)
+    irrelevant = _evidence().model_copy(
+        update={"evidence_id": "ev-irrelevant", "content": "Unrelated content."}
+    )
+    retriever = MockRetriever([irrelevant])
+    corrective = CorrectiveWorkflowConfig()
+    executor = ActionExecutor(
+        {CorrectionAction.HYBRID: RetrieverTool(retriever)},
+        max_candidates=20,
+        bounds=corrective.actions,
+    )
+    llm = QueueLLM([])
+
+    result = await run_grounded_answer_workflow(
+        correction,
+        _deps(llm, corrective=corrective, executor=executor),
+    )
+
+    assert result.stop_reason is AnswerStopReason.CONSERVATIVE
+    assert result.budget.answer.used.answer_calls == 0
+    assert not llm.calls
 
 
 @pytest.mark.asyncio

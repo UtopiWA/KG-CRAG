@@ -54,6 +54,26 @@ def _update(state: AnswerWorkflowState, **updates: object) -> AnswerWorkflowStat
     return AnswerWorkflowState.model_validate(payload)
 
 
+def _can_retry_provider_generation(state: AnswerWorkflowState) -> bool:
+    """只重试一次快速、可重试的 Provider 故障；超时不重复占用整段请求窗口。"""
+
+    generation_events = [
+        item
+        for item in state.trace
+        if item.event in {"answer_generated", "answer_generation_failed"}
+    ]
+    if not generation_events or generation_events[-1].event != "answer_generation_failed":
+        return False
+    latest = generation_events[-1]
+    if latest.details.get("failure_category") != "provider_request":
+        return False
+    if not state.errors or not state.errors[-1].retryable:
+        return False
+    if state.errors[-1].code is ErrorCode.TIMEOUT:
+        return False
+    return state.budget.used.answer_calls < state.budget.limit.answer_calls
+
+
 def _trace(
     state: AnswerWorkflowState,
     deps: AnswerWorkflowDependencies,
@@ -349,6 +369,13 @@ async def _complete_decision(
         state = await _web_remediation(state, deps)
         sequence = _checkpoint(checkpoint_store, state, sequence)
         if not state.external_evidence:
+            state = decide_answer_node(
+                state,
+                deps,
+                allow_web=allow_web,
+                internal_can_retrieve=False,
+            )
+            sequence = _checkpoint(checkpoint_store, state, sequence)
             return state, sequence
         state = _update(
             state,
@@ -362,6 +389,16 @@ async def _complete_decision(
         state = await _reretrieve(state, deps)
         sequence = _checkpoint(checkpoint_store, state, sequence)
         if state.correction.stop.reason is StopReason.EXECUTION_FAILED:
+            return state, sequence
+        if state.correction.stop.reason is not StopReason.SUFFICIENT:
+            # 二次检索仍不足时不再浪费一次必然无法通过完整性检查的生成调用。
+            state = decide_answer_node(
+                state,
+                deps,
+                allow_web=allow_web,
+                internal_can_retrieve=False,
+            )
+            sequence = _checkpoint(checkpoint_store, state, sequence)
             return state, sequence
         state = _update(
             state,
@@ -468,6 +505,21 @@ async def run_grounded_answer_workflow(
         if correction.stop.reason is StopReason.SUFFICIENT:
             state = await generate_answer_node(state, deps)
             sequence = _checkpoint(checkpoint_store, state, sequence)
+            if state.candidate is None and _can_retry_provider_generation(state):
+                state = _trace(
+                    state,
+                    deps,
+                    "generate",
+                    "answer_generation_retry_scheduled",
+                    retry_number=1,
+                )
+                sequence = _checkpoint(checkpoint_store, state, sequence)
+                state = await generate_answer_node(
+                    state,
+                    deps,
+                    stage=AnswerWorkflowStage.REMEDIATE,
+                )
+                sequence = _checkpoint(checkpoint_store, state, sequence)
             if state.candidate is not None:
                 state = _update(state, stage=AnswerWorkflowStage.CHECK)
                 sequence = _checkpoint(checkpoint_store, state, sequence)
@@ -542,7 +594,17 @@ async def run_grounded_answer_workflow(
         ):
             forced_reason = None
 
-    if state.decision is None:
+    generation_events = [
+        item
+        for item in state.trace
+        if item.event in {"answer_generated", "answer_generation_failed"}
+    ]
+    generation_failed = bool(
+        generation_events and generation_events[-1].event == "answer_generation_failed"
+    )
+    if generation_failed:
+        forced_reason = "answer_generation_failed"
+    elif state.decision is None:
         forced_reason = "workflow_has_no_decision"
     elif state.decision.action not in {
         ReflectionAction.ACCEPT,

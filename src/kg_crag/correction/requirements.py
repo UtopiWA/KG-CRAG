@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -9,10 +10,12 @@ from typing import Protocol
 
 from pydantic import Field, ValidationError
 
+from kg_crag.correction.budget import BudgetManager
 from kg_crag.correction.config import FacetRulesConfig
 from kg_crag.correction.identity import stable_digest
 from kg_crag.ingestion.storage import stable_json_bytes
 from kg_crag.models import (
+    BudgetLedger,
     BudgetUsage,
     ConditionKind,
     EvidenceRequirement,
@@ -22,7 +25,7 @@ from kg_crag.models import (
     SatisfactionCondition,
 )
 from kg_crag.models.domain import StrictModel
-from kg_crag.providers import LLMProvider
+from kg_crag.providers import LLMProvider, UsageAwareLLMProvider
 
 
 class RequirementCandidate(StrictModel):
@@ -77,20 +80,49 @@ class LLMRequirementProvider:
         self.revision = revision
 
     async def propose(self, question: str, *, system_prompt: str) -> RequirementProviderResponse:
-        raw = await self._llm.generate(question, system_prompt=system_prompt, temperature=0.0)
-        batch = RequirementBatch.model_validate_json(raw)
-        # 通用 Provider 当前不暴露 usage，按字符数做稳定、偏保守的估算。
-        input_tokens = max(1, (len(system_prompt) + len(question) + 2) // 3)
-        output_tokens = max(1, (len(raw) + 2) // 3)
+        schema = json.dumps(
+            RequirementBatch.model_json_schema(),
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+        bounded_system_prompt = f"{system_prompt.strip()}\nJSON Schema:\n{schema}".strip()
+        if isinstance(self._llm, UsageAwareLLMProvider):
+            generation = await self._llm.generate_with_usage(
+                question,
+                system_prompt=bounded_system_prompt,
+                temperature=0.0,
+            )
+            raw = generation.content
+            input_tokens = generation.input_tokens
+            output_tokens = generation.output_tokens
+            usage_estimated = not generation.has_actual_usage
+        else:
+            raw = await self._llm.generate(
+                question,
+                system_prompt=bounded_system_prompt,
+                temperature=0.0,
+            )
+            input_tokens = None
+            output_tokens = None
+            usage_estimated = True
+        normalized = raw.strip()
+        # 兼容常见的单层 JSON 围栏，围栏外文本仍会被严格拒绝并回退规则。
+        if normalized.startswith("```") and normalized.endswith("```"):
+            first_newline = normalized.find("\n")
+            if first_newline > 0 and normalized[3:first_newline].strip().casefold() in {"", "json"}:
+                normalized = normalized[first_newline + 1 : -3].strip()
+        batch = RequirementBatch.model_validate_json(normalized)
+        input_tokens = input_tokens or max(1, (len(bounded_system_prompt) + len(question) + 2) // 3)
+        output_tokens = output_tokens or max(1, (len(raw) + 2) // 3)
         return RequirementProviderResponse(
             batch=batch,
             usage=BudgetUsage(
                 llm_calls=1,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
-                context_chars=len(system_prompt) + len(question),
+                context_chars=len(bounded_system_prompt) + len(question),
             ),
-            usage_estimated=True,
+            usage_estimated=usage_estimated,
         )
 
 
@@ -307,3 +339,52 @@ async def generate_requirements(
     except Exception:
         # Provider 的超时、外部错误和结构错误均只失败一次，不隐藏重试或切换。
         return list(analysis.facets), BudgetUsage(), "rule_fallback"
+
+
+async def generate_budgeted_requirements(
+    question_id: str,
+    question: str,
+    config: FacetRulesConfig,
+    ledger: BudgetLedger,
+    *,
+    provider: RequirementProvider | None = None,
+    system_prompt: str = "",
+    cache: RequirementCache | None = None,
+) -> tuple[list[EvidenceRequirement], BudgetLedger, str]:
+    """在模型调用前预留预算，并返回已经结算的 facet 与账本。"""
+
+    analysis = analyze_question(question_id, question)
+    will_call_provider = bool(
+        config.allow_llm
+        and provider is not None
+        and (analysis.complex or analysis.confidence < config.confidence_threshold)
+    )
+    if not will_call_provider:
+        return list(analysis.facets), ledger.model_copy(deep=True), "rule"
+
+    manager = BudgetManager(ledger)
+    reservation = manager.reserve(
+        BudgetUsage(
+            llm_calls=1,
+            input_tokens=4000,
+            output_tokens=2000,
+            context_chars=10_000,
+            latency_ms=5000,
+        )
+    )
+    if reservation is None:
+        return list(analysis.facets), manager.ledger, "rule_budget_fallback"
+
+    facets, usage, source = await generate_requirements(
+        question_id,
+        question,
+        config,
+        provider=provider,
+        system_prompt=system_prompt,
+        cache=cache,
+    )
+    if source == "rule_fallback":
+        manager.settle(reservation, failed=True)
+    else:
+        manager.settle(reservation, usage)
+    return facets, manager.ledger, source

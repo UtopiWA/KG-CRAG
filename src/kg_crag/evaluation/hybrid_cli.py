@@ -158,7 +158,11 @@ async def _execute(
     vector_store = build_vector_store(config.dense, settings)
     try:
         await vector_store.ensure_collection()
-        embedding = build_embedding_service(config.dense, workspace_root=PROJECT_ROOT)
+        embedding = build_embedding_service(
+            config.dense,
+            workspace_root=PROJECT_ROOT,
+            settings=settings,
+        )
         dense = DenseRetriever(embedding, vector_store, config.dense)
         sparse = SparseRetriever(sparse_store, config.sparse)
         runners: dict[HybridStrategy, object] = {}
@@ -200,7 +204,11 @@ async def _execute(
                 }
             )
             reranker = (
-                CrossEncoderReranker(strategy_config.reranker, workspace_root=PROJECT_ROOT)
+                CrossEncoderReranker(
+                    strategy_config.reranker,
+                    workspace_root=PROJECT_ROOT,
+                    local_files_only=settings.model_local_files_only,
+                )
                 if strategy == "fusion_rerank"
                 else None
             )

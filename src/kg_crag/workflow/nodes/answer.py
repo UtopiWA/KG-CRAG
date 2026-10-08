@@ -11,6 +11,7 @@ from kg_crag.answering.checker import deterministic_check, merge_critic_findings
 from kg_crag.answering.config import GroundedAnswerConfig
 from kg_crag.answering.conservative import build_conservative_candidate
 from kg_crag.answering.context import (
+    AnswerResponseError,
     BoundEvidence,
     build_answer_context,
     parse_grounded_answer,
@@ -20,6 +21,7 @@ from kg_crag.answering.policy import decide_reflection
 from kg_crag.answering.prompt import StructuredPrompt
 from kg_crag.correction.config import CorrectiveWorkflowConfig
 from kg_crag.correction.executor import ActionExecutor
+from kg_crag.errors import KGCRAGError
 from kg_crag.models import (
     AnswerBudgetUsage,
     AnswerCheckCode,
@@ -40,7 +42,12 @@ from kg_crag.models import (
     StopReason,
     TraceEvent,
 )
-from kg_crag.providers import LLMProvider, SearchProvider
+from kg_crag.providers import (
+    LLMGeneration,
+    LLMProvider,
+    SearchProvider,
+    UsageAwareLLMProvider,
+)
 from kg_crag.workflow.trace import append_trace
 
 
@@ -138,6 +145,46 @@ def render_generation_prompt(
     return prompt, context_text, bindings
 
 
+async def _generate_with_usage(provider: LLMProvider, prompt: str) -> LLMGeneration:
+    """优先获取逐请求实际用量，普通测试替身继续兼容文本接口。"""
+
+    if isinstance(provider, UsageAwareLLMProvider):
+        return await provider.generate_with_usage(prompt, temperature=0.0)
+    return LLMGeneration(content=await provider.generate(prompt, temperature=0.0))
+
+
+def _generation_usage(
+    generation: LLMGeneration,
+    *,
+    prompt: str,
+    reserved: AnswerBudgetUsage,
+) -> tuple[AnswerBudgetUsage, bool]:
+    """实际用量可安全结算时优先采用，否则使用有界字符估算。"""
+
+    if (
+        generation.has_actual_usage
+        and (generation.input_tokens or 0) <= reserved.input_tokens
+        and (generation.output_tokens or 0) <= reserved.output_tokens
+    ):
+        actual = AnswerBudgetUsage(
+            answer_calls=1,
+            input_tokens=generation.input_tokens or 0,
+            output_tokens=generation.output_tokens or 0,
+            context_chars=min(len(prompt), 16_000),
+        )
+        return actual, False
+    estimated = AnswerBudgetUsage(
+        answer_calls=1,
+        input_tokens=min(reserved.input_tokens, max(1, (len(prompt) + 3) // 4)),
+        output_tokens=min(
+            reserved.output_tokens,
+            max(1, (len(generation.content) + 3) // 4),
+        ),
+        context_chars=min(len(prompt), 16_000),
+    )
+    return estimated, True
+
+
 async def generate_answer_node(
     state: AnswerWorkflowState,
     deps: AnswerWorkflowDependencies,
@@ -148,17 +195,69 @@ async def generate_answer_node(
 ) -> AnswerWorkflowState:
     prompt, _context, bindings = render_generation_prompt(state, deps, constraints=constraints)
     manager = AnswerBudgetManager(state.budget)
+    provider_output_limit = getattr(deps.llm, "max_output_tokens", None)
+    reserved_output_tokens = (
+        provider_output_limit
+        if isinstance(provider_output_limit, int) and not isinstance(provider_output_limit, bool)
+        else 750
+    )
     estimate = AnswerBudgetUsage(
         answer_calls=1,
         input_tokens=4000,
-        output_tokens=750,
+        output_tokens=reserved_output_tokens,
         context_chars=min(len(prompt), 16_000),
     )
     token = manager.reserve(estimate)
     if token is None:
         raise ValueError("answer generation exceeds remaining budget")
     try:
-        raw = await deps.llm.generate(prompt, temperature=0.0)
+        generation = await _generate_with_usage(deps.llm, prompt)
+    except Exception as error:
+        manager.settle(token, failed=True)
+        detail = (
+            error.detail
+            if isinstance(error, KGCRAGError)
+            else ErrorDetail(
+                code=ErrorCode.EXTERNAL_SERVICE,
+                message="answer model request failed",
+                retryable=False,
+            )
+        )
+        failed = _validated(
+            state,
+            stage=stage,
+            budget=manager.ledger,
+            errors=[*state.errors, detail],
+        )
+        provider_status = detail.context.get("status")
+        provider_error_type = detail.context.get("error_type")
+        provider_finish_reason = detail.context.get("finish_reason")
+        provider_analysis_chars = detail.context.get("analysis_chars")
+        return _validated(
+            failed,
+            trace=_trace(
+                failed,
+                stage.value,
+                "answer_generation_failed",
+                {
+                    "answer_calls": manager.ledger.used.answer_calls,
+                    "failure_category": "provider_request",
+                    "retryable": detail.retryable,
+                    "provider_status": provider_status,
+                    "provider_error_type": provider_error_type,
+                    "provider_finish_reason": provider_finish_reason,
+                    "provider_analysis_chars": provider_analysis_chars,
+                    "input_tokens": estimate.input_tokens,
+                    "output_tokens": estimate.output_tokens,
+                    "usage_estimated": True,
+                },
+                max_events=deps.config.max_trace_events,
+            ),
+        )
+
+    raw = generation.content
+    usage, usage_estimated = _generation_usage(generation, prompt=prompt, reserved=estimate)
+    try:
         candidate = parse_grounded_answer(
             raw,
             bindings,
@@ -166,8 +265,8 @@ async def generate_answer_node(
             config=deps.config.generation,
             allowed_binding_sets=allowed_binding_sets,
         )
-    except Exception:
-        manager.settle(token, failed=True)
+    except AnswerResponseError as error:
+        manager.settle(token, usage)
         failed = _validated(
             state,
             stage=stage,
@@ -176,8 +275,9 @@ async def generate_answer_node(
                 *state.errors,
                 ErrorDetail(
                     code=ErrorCode.DATA,
-                    message="answer generation or parsing failed",
+                    message="answer response validation failed",
                     retryable=False,
+                    context={"failure_category": error.category.value},
                 ),
             ],
         )
@@ -187,19 +287,49 @@ async def generate_answer_node(
                 failed,
                 stage.value,
                 "answer_generation_failed",
-                {"answer_calls": manager.ledger.used.answer_calls},
+                {
+                    "answer_calls": manager.ledger.used.answer_calls,
+                    "failure_category": error.category.value,
+                    "input_tokens": usage.input_tokens,
+                    "output_tokens": usage.output_tokens,
+                    "usage_estimated": usage_estimated,
+                },
                 max_events=deps.config.max_trace_events,
             ),
         )
-    manager.settle(
-        token,
-        AnswerBudgetUsage(
-            answer_calls=1,
-            input_tokens=min(4000, max(1, (len(prompt) + 3) // 4)),
-            output_tokens=min(750, max(1, (len(raw) + 3) // 4)),
-            context_chars=min(len(prompt), 16_000),
-        ),
-    )
+    except Exception:
+        manager.settle(token, usage)
+        failed = _validated(
+            state,
+            stage=stage,
+            budget=manager.ledger,
+            errors=[
+                *state.errors,
+                ErrorDetail(
+                    code=ErrorCode.DATA,
+                    message="answer response validation failed",
+                    retryable=False,
+                    context={"failure_category": "internal_validation"},
+                ),
+            ],
+        )
+        return _validated(
+            failed,
+            trace=_trace(
+                failed,
+                stage.value,
+                "answer_generation_failed",
+                {
+                    "answer_calls": manager.ledger.used.answer_calls,
+                    "failure_category": "internal_validation",
+                    "input_tokens": usage.input_tokens,
+                    "output_tokens": usage.output_tokens,
+                    "usage_estimated": usage_estimated,
+                },
+                max_events=deps.config.max_trace_events,
+            ),
+        )
+    manager.settle(token, usage)
     generated = _validated(
         state,
         stage=stage,
@@ -218,6 +348,7 @@ async def generate_answer_node(
                 "answer_calls": manager.ledger.used.answer_calls,
                 "input_tokens": manager.ledger.used.input_tokens,
                 "output_tokens": manager.ledger.used.output_tokens,
+                "usage_estimated": usage_estimated,
             },
             max_events=deps.config.max_trace_events,
         ),
@@ -452,7 +583,9 @@ def finalize_answer_node(
                 answer=state.budget,
             ),
         )
-        if reason == "semantic critic failed":
+        if reason == "answer_generation_failed":
+            stop_reason = AnswerStopReason.GENERATION_FAILED
+        elif reason == "semantic critic failed":
             stop_reason = AnswerStopReason.CRITIC_FAILED
         elif "budget" in reason:
             stop_reason = AnswerStopReason.BUDGET_EXHAUSTED
@@ -496,6 +629,18 @@ def finalize_answer_node(
         external_evidence=state.external_evidence,
         external_coverage=state.external_coverage,
         evaluation=state.evaluation,
+        requirements=state.correction.state.facets,
+        facet_assessments=(
+            state.correction.state.sufficiency.facets
+            if state.correction.state.sufficiency is not None
+            else []
+        ),
+        conflicts=(
+            state.correction.state.sufficiency.conflicts
+            if state.correction.state.sufficiency is not None
+            else []
+        ),
+        internal_actions=state.correction.state.action_history,
         missing_required_facet_ids=sorted(missing),
         retrieval_path=retrieval_path,
         internal_stop_reason=state.correction.stop.reason,

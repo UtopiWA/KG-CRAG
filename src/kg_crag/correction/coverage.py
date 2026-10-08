@@ -8,6 +8,7 @@ from typing import Protocol
 
 from kg_crag.correction.identity import stable_digest
 from kg_crag.models import (
+    ConditionKind,
     ConflictKind,
     CoverageMatrix,
     CoverageStatus,
@@ -16,6 +17,7 @@ from kg_crag.models import (
     EvidenceRequirement,
     EvidenceSourceType,
     FacetCoverage,
+    FacetKind,
 )
 
 
@@ -110,6 +112,53 @@ class RuleFacetMatcher:
         return matched, basis[:20], lexical
 
 
+_QUESTION_WORDS = {
+    "what",
+    "which",
+    "who",
+    "where",
+    "when",
+    "why",
+    "how",
+    "does",
+    "do",
+    "did",
+    "is",
+    "are",
+    "was",
+    "were",
+}
+
+
+def entity_anchor_terms(facet: EvidenceRequirement) -> tuple[str, ...]:
+    """提取问题中的显式拉丁实体名，用于把同论文的答案片段纳入候选。"""
+
+    tokens = re.findall(r"[A-Za-z][A-Za-z0-9_.+-]{2,}", facet.description)
+    return tuple(
+        dict.fromkeys(
+            token.casefold()
+            for token in tokens
+            if token[0].isupper() and token.casefold() not in _QUESTION_WORDS
+        )
+    )
+
+
+def _anchored_papers(
+    facet: EvidenceRequirement,
+    evidence: Sequence[Evidence],
+) -> set[str]:
+    """先通过显式实体定位论文，再允许该论文中省略实体名的摘要或续接段落参与覆盖。"""
+
+    anchors = entity_anchor_terms(facet)
+    if not anchors:
+        return set()
+    return {
+        item.paper_id
+        for item in evidence
+        if item.paper_id and any(anchor in item.content.casefold() for anchor in anchors)
+    }
+
+
 def _source_quality(evidence: Evidence) -> float:
     available = [
         value for value in evidence.scores.model_dump().values() if isinstance(value, int | float)
@@ -132,6 +181,9 @@ def build_coverage_matrix(
     selected_verifier = verifier or PermissiveInternalVerifier()
     sorted_facets = sorted(facets, key=lambda item: item.facet_id)
     sorted_evidence = sorted(evidence, key=lambda item: item.evidence_id)
+    anchored_papers = {
+        facet.facet_id: _anchored_papers(facet, sorted_evidence) for facet in sorted_facets
+    }
     entries: list[FacetCoverage] = []
     for facet in sorted_facets:
         for item in sorted_evidence:
@@ -147,6 +199,16 @@ def build_coverage_matrix(
                 matched, basis, support = False, [], None
             else:
                 matched, basis, lexical = selected_matcher.match(facet, item)
+                # 摘要或续接片段可能不重复论文简称。实体已在同一篇论文的其他候选中
+                # 明确锚定时，保留该片段给后续检索排名和回答生成共同判断。
+                if (
+                    not matched
+                    and item.source_type is EvidenceSourceType.CHUNK
+                    and item.paper_id in anchored_papers[facet.facet_id]
+                ):
+                    matched = True
+                    basis = [f"paper_scope:{item.paper_id}"]
+                    lexical = 0.5
                 status = CoverageStatus.MATCHED if matched else CoverageStatus.NOT_MATCHED
                 quality = _source_quality(item)
                 support = round(0.7 * lexical + 0.3 * quality, 6) if matched else None
@@ -206,7 +268,76 @@ def build_coverage_matrix(
 
 
 _NUMBER = re.compile(r"(?<![\w.])(-?\d+(?:\.\d+)?)\s*([%a-zA-Z/]+)?")
-_NEGATIONS = (" not ", " no ", "without", "不能", "不支持", "没有")
+
+
+def _normalized_conflict(left: Evidence, right: Evidence) -> ConflictKind | None:
+    """只比较显式绑定到同一命题的规范化值。"""
+
+    left_key = left.metadata.get("normalized_value_key")
+    right_key = right.metadata.get("normalized_value_key")
+    if (
+        not isinstance(left_key, str)
+        or not left_key.strip()
+        or not isinstance(right_key, str)
+        or left_key.strip().casefold() != right_key.strip().casefold()
+    ):
+        return None
+    left_value = left.metadata.get("normalized_value")
+    right_value = right.metadata.get("normalized_value")
+    if left_value is None or right_value is None:
+        return None
+    if isinstance(left_value, bool) and isinstance(right_value, bool):
+        return ConflictKind.NEGATION if left_value != right_value else None
+    if (
+        isinstance(left_value, int | float)
+        and not isinstance(left_value, bool)
+        and isinstance(right_value, int | float)
+        and not isinstance(right_value, bool)
+    ):
+        return ConflictKind.NUMERIC if float(left_value) != float(right_value) else None
+    return (
+        ConflictKind.DISCRETE
+        if str(left_value).strip().casefold() != str(right_value).strip().casefold()
+        else None
+    )
+
+
+_METRIC_UNITS = {
+    "%",
+    "percent",
+    "percentage",
+    "x",
+    "ms",
+    "s",
+    "sec",
+    "seconds",
+    "point",
+    "points",
+    "pt",
+}
+
+
+def _metric_measurement(content: str, facet: EvidenceRequirement) -> tuple[float, str] | None:
+    """只在 facet 词项邻域提取指标值，并优先选择公认单位。"""
+
+    folded = content.casefold()
+    windows: list[str] = []
+    for term in sorted(facet.condition.terms, key=len, reverse=True):
+        normalized = term.casefold().strip()
+        if len(normalized) < 2:
+            continue
+        start = folded.find(normalized)
+        if start >= 0:
+            windows.append(content[max(0, start - 120) : start + len(normalized) + 160])
+    if not windows:
+        return None
+    values = [
+        (float(number), unit.casefold()) for number, unit in _NUMBER.findall(" ".join(windows))
+    ]
+    if not values:
+        return None
+    with_units = [item for item in values if item[1] in _METRIC_UNITS]
+    return (with_units or values)[-1]
 
 
 def detect_conflicts(
@@ -221,38 +352,23 @@ def detect_conflicts(
     conflicts: list[EvidenceConflict] = []
     for index, left in enumerate(items):
         for right in items[index + 1 :]:
-            left_numbers = _NUMBER.findall(left.content)
-            right_numbers = _NUMBER.findall(right.content)
-            left_discrete = left.metadata.get("normalized_value")
-            right_discrete = right.metadata.get("normalized_value")
-            left_negative = any(token in f" {left.content.casefold()} " for token in _NEGATIONS)
-            right_negative = any(token in f" {right.content.casefold()} " for token in _NEGATIONS)
-            kind: ConflictKind | None = None
+            kind = _normalized_conflict(left, right)
             blocking = True
             review = False
-            numeric_difference = next(
-                (
-                    (left_number, right_number)
-                    for left_number, right_number in zip(left_numbers, right_numbers, strict=False)
-                    if left_number != right_number
-                ),
-                None,
+            metric_facet = (
+                facet.kind is FacetKind.METRIC or facet.condition.kind is ConditionKind.NUMERIC
             )
-            if left_negative != right_negative:
-                kind = ConflictKind.NEGATION
-            elif numeric_difference is not None:
-                left_number, right_number = numeric_difference
-                left_unit, right_unit = left_number[1], right_number[1]
+            if kind is None and metric_facet:
+                left_measurement = _metric_measurement(left.content, facet)
+                right_measurement = _metric_measurement(right.content, facet)
+                if left_measurement is None or right_measurement is None:
+                    continue
+                left_number, left_unit = left_measurement
+                right_number, right_unit = right_measurement
                 if left_unit and right_unit and left_unit != right_unit:
                     kind, blocking, review = ConflictKind.UNKNOWN_UNIT, False, True
-                else:
+                elif left_number != right_number:
                     kind = ConflictKind.NUMERIC
-            elif (
-                isinstance(left_discrete, str | bool)
-                and isinstance(right_discrete, str | bool)
-                and str(left_discrete).casefold() != str(right_discrete).casefold()
-            ):
-                kind = ConflictKind.DISCRETE
             if kind is None:
                 continue
             ids = sorted([left.evidence_id, right.evidence_id])
@@ -265,7 +381,8 @@ def detect_conflicts(
                     evidence_ids=ids,
                     blocking=blocking,
                     review_required=review,
-                    reason=f"{kind.value} conflict between {ids[0]} and {ids[1]}",
+                    # Evidence ID 已由结构化字段完整保留，原因文本不重复拼接长 ID。
+                    reason=f"{kind.value} conflict between two Evidence records",
                 )
             )
     return sorted(conflicts, key=lambda item: item.conflict_id)

@@ -33,8 +33,16 @@ class FacetStatus(StrEnum):
     CONFLICTING = "conflicting"
 
 
+class TokenUsageSource(StrEnum):
+    NONE = "none"
+    ACTUAL = "actual"
+    ESTIMATED = "estimated"
+    MIXED = "mixed"
+
+
 class ComponentStatus(StrEnum):
     READY = "ready"
+    WARMING = "warming"
     DEGRADED = "degraded"
     DISABLED = "disabled"
 
@@ -54,11 +62,15 @@ class QueryRequest(StrictModel):
     question: str = Field(min_length=1, max_length=2000)
     mode: ApplicationMode = ApplicationMode.REPLAY
     replay_case_id: str | None = Field(default=None, pattern=r"^[a-z0-9-]{3,64}$")
+    allow_web: bool = False
+    include_trace: bool = False
 
     @model_validator(mode="after")
     def replay_case_matches_mode(self) -> QueryRequest:
         if self.mode is ApplicationMode.LIVE and self.replay_case_id is not None:
             raise ValueError("replay_case_id is only valid in replay mode")
+        if self.mode is ApplicationMode.REPLAY and self.allow_web:
+            raise ValueError("allow_web is only valid in live mode")
         return self
 
 
@@ -88,6 +100,8 @@ class FacetSummary(StrictModel):
     label: str = Field(min_length=1, max_length=300)
     status: FacetStatus
     evidence_ids: list[str] = Field(default_factory=list, max_length=20)
+    reason: str | None = Field(default=None, max_length=300)
+    conflict_ids: list[str] = Field(default_factory=list, max_length=20)
 
 
 class ActionSummary(StrictModel):
@@ -104,9 +118,19 @@ class ApplicationBudgetSummary(StrictModel):
     web_calls: int = Field(default=0, ge=0, le=5)
     input_tokens: int = Field(default=0, ge=0, le=100_000)
     output_tokens: int = Field(default=0, ge=0, le=100_000)
+    token_usage_source: TokenUsageSource = TokenUsageSource.NONE
     elapsed_ms: int = Field(default=0, ge=0, le=600_000)
     stopped: bool = False
     stop_reason: str | None = Field(default=None, max_length=200)
+
+
+class RuntimeIdentitySummary(StrictModel):
+    """公开运行身份只包含可复现版本，不包含路径或连接信息。"""
+
+    corpus_snapshot: str = Field(pattern=r"^[a-f0-9]{64}$")
+    dense_version: str = Field(pattern=r"^[a-f0-9]{64}$")
+    sparse_version: str = Field(pattern=r"^[a-f0-9]{64}$")
+    graph_version: str | None = Field(default=None, max_length=128)
 
 
 class QueryResponse(StrictModel):
@@ -121,6 +145,7 @@ class QueryResponse(StrictModel):
     retrieval_path: list[str] = Field(default_factory=list, max_length=10)
     budget: ApplicationBudgetSummary = Field(default_factory=ApplicationBudgetSummary)
     stop_reason: str = Field(min_length=1, max_length=200)
+    runtime_identity: RuntimeIdentitySummary | None = None
     replay_fixture_version: str | None = Field(default=None, max_length=64)
     replay_notice: str | None = Field(default=None, max_length=300)
 
@@ -131,6 +156,8 @@ class QueryResponse(StrictModel):
         )
         if (self.mode is ApplicationMode.REPLAY) != has_replay_metadata:
             raise ValueError("replay responses require both fixture version and notice")
+        if self.mode is ApplicationMode.REPLAY and self.runtime_identity is not None:
+            raise ValueError("replay responses cannot claim a live runtime identity")
         return self
 
 

@@ -7,7 +7,15 @@ from enum import StrEnum
 
 from pydantic import Field, HttpUrl, field_validator, model_validator
 
-from kg_crag.models.correction import BudgetLedger, CorrectionRunResult, StopReason
+from kg_crag.models.correction import (
+    ActionResult,
+    BudgetLedger,
+    CorrectionRunResult,
+    EvidenceConflict,
+    EvidenceRequirement,
+    FacetAssessment,
+    StopReason,
+)
 from kg_crag.models.domain import Evidence, EvidenceSourceType, RetrievalStrategy, StrictModel
 from kg_crag.models.foundation import ErrorDetail, TraceEvent
 from kg_crag.models.rag import ClaimType
@@ -33,6 +41,7 @@ class AnswerCheckCode(StrEnum):
     UNCITED_NUMBER = "uncited_number"
     BLOCKING_CONFLICT = "blocking_conflict"
     INCOMPLETE = "incomplete"
+    ABSTENTION = "abstention"
     UNSUPPORTED = "unsupported"
     WRONG_ATTRIBUTION = "wrong_attribution"
     CRITIC_FAILED = "critic_failed"
@@ -241,8 +250,9 @@ class AnswerBudgetLimit(AnswerBudgetUsage):
     critic_calls: int = Field(default=1, ge=0, le=1)
     web_calls: int = Field(default=1, ge=0, le=1)
     reflection_rounds: int = Field(default=1, ge=0, le=1)
-    input_tokens: int = Field(default=9000, ge=0, le=12_000)
-    output_tokens: int = Field(default=3000, ge=0, le=12_000)
+    # 为两次最多 1600 Token 的生成预留完整输出空间，同时保持总上限不变。
+    input_tokens: int = Field(default=8800, ge=0, le=12_000)
+    output_tokens: int = Field(default=3200, ge=0, le=12_000)
     web_results: int = Field(default=5, ge=0, le=5)
     context_chars: int = Field(default=16_000, ge=1, le=16_000)
     external_context_chars: int = Field(default=8000, ge=0, le=8000)
@@ -317,6 +327,10 @@ class GroundedAnswerResult(StrictModel):
     external_evidence: list[Evidence] = Field(default_factory=list, max_length=5)
     external_coverage: list[ExternalFacetCoverage] = Field(default_factory=list, max_length=100)
     evaluation: AnswerEvaluation | None = None
+    requirements: list[EvidenceRequirement] = Field(default_factory=list, max_length=20)
+    facet_assessments: list[FacetAssessment] = Field(default_factory=list, max_length=20)
+    conflicts: list[EvidenceConflict] = Field(default_factory=list, max_length=100)
+    internal_actions: list[ActionResult] = Field(default_factory=list, max_length=2)
     missing_required_facet_ids: list[str] = Field(default_factory=list, max_length=20)
     retrieval_path: list[RetrievalStrategy] = Field(default_factory=list, max_length=10)
     internal_stop_reason: StopReason

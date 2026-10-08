@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import asyncio
+import threading
 from collections.abc import Callable
+from pathlib import Path
 from typing import Protocol, cast
 
 from kg_crag.errors import KGCRAGError
 from kg_crag.models import ErrorCode, ErrorDetail
+from kg_crag.providers.local_models import enforce_local_model_resolution
 
 
 class SentenceModel(Protocol):
@@ -36,6 +39,7 @@ class SentenceTransformerEmbeddingProvider:
         dimensions: int,
         normalize: bool,
         local_files_only: bool = False,
+        cache_folder: str | Path | None = None,
         model_factory: Callable[..., SentenceModel] | None = None,
     ) -> None:
         self.model_name = model_name
@@ -43,39 +47,48 @@ class SentenceTransformerEmbeddingProvider:
         self.dimensions = dimensions
         self.normalize = normalize
         self.local_files_only = local_files_only
+        self.cache_folder = str(Path(cache_folder).resolve()) if cache_folder else None
         self._model_factory = model_factory
         self._model: SentenceModel | None = None
+        self._load_lock = threading.Lock()
 
     def _load(self) -> SentenceModel:
         if self._model is not None:
             return self._model
-        try:
-            if self._model_factory is None:
-                from sentence_transformers import SentenceTransformer
+        with self._load_lock:
+            if self._model is not None:
+                return self._model
+            try:
+                enforce_local_model_resolution(self.local_files_only)
+                if self._model_factory is None:
+                    from sentence_transformers import SentenceTransformer
 
-                factory: Callable[..., SentenceModel] = SentenceTransformer
-            else:
-                factory = self._model_factory
-            kwargs: dict[str, str | bool] = {"revision": self.revision}
-            if self.local_files_only:
-                # 离线实验必须禁止库在模型已缓存时仍发起远端版本探测。
-                kwargs["local_files_only"] = True
-            self._model = factory(self.model_name, **kwargs)
-        except Exception as error:
-            raise KGCRAGError(
-                ErrorDetail(
-                    code=ErrorCode.EXTERNAL_SERVICE,
-                    message="embedding model could not be loaded",
-                    retryable=True,
-                    context={"provider": "sentence-transformers"},
-                )
-            ) from error
+                    factory: Callable[..., SentenceModel] = SentenceTransformer
+                else:
+                    factory = self._model_factory
+                kwargs: dict[str, str | bool] = {"revision": self.revision}
+                if self.local_files_only:
+                    # 离线实验必须禁止库在模型已缓存时仍发起远端版本探测。
+                    kwargs["local_files_only"] = True
+                if self.cache_folder:
+                    kwargs["cache_folder"] = self.cache_folder
+                self._model = factory(self.model_name, **kwargs)
+            except Exception as error:
+                raise KGCRAGError(
+                    ErrorDetail(
+                        code=ErrorCode.EXTERNAL_SERVICE,
+                        message="embedding model could not be loaded",
+                        retryable=True,
+                        context={"provider": "sentence-transformers"},
+                    )
+                ) from error
         return self._model
 
     async def embed(self, texts: list[str]) -> list[list[float]]:
         if not texts:
             return []
-        model = self._load()
+        # 模型构造可能读取数 GB 权重或访问模型仓库，必须移出 API 事件循环。
+        model = await asyncio.to_thread(self._load)
         try:
             encoded = await asyncio.to_thread(
                 model.encode,
@@ -111,3 +124,8 @@ class SentenceTransformerEmbeddingProvider:
                 )
             )
         return vectors
+
+    async def warmup(self, text: str = "scientific literature retrieval") -> None:
+        """提前完成权重加载和一次有界推理，避免首个用户请求承担冷启动。"""
+
+        await self.embed([text])

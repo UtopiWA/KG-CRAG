@@ -23,12 +23,13 @@ def select_evidence(
     min_support: float,
     max_selected: int,
 ) -> list[str]:
-    """以必需 facet 新增覆盖数为主键，确定性地执行贪心集合覆盖。"""
+    """先覆盖全部必需 facet，再按检索排名补充少量同 facet 上下文。"""
 
     required = {item.facet_id for item in facets if item.required}
     coverage_by_evidence: dict[str, set[str]] = {}
     strength_by_evidence: dict[str, float] = {}
     quality_by_evidence: dict[str, float] = {}
+    evidence_by_id = {item.evidence_id: item for item in evidence}
     for item in matrix.entries:
         if item.matched and (item.support_strength or 0.0) >= min_support:
             coverage_by_evidence.setdefault(item.evidence_id, set()).add(item.facet_id)
@@ -41,14 +42,29 @@ def select_evidence(
     remaining = set(required)
     selected: list[str] = []
     available = {item.evidence_id for item in evidence}
+
+    def retrieval_priority(evidence_id: str) -> tuple[int, int, int, int, str]:
+        item = evidence_by_id[evidence_id]
+        ranks = item.ranks
+        return (
+            0 if item.metadata.get("paper_context_expansion") is True else 1,
+            ranks.rerank or 2**30,
+            ranks.fusion or 2**30,
+            min(
+                (value for value in (ranks.dense, ranks.sparse) if value is not None),
+                default=2**30,
+            ),
+            evidence_id,
+        )
+
     while remaining and available and len(selected) < max_selected:
         ranked = sorted(
             available,
             key=lambda evidence_id: (
                 -len(coverage_by_evidence.get(evidence_id, set()) & remaining),
+                retrieval_priority(evidence_id),
                 -strength_by_evidence.get(evidence_id, 0.0),
                 -quality_by_evidence.get(evidence_id, 0.0),
-                evidence_id,
             ),
         )
         best = ranked[0]
@@ -58,6 +74,32 @@ def select_evidence(
         selected.append(best)
         remaining -= gained
         available.remove(best)
+
+    # 单条实体命中只能证明论文相关，往往不足以承载定义、列表或机制答案。
+    # 在既有上限内补入其余高排名匹配片段，由生成阶段在同一证据包中选择引用。
+    supplemental = sorted(
+        (
+            evidence_id
+            for evidence_id, covered_facets in coverage_by_evidence.items()
+            if evidence_id not in selected and covered_facets & required
+        ),
+        key=retrieval_priority,
+    )
+    selected_coverage = {
+        facet_id: sum(
+            facet_id in coverage_by_evidence.get(evidence_id, set()) for evidence_id in selected
+        )
+        for facet_id in required
+    }
+    for evidence_id in supplemental:
+        if len(selected) >= max_selected:
+            break
+        covered = coverage_by_evidence[evidence_id] & required
+        if not any(selected_coverage[facet_id] < 3 for facet_id in covered):
+            continue
+        selected.append(evidence_id)
+        for facet_id in covered:
+            selected_coverage[facet_id] += 1
     return selected
 
 

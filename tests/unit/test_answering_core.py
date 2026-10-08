@@ -121,6 +121,38 @@ def test_context_and_parser_bind_claims_to_evidence_and_facets() -> None:
         parse_grounded_answer(raw, bindings, facets, config=AnswerGenerationConfig())
 
 
+def test_parser_accepts_only_a_single_markdown_json_fence_wrapper() -> None:
+    candidate, _, bindings, facets, _ = _candidate()
+    fenced = (
+        "```json\n"
+        + json.dumps(
+            {
+                "claims": [
+                    {
+                        "text": candidate.claims[0].text,
+                        "claim_type": "fact",
+                        "citation_ids": ["E1"],
+                        "facet_ids": [facets[0].facet_id],
+                    }
+                ],
+                "confidence": 0.8,
+            }
+        )
+        + "\n```"
+    )
+
+    parsed = parse_grounded_answer(fenced, bindings, facets, config=AnswerGenerationConfig())
+
+    assert parsed.claims[0].citation_ids == ["E1"]
+    with pytest.raises(ValueError, match="valid JSON"):
+        parse_grounded_answer(
+            "说明如下:" + fenced,
+            bindings,
+            facets,
+            config=AnswerGenerationConfig(),
+        )
+
+
 def test_regeneration_cannot_introduce_new_fact_bindings() -> None:
     candidate, _, bindings, facets, _ = _candidate()
     allowed = supported_binding_sets(candidate)
@@ -160,6 +192,24 @@ def test_deterministic_checker_detects_missing_facet_and_uncited_number() -> Non
     codes = {item.code for item in evaluation.findings}
     assert AnswerCheckCode.UNCITED_NUMBER in codes
     assert AnswerCheckCode.INCOMPLETE in codes
+    assert not evaluation.acceptable
+
+
+def test_deterministic_checker_rejects_abstention_bound_as_a_supported_answer() -> None:
+    candidate, _, _, facets, sufficiency = _candidate()
+    refusal = candidate.model_copy(
+        update={
+            "answer": "暂无可安全陈述的结论。",
+            "claims": [candidate.claims[0].model_copy(update={"text": "暂无可安全陈述的结论。"})],
+        }
+    )
+
+    evaluation = deterministic_check(refusal, facets, sufficiency)
+
+    codes = {item.code for item in evaluation.findings}
+    assert AnswerCheckCode.ABSTENTION in codes
+    assert AnswerCheckCode.INCOMPLETE in codes
+    assert not evaluation.faithful
     assert not evaluation.acceptable
 
 
