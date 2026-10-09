@@ -6,7 +6,11 @@ from pathlib import Path
 import pytest
 
 from kg_crag.correction.config import FacetRulesConfig
-from kg_crag.correction.coverage import CatalogSourceVerifier, build_coverage_matrix
+from kg_crag.correction.coverage import (
+    CatalogSourceVerifier,
+    build_coverage_matrix,
+    entity_anchor_terms,
+)
 from kg_crag.correction.requirements import (
     LLMRequirementProvider,
     MockRequirementProvider,
@@ -56,6 +60,8 @@ def test_rule_analysis_is_stable_for_simple_comparison_relationship_and_metric()
     simple = analyze_question("q1", "What architecture does Voyager use?")
     assert len(simple.facets) == 1
     assert not simple.complex
+    cross_lingual = analyze_question("q-mixed", "MLR-Bench 由哪三个核心部分组成?")
+    assert cross_lingual.complex
     comparison = analyze_question("q2", "比较 Voyager 与 ReAct 的架构和准确率")
     assert comparison.complex
     assert len(comparison.facets) >= 4
@@ -89,16 +95,20 @@ async def test_llm_boundary_skips_simple_uses_one_call_and_falls_back_atomically
         "q1", "What is Voyager?", config, provider=provider
     )
     assert source == "rule" and usage.llm_calls == 0 and provider.calls == 0 and facets
+    facets, usage, source = await generate_requirements(
+        "q-mixed", "MLR-Bench 由哪三个核心部分组成?", config, provider=provider
+    )
+    assert source == "llm" and usage.llm_calls == 1 and provider.calls == 1 and facets
     cache = RequirementCache(tmp_path / "requirements")
     facets, usage, source = await generate_requirements(
         "q2", "比较 A 与 B 的架构", config, provider=provider, cache=cache
     )
-    assert source == "llm" and usage.llm_calls == 1 and provider.calls == 1
+    assert source == "llm" and usage.llm_calls == 1 and provider.calls == 2
     cached, usage, source = await generate_requirements(
         "q2", "比较 A 与 B 的架构", config, provider=provider, cache=cache
     )
     assert cached == facets
-    assert source == "llm_cache" and usage.llm_calls == 0 and provider.calls == 1
+    assert source == "llm_cache" and usage.llm_calls == 0 and provider.calls == 2
     # 重复候选整批非法，不能让合法前缀部分进入状态。
     bad = MockRequirementProvider(
         RequirementProviderResponse(
@@ -131,6 +141,41 @@ async def test_llm_boundary_skips_simple_uses_one_call_and_falls_back_atomically
     assert ledger.used.input_tokens == 12
     assert ledger.used.output_tokens == 6
     assert ledger.reserved == BudgetUsage()
+
+
+@pytest.mark.asyncio
+async def test_llm_optional_requirement_stays_optional() -> None:
+    """Facet Provider 的 required=false 不能在落地时被提升为硬门槛。"""
+
+    optional = RequirementCandidate(
+        kind=FacetKind.METRIC,
+        description="未被问题要求的辅助实验指标",
+        required=False,
+        expected_evidence_types=[EvidenceSourceType.CHUNK],
+        condition=SatisfactionCondition(
+            kind=ConditionKind.TERMS,
+            terms=["experiment", "metric"],
+            min_term_matches=2,
+        ),
+        confidence=0.6,
+    )
+    provider = MockRequirementProvider(
+        RequirementProviderResponse(
+            batch=RequirementBatch(candidates=[optional]),
+            usage=BudgetUsage(llm_calls=1),
+        )
+    )
+
+    facets, _, source = await generate_requirements(
+        "optional-facet",
+        "比较 ALAMA 与 UniAct 的机制关系",
+        FacetRulesConfig(allow_llm=True),
+        provider=provider,
+    )
+
+    assert source == "llm"
+    assert len(facets) == 1
+    assert facets[0].required is False
 
 
 @pytest.mark.asyncio
@@ -273,11 +318,116 @@ def test_content_facet_ignores_unrelated_numbers_and_negation_words() -> None:
     assert not any(item.conflict for item in matrix.entries)
 
 
-def test_paper_anchor_keeps_answer_bearing_chunk_and_selection_follows_retrieval_rank() -> None:
+def test_distinctive_entity_anchor_blocks_generic_term_false_positive() -> None:
     facet = analyze_question(
-        "camel-roleplay",
-        "CAMEL 如何通过角色扮演促进多个智能体协作?",
+        "agora-contributions",
+        "ACL 2025 的 AGORA 框架有哪三项核心贡献? 实验对复杂推理方法与 "
+        "Chain-of-Thought 的效果和计算开销得出了什么结论?",
     ).facets[0]
+    wrong_paper = _evidence(
+        "hipporag-abstract",
+        "This unrelated ACL paper compares complex reasoning with Chain-of-Thought.",
+        paper_id="paper-hipporag",
+    )
+
+    matrix = build_coverage_matrix([facet], [wrong_paper], rule_version="coverage-v5")
+    assessment = assess_sufficiency(
+        [facet], [wrong_paper], matrix, min_support=0.3, min_sources=1, max_selected=4
+    )
+
+    assert not matrix.entries[0].matched
+    assert not assessment.sufficient
+    assert assessment.selected_evidence_ids == []
+
+
+def test_multi_entity_anchor_rejects_ambiguous_pmc_acronym() -> None:
+    facet = analyze_question(
+        "pmc-results",
+        "COLING 2025 的 PMC 方法在 TravelPlanner 和 API-Bank 上分别取得了什么结果? "
+        "这些结果相对 GPT-4 基线有何提升?",
+    ).facets[0]
+    medical_paper = _evidence(
+        "medical-rag",
+        "PMC provides biomedical articles used by a medical Graph RAG system with GPT-4.",
+        paper_id="arxiv:2408.04187",
+    )
+    target_paper = _evidence(
+        "pmc-target",
+        "PMC reports planning results on TravelPlanner and compares them with GPT-4.",
+        paper_id="paper-pmc",
+    )
+
+    matrix = build_coverage_matrix(
+        [facet], [medical_paper, target_paper], rule_version="coverage-v5"
+    )
+    by_id = {item.evidence_id: item for item in matrix.entries}
+
+    assert not by_id[medical_paper.evidence_id].matched
+    assert by_id[target_paper.evidence_id].matched
+
+
+def test_structured_entity_anchor_ignores_category_labels_and_name_collisions() -> None:
+    """强项目名存在时，普通英文分类名不能替代目标实体。"""
+
+    facet = analyze_question(
+        "acebench-scenes",
+        "EMNLP 2025 的 ACEBench 如何划分 Normal、Special 和 Agent 三类场景?",
+    ).facets[0]
+    wrong_benchmark = _evidence(
+        "agentbench",
+        "AgentBench evaluates agents in normal and special interactive environments.",
+        paper_id="paper-agentbench",
+    )
+    target = _evidence(
+        "acebench",
+        "ACEBench includes Normal, Special, and Agent evaluation scenarios.",
+        paper_id="paper-acebench",
+    )
+
+    matrix = build_coverage_matrix([facet], [wrong_benchmark, target], rule_version="coverage-v5")
+    by_id = {item.evidence_id: item for item in matrix.entries}
+
+    assert entity_anchor_terms(facet) == ("acebench",)
+    assert not by_id[wrong_benchmark.evidence_id].matched
+    assert by_id[target.evidence_id].matched
+
+
+def test_optional_metric_conflict_does_not_block_required_answer() -> None:
+    required = analyze_question("required", "Voyager architecture").facets[0]
+    optional = analyze_question("optional", "What accuracy metric is reported?").facets[0]
+    optional = optional.model_copy(update={"required": False})
+    architecture = _evidence("architecture", "Voyager architecture uses a skill library")
+    left = _evidence("metric-left", "accuracy metric is 80%")
+    right = _evidence("metric-right", "accuracy metric is 90%")
+    evidence = [architecture, left, right]
+
+    matrix = build_coverage_matrix([required, optional], evidence, rule_version="coverage-v5")
+    assessment = assess_sufficiency(
+        [required, optional], evidence, matrix, min_support=0.3, min_sources=1, max_selected=4
+    )
+
+    assert assessment.sufficient
+    assert assessment.conflicts
+    assert all(not item.blocking for item in assessment.conflicts)
+
+
+def test_same_paper_scope_does_not_turn_unrelated_chunks_into_facet_coverage() -> None:
+    facet = (
+        analyze_question(
+            "camel-roleplay",
+            "CAMEL 如何通过角色扮演促进多个智能体协作?",
+        )
+        .facets[0]
+        .model_copy(
+            update={
+                "condition": SatisfactionCondition(
+                    kind=ConditionKind.TERMS,
+                    terms=["CAMEL", "role-playing", "collaboration"],
+                    min_term_matches=2,
+                )
+            }
+        )
+    )
     decoy = _evidence(
         "camel-checklist",
         "CAMEL appendix checklist requirements.",
@@ -285,7 +435,7 @@ def test_paper_anchor_keeps_answer_bearing_chunk_and_selection_follows_retrieval
     ).model_copy(update={"ranks": EvidenceRanks(rerank=2, fusion=1)})
     abstract = _evidence(
         "camel-abstract",
-        "Role-playing with inception prompting guides communicative agents toward task "
+        "CAMEL role-playing with inception prompting guides communicative agents toward task "
         "completion while maintaining consistency with human intentions.",
         paper_id="paper-camel",
     ).model_copy(update={"ranks": EvidenceRanks(rerank=1, dense=1)})
@@ -301,12 +451,13 @@ def test_paper_anchor_keeps_answer_bearing_chunk_and_selection_follows_retrieval
         [facet], evidence, matrix, min_support=0.3, min_sources=1, max_selected=3
     )
 
+    by_id = {item.evidence_id: item for item in matrix.entries}
     abstract_coverage = next(
         item for item in matrix.entries if item.evidence_id == abstract.evidence_id
     )
     assert abstract_coverage.matched
-    assert abstract_coverage.basis == ["paper_scope:paper-camel"]
-    assert assessment.selected_evidence_ids[:2] == [abstract.evidence_id, decoy.evidence_id]
+    assert not by_id[decoy.evidence_id].matched
+    assert assessment.selected_evidence_ids == [abstract.evidence_id]
 
 
 def test_discrete_conflict_and_independent_source_count_are_conservative() -> None:

@@ -21,7 +21,11 @@ _ABSTENTION = re.compile(
     r"|无法.{0,16}(?:回答|判断|确定|得出)"
     r"|cannot.{0,16}(?:answer|determine|conclude)"
     r"|insufficient\s+(?:evidence|information)"
-    r"|not\s+enough\s+(?:evidence|information)",
+    r"|not\s+enough\s+(?:evidence|information)"
+    r"|(?:证据|材料|上下文|Evidence).{0,40}(?:未|没有|不).{0,12}"
+    r"(?:提供|包含|给出|显示|支持|足以)"
+    r"|(?:未|没有).{0,8}(?:提供|包含|给出).{0,16}(?:所需|具体|相关).{0,8}"
+    r"(?:信息|内容|数据|细节|答案)",
     re.IGNORECASE,
 )
 
@@ -36,13 +40,10 @@ def deterministic_check(
     candidate: GroundedAnswerCandidate,
     facets: list[EvidenceRequirement],
     sufficiency: SufficiencyAssessment,
-    *,
-    externally_covered_facet_ids: set[str] | None = None,
 ) -> AnswerEvaluation:
     """只依赖结构化字段完成可复现的硬性检查。"""
 
     findings: list[AnswerFinding] = []
-    external = externally_covered_facet_ids or set()
     required = {item.facet_id for item in facets if item.required}
     abstaining_claim_ids = {item.claim_id for item in candidate.claims if _is_abstention(item.text)}
     claimed_facets = {
@@ -51,7 +52,9 @@ def deterministic_check(
         if item.claim_type is not ClaimType.UNCERTAIN and item.claim_id not in abstaining_claim_ids
         for facet_id in item.facet_ids
     }
-    missing = required - claimed_facets - external
+    # Evidence 覆盖只说明“材料足够生成答案”，不能替代答案本身覆盖 facet。
+    # 内部与外部证据都必须最终形成带引用的非拒答 claim。
+    missing = required - claimed_facets
     if missing:
         findings.append(
             AnswerFinding(

@@ -61,7 +61,7 @@ class AnswerWorkflowDependencies:
     correction_config: CorrectiveWorkflowConfig | None = None
     action_executor: ActionExecutor | None = None
     model_revision: str = "unknown"
-    external_coverage_version: str = "external-coverage-v1"
+    external_coverage_version: str = "external-coverage-v4"
 
 
 def _validated(state: AnswerWorkflowState, **updates: object) -> AnswerWorkflowState:
@@ -190,7 +190,6 @@ async def generate_answer_node(
     deps: AnswerWorkflowDependencies,
     *,
     constraints: str = "仅输出可由 Evidence 直接支持的结论。",
-    allowed_binding_sets: set[tuple[tuple[str, ...], tuple[str, ...]]] | None = None,
     stage: AnswerWorkflowStage = AnswerWorkflowStage.GENERATE,
 ) -> AnswerWorkflowState:
     prompt, _context, bindings = render_generation_prompt(state, deps, constraints=constraints)
@@ -263,7 +262,6 @@ async def generate_answer_node(
             bindings,
             state.correction.state.facets,
             config=deps.config.generation,
-            allowed_binding_sets=allowed_binding_sets,
         )
     except AnswerResponseError as error:
         manager.settle(token, usage)
@@ -363,12 +361,10 @@ async def check_answer_node(
 ) -> AnswerWorkflowState:
     if state.candidate is None or state.correction.state.sufficiency is None:
         raise ValueError("answer check requires a candidate and sufficiency assessment")
-    external_covered = {item.facet_id for item in state.external_coverage if item.matched}
     evaluation = deterministic_check(
         state.candidate,
         state.correction.state.facets,
         state.correction.state.sufficiency,
-        externally_covered_facet_ids=external_covered,
     )
     errors = list(state.errors)
     manager = AnswerBudgetManager(state.budget)
@@ -402,13 +398,24 @@ async def check_answer_node(
                     internal_matrix=state.correction.state.coverage_matrix,
                     external_coverage=state.external_coverage,
                     config=deps.config.generation,
+                    citation_ids={item.citation_id for item in state.candidate.citations},
                 )
                 try:
                     findings = await deps.critic.evaluate(
                         question=state.correction.state.question,
                         candidate=state.candidate,
-                        evidence_context=context_text[: deps.config.critic.max_context_chars],
-                        facets=",".join(item.facet_id for item in state.correction.state.facets),
+                        evidence_context=context_text,
+                        facets=json.dumps(
+                            [
+                                {
+                                    "facet_id": item.facet_id,
+                                    "description": item.description,
+                                }
+                                for item in state.correction.state.facets
+                            ],
+                            ensure_ascii=False,
+                            separators=(",", ":"),
+                        ),
                         conflicts=",".join(
                             item.conflict_id
                             for item in state.correction.state.sufficiency.conflicts
@@ -458,6 +465,10 @@ async def check_answer_node(
             {
                 "acceptable": evaluation.acceptable,
                 "findings": len(evaluation.findings),
+                "finding_codes": ",".join(
+                    sorted({item.code.value for item in evaluation.findings})
+                ),
+                "unlocalized_findings": sum(not item.claim_ids for item in evaluation.findings),
                 "critic_used": evaluation.critic_used,
                 "critic_calls": manager.ledger.used.critic_calls,
             },
@@ -475,12 +486,32 @@ def decide_answer_node(
 ) -> AnswerWorkflowState:
     missing = set(state.correction.stop.missing_facet_ids)
     if state.evaluation is not None:
-        missing.update(
-            facet_id
-            for item in state.evaluation.findings
-            if item.code is AnswerCheckCode.INCOMPLETE
-            for facet_id in item.facet_ids
-        )
+        evidence_gap_codes = {
+            AnswerCheckCode.INCOMPLETE,
+            AnswerCheckCode.UNSUPPORTED,
+            AnswerCheckCode.WRONG_ATTRIBUTION,
+            AnswerCheckCode.SOURCE_MISMATCH,
+            AnswerCheckCode.FACET_MISMATCH,
+        }
+        claims_by_id = {
+            item.claim_id: set(item.facet_ids)
+            for item in (state.candidate.claims if state.candidate else [])
+        }
+        candidate_facets = {value for values in claims_by_id.values() for value in values}
+        for finding in state.evaluation.findings:
+            if finding.code not in evidence_gap_codes:
+                continue
+            missing.update(finding.facet_ids)
+            for claim_id in finding.claim_ids:
+                missing.update(claims_by_id.get(claim_id, set()))
+            if (
+                finding.code is not AnswerCheckCode.INCOMPLETE
+                and not finding.facet_ids
+                and not finding.claim_ids
+            ):
+                # 部分 Provider 能识别证据问题却省略定位 ID；此时只回退到
+                # 候选已声明的 facet，不把未作答维度无界加入 Web 查询。
+                missing.update(candidate_facets)
     missing -= {item.facet_id for item in state.external_coverage if item.matched}
     decision = decide_reflection(
         internal_stop=state.correction.stop.reason,

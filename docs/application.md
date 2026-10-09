@@ -52,7 +52,7 @@ kg-crag-api
 kg-crag-ui
 ```
 
-请求只公开 `mode`、`allow_web`、`include_trace` 与回放案例控制，不接受 Prompt、阈值或工具名。Web 必须同时满足全局 Provider/凭据配置、请求许可和内部证据不足门禁；Tavily Key 缺失时实时装配明确失败。Graph 使用当前冻结 pilot 构建轻量内存元数据图，不要求 Neo4j，但它不能替代尚未抽取的正文事实。`KG_CRAG_LLM_MAX_OUTPUT_TOKENS` 默认 1600，沿用现有 `KG_CRAG_LLM_PROVIDER`、模型、地址与密钥。`glm-5.3-flash` 建议使用 `KG_CRAG_LLM_REASONING_EFFORT=low`；`provider-default` 不改写其他兼容服务的默认行为。
+请求只公开 `mode`、`allow_web`、`include_trace` 与回放案例控制，不接受 Prompt、阈值或工具名。Web 必须同时满足全局 Provider/凭据配置、请求许可和证据缺口门禁；该缺口可以来自内部充分性，也可以由 Critic 明确指出来源不支持。Tavily Key 缺失时实时装配明确失败。Graph 使用当前冻结 pilot 构建轻量内存元数据图，不要求 Neo4j，但它不能替代尚未抽取的正文事实。`KG_CRAG_LLM_MAX_OUTPUT_TOKENS` 默认 1600，沿用现有 `KG_CRAG_LLM_PROVIDER`、模型、地址与密钥。`glm-5.3-flash` 建议使用 `KG_CRAG_LLM_REASONING_EFFORT=low`；`provider-default` 不改写其他兼容服务的默认行为。
 
 复杂问题会先执行一次严格 Schema 约束的 Facet LLM，再运行 Hybrid 检索；简单问题仍直接使用规则 facet。模型响应非法、超时或失败时整批回退规则结果，不接纳部分候选。Facet 结果按问题、Prompt 和模型 revision 缓存，并把实际或保守估算 Token 计入纠错预算。当前多证据平衡值为：Dense/Sparse 各 20、融合 16、重排 12、最终 Evidence 12、同论文补充 5、回答上下文 16000 字符。
 

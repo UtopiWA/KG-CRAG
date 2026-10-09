@@ -6,6 +6,7 @@ from collections.abc import Sequence
 from urllib.parse import urlsplit, urlunsplit
 
 from kg_crag.answering.config import WebSearchConfig
+from kg_crag.correction.coverage import entity_anchor_terms
 from kg_crag.models import EvidenceRequirement, SearchResult, WebSourceType
 
 _BLOCKED_PATH_PARTS = ("/login", "/signin", "/subscribe", "/paywall", "/account")
@@ -25,10 +26,24 @@ def build_web_query(
 ) -> str:
     if not question.strip() or not facets:
         raise ValueError("Web query requires a question and missing facets")
-    descriptions = " ".join(
-        item.description for item in sorted(facets, key=lambda item: item.facet_id)
-    )
-    query = " ".join(f"{question.strip()} {descriptions}".split())
+    ordered = sorted(facets, key=lambda item: item.facet_id)
+    # 实体名和 facet 条件通常包含论文采用的英文术语，应放在中文原问题之前，
+    # 让搜索服务围绕目标工作选取正文片段，而不只是返回标题元数据。
+    segments = [
+        *[anchor for item in ordered for anchor in entity_anchor_terms(item)],
+        *[term for item in ordered for term in item.condition.terms],
+        question.strip(),
+        *[item.description for item in ordered],
+    ]
+    unique: list[str] = []
+    seen: set[str] = set()
+    for segment in segments:
+        normalized = " ".join(segment.split())
+        key = normalized.casefold()
+        if normalized and key not in seen:
+            unique.append(normalized)
+            seen.add(key)
+    query = " ".join(unique)
     return query[:max_chars].rstrip()
 
 

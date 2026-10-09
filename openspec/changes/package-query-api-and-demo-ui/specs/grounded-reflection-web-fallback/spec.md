@@ -8,7 +8,7 @@
 
 ### Requirement: 逐结论可追溯的结构化回答
 
-系统 MUST 只使用当前运行选定且通过校验的 `Evidence` 生成回答，并严格校验回答 Schema、结论类型、引用 ID、facet ID 和结论—Evidence 绑定。解析器 MAY 接受包裹单个 JSON 对象的单层 Markdown JSON 围栏，但 MUST 拒绝围栏外说明、多个对象、未知字段、未知引用或不受 Evidence 支撑的 facet 绑定。把“无可信结论”“证据不足”或等价拒答绑定到已覆盖必需 facet 的候选 MUST NOT 被接受为事实回答；系统 MAY 在相同引用和 facet 绑定内执行唯一一次重写。Provider 请求与响应校验失败 MUST 分类为有限、安全的失败类别，且不得把原始模型响应写入公共结果或 Trace。
+系统 MUST 只使用当前运行选定且通过校验的 `Evidence` 生成回答，并严格校验回答 Schema、结论类型、引用 ID、facet ID 和结论—Evidence 绑定。解析器 MAY 接受包裹单个 JSON 对象的单层 Markdown JSON 围栏，但 MUST 拒绝围栏外说明、多个对象、未知字段、未知引用或不受 Evidence 支撑的 facet 绑定。把“无可信结论”“证据不足”“现有 Evidence 未提供所需信息”或等价拒答绑定到已覆盖必需 facet 的候选 MUST NOT 被接受为事实回答；证据覆盖状态 MUST NOT 代替回答中的带引用结论覆盖必需 facet。系统 MAY 在完全相同的有界回答上下文内执行唯一一次重写，并允许把复合结论拆为原子结论、补出首稿遗漏的已支持 facet、合并既有结论或增加不绑定事实的 `uncertain` 边界说明；重写仍由未知引用、未知 facet 和逐结论 Evidence—facet 支持校验约束，MUST NOT 引入上下文外来源、新 facet 或无支持的事实绑定。Provider 请求与响应校验失败 MUST 分类为有限、安全的失败类别，且不得把原始模型响应写入公共结果或 Trace。
 
 #### Scenario: 内部证据充分时生成可追溯回答
 
@@ -38,7 +38,22 @@
 #### Scenario: 拒答文本伪装成已覆盖结论
 
 - **WHEN** 候选把“暂无可信结论”或等价拒答绑定到一个已覆盖的必需 facet
-- **THEN** 确定性检查 MUST 将其标记为 `abstention` 且不得接受；若预算允许，系统只能在原有引用和 facet 绑定内重写一次
+- **THEN** 确定性检查 MUST 将其标记为 `abstention` 且不得接受；若预算允许，系统只能在当前有界上下文已有且受支持的 Evidence—facet 范围内重写一次
+
+#### Scenario: 重写拆分复合结论
+
+- **WHEN** 首稿把多个已支持 facet 写入同一条结论，重写将其拆成分别引用原 Evidence 的多个原子结论
+- **THEN** 系统 MUST 允许这种范围内重组并继续执行逐条 Evidence—facet 校验，不得仅因引用集合与 facet 集合不再完全相同而报 `new_fact_binding`
+
+#### Scenario: 补证后把来源元数据误当作不可回答
+
+- **WHEN** Web 已返回并绑定能够支持必需 facet 的正文，但首次回答声称“Evidence 未提供或未包含所需信息”
+- **THEN** 确定性检查 MUST 将其识别为拒答；若仍有第二次生成预算，系统 MAY 在相同有界 Evidence—facet 范围内重写一次，且不得再次搜索、检索或扩大上下文
+
+#### Scenario: 外部证据存在但回答遗漏事实
+
+- **WHEN** Web Evidence 已覆盖必需 facet，但候选只输出元数据、拒答或没有形成绑定该 facet 的事实结论
+- **THEN** 确定性检查 MUST 将候选判为不完整，不得仅凭外部覆盖矩阵将其接受
 
 ### Requirement: 共享预算下的可靠回答工作流
 
@@ -58,6 +73,11 @@
 
 - **WHEN** 已发起的生成、Critic、检索或搜索调用超时或失败
 - **THEN** 系统 MUST 记录实际用量或预留的保守估算并保留失败语义；超时不得重试，其他明确标记为 retryable 的回答 Provider 故障最多允许一次计入预算且写入 Trace 的重试，不得隐藏重试或通过恢复重复消费同一调用配额
+
+#### Scenario: 补证后的首次结构化输出非法
+
+- **WHEN** Web 或内部补检已经完成，但首次回答为非法 JSON、非法 Schema、未知引用、未知 facet 或不受支持的 facet 绑定，且第二次生成预算仍可预留
+- **THEN** 系统 MAY 以更严格的结构约束重写一次并记录重试类别；该重写不重复搜索或检索，累计生成次数不得超过 2，第二次仍失败时必须保守停止
 
 #### Scenario: 推理内容耗尽输出额度
 
@@ -87,6 +107,33 @@
 
 - **WHEN** 内部知识缺失但 Web 被禁用、无可信结果、超时或 Provider 失败
 - **THEN** 系统 MUST 返回可验证的保守结果，列出已支持结论、缺失 facet、Web 状态和有限错误，不得伪造答案或隐藏为普通无命中
+
+#### Scenario: Web 返回目标论文的英文摘要
+
+- **WHEN** 中文复合问题的可信 Web 结果以英文标题或摘要明确命中可区分的目标项目名，但单条摘要没有重复问题中的全部子组件名或中文术语
+- **THEN** 系统 MUST 允许以目标主实体建立待检查的外部 facet 绑定，将标题和摘录一并交给回答与 Critic；普通分类词、相似项目名或不满足短缩写消歧的结果不得获得该绑定
+
+#### Scenario: 学术主来源与项目页同时命中
+
+- **WHEN** 同一次 Web 搜索中，arXiv、论文站或学术数据库与 GitHub 等项目页都被判定可覆盖同一 facet
+- **THEN** 系统 MUST 只让学术主来源获得该 facet 的回答绑定，并从生成上下文排除未绑定的次要结果；只有没有匹配主来源时项目页才可作为受检查的兜底证据
+
+#### Scenario: 搜索摘要只有页面元数据
+
+- **WHEN** 可信搜索结果命中目标论文，但普通搜索摘要只包含标题或页面元数据
+- **THEN** 单次受控搜索请求 MUST 优先携带目标实体和 facet 证据词，并 MAY 请求同一结果的有界纯文本正文；转换器只截取目标实体附近正文和相关搜索片段，仍受单条与总外部上下文上限约束
+
+#### Scenario: Critic 识别内部来源不支持结论
+
+- **WHEN** 内部充分性曾被判为通过，但语义 Critic 指出候选存在不支持、来源错配、facet 错配或错误归因，且请求已允许可用 Web
+- **THEN** 系统 MUST 把受影响的候选 facet 恢复为证据缺口，并 MAY 将唯一补救轮次用于受控 Web，而不得直接把同一错误内部证据重新表述后接受
+- **AND** Critic 的有界上下文 MUST 优先保留候选实际引用的 Evidence 及原引用编号，不得因截取未引用的前序结果而遗漏被检查来源
+- **AND** 若首轮 Critic 已消费唯一 Critic 预算，Web 后 MUST 执行完整确定性引用与 facet 检查，不得再次调用 Critic 并伪装成预算内操作
+
+#### Scenario: Critic 使用单层 JSON 围栏
+
+- **WHEN** Critic 只用单层 `json` Markdown 围栏包裹一个满足 Schema 与 ID 约束的 findings 对象
+- **THEN** 系统移除围栏后执行完整校验；围栏外说明、未知 ID、未知 code 或非法字段仍必须失败
 
 #### Scenario: 有效检查点恢复不重复调用
 

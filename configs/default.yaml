@@ -18,15 +18,15 @@ corrective_workflow:
   policy_version: policy-v1
   initial_strategy: facet_corrective
   facets:
-    version: facet-rules-v1
-    prompt_version: facet-prompt-v1
-    prompt_path: prompts/facet-requirements-v1.txt
+    version: facet-rules-v3
+    prompt_version: facet-prompt-v2
+    prompt_path: prompts/facet-requirements-v2.txt
     confidence_threshold: 0.75
     max_facets: 12
     max_description_chars: 300
     allow_llm: true
   coverage:
-    version: coverage-v3
+    version: coverage-v6
     min_support: 0.45
     min_sources: 1
     max_selected_evidence: 12
@@ -68,9 +68,9 @@ grounded_answer:
   enabled: false
   prompts:
     answer_path: prompts/grounded-answer-v1.txt
-    critic_path: prompts/answer-critic-v1.txt
+    critic_path: prompts/answer-critic-v2.txt
     checker_version: answer-checker-v1
-    policy_version: answer-policy-v1
+    policy_version: answer-policy-v3
   generation:
     max_selected_evidence: 12
     max_chars_per_evidence: 2000

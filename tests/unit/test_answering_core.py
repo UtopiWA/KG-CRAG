@@ -12,7 +12,6 @@ from kg_crag.answering import (
     deterministic_check,
     merge_critic_findings,
     parse_grounded_answer,
-    supported_binding_sets,
 )
 from kg_crag.answering.config import AnswerGenerationConfig
 from kg_crag.answering.prompt import load_structured_prompt
@@ -121,6 +120,29 @@ def test_context_and_parser_bind_claims_to_evidence_and_facets() -> None:
         parse_grounded_answer(raw, bindings, facets, config=AnswerGenerationConfig())
 
 
+def test_critic_context_keeps_only_cited_evidence_with_original_numbering() -> None:
+    facets, matrix, _ = _coverage()
+    first = _evidence()
+    second = first.model_copy(
+        update={
+            "evidence_id": "ev-2",
+            "source_id": "chunk-2",
+            "content": "The second excerpt contains the detailed mechanism.",
+        }
+    )
+    context, bindings = build_answer_context(
+        [first, second],
+        internal_matrix=matrix,
+        external_coverage=[],
+        config=AnswerGenerationConfig(),
+        citation_ids={"E2"},
+    )
+
+    assert context.startswith("[E2]")
+    assert "[E1]" not in context
+    assert [item.citation_id for item in bindings] == ["E2"]
+
+
 def test_parser_accepts_only_a_single_markdown_json_fence_wrapper() -> None:
     candidate, _, bindings, facets, _ = _candidate()
     fenced = (
@@ -153,9 +175,8 @@ def test_parser_accepts_only_a_single_markdown_json_fence_wrapper() -> None:
         )
 
 
-def test_regeneration_cannot_introduce_new_fact_bindings() -> None:
-    candidate, _, bindings, facets, _ = _candidate()
-    allowed = supported_binding_sets(candidate)
+def test_parser_allows_uncertain_boundary_without_fabricated_bindings() -> None:
+    _candidate_value, _, bindings, facets, _ = _candidate()
     raw = json.dumps(
         {
             "claims": [
@@ -169,14 +190,65 @@ def test_regeneration_cannot_introduce_new_fact_bindings() -> None:
             "confidence": 0.2,
         }
     )
-    with pytest.raises(ValueError, match="new fact binding"):
-        parse_grounded_answer(
-            raw,
-            bindings,
-            facets,
-            config=AnswerGenerationConfig(),
-            allowed_binding_sets=allowed,
-        )
+    parsed = parse_grounded_answer(
+        raw,
+        bindings,
+        facets,
+        config=AnswerGenerationConfig(),
+    )
+
+    assert parsed.claims[0].claim_type.value == "uncertain"
+    assert parsed.claims[0].citation_ids == []
+    assert parsed.claims[0].facet_ids == []
+
+
+def test_parser_allows_splitting_claims_with_supported_evidence_facet_bindings() -> None:
+    """复合结论可拆成原子句，逐条 Evidence—facet 支持仍是硬约束。"""
+
+    first = _facet("architecture")
+    second = _facet("results")
+    evidence = Evidence(
+        evidence_id="ev-compound",
+        content="The architecture uses planning, and the results show improved accuracy.",
+        source_type=EvidenceSourceType.CHUNK,
+        source_id="chunk-compound",
+        paper_id="paper-compound",
+    )
+    matrix = build_coverage_matrix([first, second], [evidence], rule_version="v1")
+    _, bindings = build_answer_context(
+        [evidence],
+        internal_matrix=matrix,
+        external_coverage=[],
+        config=AnswerGenerationConfig(),
+    )
+    split_raw = json.dumps(
+        {
+            "claims": [
+                {
+                    "text": "It uses planning.",
+                    "claim_type": "fact",
+                    "citation_ids": ["E1"],
+                    "facet_ids": [first.facet_id],
+                },
+                {
+                    "text": "It reports improved accuracy.",
+                    "claim_type": "fact",
+                    "citation_ids": ["E1"],
+                    "facet_ids": [second.facet_id],
+                },
+            ],
+            "confidence": 0.8,
+        }
+    )
+
+    regenerated = parse_grounded_answer(
+        split_raw,
+        bindings,
+        [first, second],
+        config=AnswerGenerationConfig(),
+    )
+
+    assert len(regenerated.claims) == 2
 
 
 def test_deterministic_checker_detects_missing_facet_and_uncited_number() -> None:
@@ -213,6 +285,25 @@ def test_deterministic_checker_rejects_abstention_bound_as_a_supported_answer() 
     assert not evaluation.acceptable
 
 
+def test_deterministic_checker_rejects_evidence_metadata_refusal() -> None:
+    candidate, _, _, facets, sufficiency = _candidate()
+    refusal_text = "提供的 Evidence 只有页面元数据，未包含回答所需的具体信息。"
+    refusal = candidate.model_copy(
+        update={
+            "answer": refusal_text,
+            "claims": [candidate.claims[0].model_copy(update={"text": refusal_text})],
+        }
+    )
+
+    evaluation = deterministic_check(refusal, facets, sufficiency)
+
+    assert {item.code for item in evaluation.findings} >= {
+        AnswerCheckCode.ABSTENTION,
+        AnswerCheckCode.INCOMPLETE,
+    }
+    assert not evaluation.acceptable
+
+
 @pytest.mark.asyncio
 async def test_critic_identifies_unsupported_and_rejects_unknown_ids() -> None:
     candidate, context, _, facets, sufficiency = _candidate()
@@ -228,7 +319,7 @@ async def test_critic_identifies_unsupported_and_rejects_unknown_ids() -> None:
     critic = SemanticCritic(
         provider,
         load_structured_prompt(
-            __import__("pathlib").Path("prompts/answer-critic-v1.txt"),
+            __import__("pathlib").Path("prompts/answer-critic-v2.txt"),
             placeholders={"question", "claims", "evidence_context", "facets", "conflicts"},
         ),
         max_prompt_chars=10_000,
@@ -243,6 +334,25 @@ async def test_critic_identifies_unsupported_and_rejects_unknown_ids() -> None:
     )
     merged = merge_critic_findings(deterministic_check(candidate, facets, sufficiency), findings)
     assert merged.critic_used and not merged.faithful and not merged.acceptable
+    provider.response = "```json\n" + json.dumps({"findings": []}) + "\n```"
+    assert (
+        await critic.evaluate(
+            question="What architecture?",
+            candidate=candidate,
+            evidence_context=context,
+            facets=facets[0].description,
+            conflicts="none",
+        )
+        == []
+    )
+    await critic.evaluate(
+        question="What architecture?",
+        candidate=candidate,
+        evidence_context="evidence " * 5000,
+        facets=facets[0].description,
+        conflicts="none",
+    )
+    assert len(str(provider.calls[-1]["prompt"])) <= 10_000
     provider.response = json.dumps(
         {
             "findings": [
@@ -290,7 +400,7 @@ async def test_critic_provider_failure_cannot_be_treated_as_pass() -> None:
     critic = SemanticCritic(
         FailingProvider(),
         load_structured_prompt(
-            __import__("pathlib").Path("prompts/answer-critic-v1.txt"),
+            __import__("pathlib").Path("prompts/answer-critic-v2.txt"),
             placeholders={"question", "claims", "evidence_context", "facets", "conflicts"},
         ),
         max_prompt_chars=10_000,
@@ -341,6 +451,40 @@ def test_decision_table_and_conservative_answer_are_bounded() -> None:
         remediation_used=False,
     )
     assert web.action is ReflectionAction.WEB_SEARCH
+    critic_gap = merge_critic_findings(
+        passing,
+        [
+            AnswerFinding(
+                code=AnswerCheckCode.UNSUPPORTED,
+                reason="the selected paper does not support this claim",
+                claim_ids=[candidate.claims[0].claim_id],
+                facet_ids=[facets[0].facet_id],
+            )
+        ],
+    )
+    critic_web = decide_reflection(
+        internal_stop=StopReason.SUFFICIENT,
+        evaluation=critic_gap,
+        candidate=candidate,
+        missing_facet_ids=[facets[0].facet_id],
+        web_allowed=True,
+        web_ready=True,
+        internal_can_retrieve=False,
+        remediation_used=False,
+    )
+    assert critic_web.action is ReflectionAction.WEB_SEARCH
+    for internal_stop in (StopReason.NO_POSITIVE_GAIN, StopReason.BUDGET_EXHAUSTED):
+        exhausted_internal = decide_reflection(
+            internal_stop=internal_stop,
+            evaluation=None,
+            candidate=None,
+            missing_facet_ids=[facets[0].facet_id],
+            web_allowed=True,
+            web_ready=True,
+            internal_can_retrieve=True,
+            remediation_used=False,
+        )
+        assert exhausted_internal.action is ReflectionAction.WEB_SEARCH
     blocked = decide_reflection(
         internal_stop=StopReason.EXECUTION_FAILED,
         evaluation=None,

@@ -138,6 +138,20 @@ def _normalized_terms(text: str) -> list[str]:
     return list(dict.fromkeys(terms))[:20]
 
 
+def _needs_cross_lingual_facets(text: str) -> bool:
+    """中文问题包含可区分的拉丁项目名时，需生成文献侧英文证据词。"""
+
+    if re.search(r"[\u4e00-\u9fff]", text) is None:
+        return False
+    tokens = re.findall(r"[A-Za-z][A-Za-z0-9_.+-]{2,}", text)
+    return any(
+        token.isupper()
+        or any(char.isupper() for char in token[1:])
+        or any(char.isdigit() or char in "-_.+" for char in token)
+        for token in tokens
+    )
+
+
 def _facet(
     question_id: str,
     kind: FacetKind,
@@ -146,6 +160,7 @@ def _facet(
     *,
     target: str | None = None,
     evidence_types: list[EvidenceSourceType] | None = None,
+    required: bool = True,
     source: RequirementSource = RequirementSource.RULE,
     confidence: float = 1.0,
 ) -> EvidenceRequirement:
@@ -171,7 +186,7 @@ def _facet(
         question_id=question_id,
         kind=kind,
         description=normalized_description,
-        required=True,
+        required=required,
         expected_evidence_types=types,
         condition=SatisfactionCondition(
             kind=condition_kind,
@@ -241,7 +256,9 @@ def analyze_question(question_id: str, question: str) -> RuleAnalysis:
         )
         facets.append(_facet(question_id, kind, normalized, terms))
 
-    complex_question = comparison or multi_hop or len(terms) > 12
+    complex_question = (
+        comparison or multi_hop or len(terms) > 12 or _needs_cross_lingual_facets(normalized)
+    )
     confidence = 0.9 if not complex_question else 0.7
     return RuleAnalysis(
         tuple(sorted(facets, key=lambda item: item.facet_id)), complex_question, confidence
@@ -283,6 +300,7 @@ def _materialize_candidates(
             item.condition.terms,
             target=item.target_entity,
             evidence_types=item.expected_evidence_types,
+            required=item.required,
             source=RequirementSource.LLM,
             confidence=item.confidence,
         ).model_copy(update={"condition": item.condition})

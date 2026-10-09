@@ -15,9 +15,9 @@ from kg_crag.models.domain import StrictModel
 
 
 class FacetRulesConfig(StrictModel):
-    version: str = "facet-rules-v1"
-    prompt_version: str = "facet-prompt-v1"
-    prompt_path: str = "prompts/facet-requirements-v1.txt"
+    version: str = "facet-rules-v3"
+    prompt_version: str = "facet-prompt-v2"
+    prompt_path: str = "prompts/facet-requirements-v2.txt"
     confidence_threshold: float = Field(default=0.75, ge=0.0, le=1.0)
     max_facets: int = Field(default=12, ge=1, le=20)
     max_description_chars: int = Field(default=300, ge=20, le=500)
@@ -30,7 +30,7 @@ class FacetRulesConfig(StrictModel):
 
 
 class CoverageConfig(StrictModel):
-    version: str = "coverage-v3"
+    version: str = "coverage-v6"
     min_support: float = Field(default=0.45, ge=0.0, le=1.0)
     min_sources: int = Field(default=1, ge=1, le=5)
     max_selected_evidence: int = Field(default=8, ge=1, le=20)

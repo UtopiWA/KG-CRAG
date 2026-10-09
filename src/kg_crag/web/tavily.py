@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import json
+import re
 import urllib.error
 import urllib.request
+from collections.abc import Sequence
 from datetime import UTC, datetime
 from typing import Any, Protocol
 from urllib.parse import urlsplit
@@ -68,7 +70,7 @@ def _source_type(url: str) -> WebSourceType:
 
 
 class TavilySearchProvider:
-    provider_version = "tavily-json-v1"
+    provider_version = "tavily-json-v3"
 
     def __init__(
         self,
@@ -76,6 +78,7 @@ class TavilySearchProvider:
         *,
         timeout_seconds: float = 15.0,
         max_excerpt_chars: int = 2000,
+        include_domains: Sequence[str] | None = None,
         transport: JSONSearchTransport | None = None,
     ) -> None:
         if max_excerpt_chars < 100 or max_excerpt_chars > 2000:
@@ -84,6 +87,7 @@ class TavilySearchProvider:
             api_key or "", timeout_seconds=timeout_seconds
         )
         self._max_excerpt_chars = max_excerpt_chars
+        self._include_domains = tuple(include_domains or ())
         self.calls = 0
 
     async def search(self, query: str, *, max_results: int) -> list[SearchResult]:
@@ -94,15 +98,23 @@ class TavilySearchProvider:
             raise ValueError("search max_results must be between 1 and 5")
         self.calls += 1
         try:
-            payload = await self._transport.post(
-                {
-                    "query": normalized,
-                    "max_results": max_results,
-                    "search_depth": "basic",
-                    "include_answer": False,
-                    "include_raw_content": False,
-                }
-            )
+            request_payload: dict[str, Any] = {
+                "query": normalized,
+                "max_results": max_results,
+                "search_depth": "basic",
+                "chunks_per_source": 3,
+                "include_answer": False,
+                "include_raw_content": "text",
+            }
+            if self._include_domains:
+                # 在服务端先限制可信学术域名，客户端仍会执行最终 URL 白名单复核。
+                request_payload.update(
+                    {
+                        "include_domains": list(self._include_domains),
+                        "include_domains_mode": "restrict",
+                    }
+                )
+            payload = await self._transport.post(request_payload)
         except KGCRAGError:
             raise
         except TimeoutError as error:
@@ -120,7 +132,15 @@ class TavilySearchProvider:
             title, url, content = raw.get("title"), raw.get("url"), raw.get("content")
             if not all(isinstance(value, str) and value.strip() for value in (title, url, content)):
                 raise _search_error("Tavily result fields are incomplete")
-            excerpt = str(content).strip()[: self._max_excerpt_chars].rstrip()
+            raw_content = raw.get("raw_content")
+            if raw_content is not None and not isinstance(raw_content, str):
+                raise _search_error("Tavily raw content is invalid")
+            excerpt = _evidence_excerpt(
+                str(content),
+                raw_content,
+                query=normalized,
+                max_chars=self._max_excerpt_chars,
+            )
             score = raw.get("score", 0.0)
             if not isinstance(score, int | float) or not 0.0 <= float(score) <= 1.0:
                 raise _search_error("Tavily result score is invalid")
@@ -139,6 +159,38 @@ class TavilySearchProvider:
                 )
             )
         return results
+
+
+_QUERY_TOKEN = re.compile(r"[A-Za-z][A-Za-z0-9_.+-]{3,}")
+
+
+def _normalized_text(value: str) -> str:
+    return " ".join(value.split())
+
+
+def _evidence_excerpt(
+    content: str,
+    raw_content: str | None,
+    *,
+    query: str,
+    max_chars: int,
+) -> str:
+    """优先截取目标实体附近的网页正文，并保留搜索服务给出的相关片段。"""
+
+    snippet = _normalized_text(content)
+    raw_text = _normalized_text(raw_content or "")
+    if not raw_text:
+        return snippet[:max_chars].rstrip()
+    focus_tokens = list(dict.fromkeys(token.casefold() for token in _QUERY_TOKEN.findall(query)))
+    folded = raw_text.casefold()
+    positions = [folded.find(token) for token in focus_tokens if folded.find(token) >= 0]
+    start = max(0, min(positions, default=0) - 200)
+    raw_limit = max_chars if not snippet else max(400, max_chars * 3 // 4)
+    raw_window = raw_text[start : start + raw_limit].rstrip()
+    if not snippet or snippet in raw_window:
+        return raw_window[:max_chars].rstrip()
+    remaining = max_chars - len(raw_window) - 2
+    return f"{raw_window}\n\n{snippet[:remaining]}".rstrip() if remaining > 0 else raw_window
 
 
 def _search_error(message: str, *, retryable: bool = False) -> KGCRAGError:

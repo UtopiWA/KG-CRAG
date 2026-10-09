@@ -33,9 +33,9 @@ def _default_source_types() -> list[WebSourceType]:
 
 class AnswerPromptConfig(StrictModel):
     answer_path: str = "prompts/grounded-answer-v1.txt"
-    critic_path: str = "prompts/answer-critic-v1.txt"
+    critic_path: str = "prompts/answer-critic-v2.txt"
     checker_version: str = "answer-checker-v1"
-    policy_version: str = "answer-policy-v1"
+    policy_version: str = "answer-policy-v3"
 
     @field_validator("answer_path", "critic_path")
     @classmethod

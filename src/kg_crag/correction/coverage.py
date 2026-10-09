@@ -94,6 +94,9 @@ class RuleFacetMatcher:
             hops = evidence.metadata.get("hop_count")
             if isinstance(hops, int) and 1 <= hops <= condition.max_hops:
                 basis.append(f"hops:{hops}")
+        anchors = entity_anchor_terms(facet)
+        matched_anchors = matching_entity_anchor_terms(facet, folded)
+        basis.extend(f"anchor:{item}" for item in matched_anchors)
         selector_match = bool(
             len(matched_terms) >= condition.min_term_matches
             or entity_matches
@@ -102,7 +105,10 @@ class RuleFacetMatcher:
         if not (condition.terms or condition.entity_ids or condition.paper_ids):
             selector_match = evidence.source_type in condition.evidence_types
         expected_type = evidence.source_type in facet.expected_evidence_types
-        matched = selector_match and expected_type
+        # 含明确目标实体的问题必须先命中该实体，不能只凭 ACL、CoT 等泛词
+        # 把另一篇论文判成已覆盖；补入的同论文片段也必须独立通过本门槛。
+        anchor_match = not anchors or entity_anchor_match_sufficient(facet, folded)
+        matched = selector_match and expected_type and anchor_match
         denominator = max(
             1, len(condition.terms) + len(condition.entity_ids) + len(condition.paper_ids)
         )
@@ -129,34 +135,89 @@ _QUESTION_WORDS = {
     "were",
 }
 
+_WEAK_ENTITY_ANCHORS = {
+    "acl",
+    "ai",
+    "chain-of-thought",
+    "coling",
+    "cot",
+    "emnlp",
+    "gpt",
+    "gpt-4",
+    "llm",
+    "llms",
+    "naacl",
+    "rag",
+    "activation",
+    "adaptive",
+    "agent",
+    "architecture",
+    "framework",
+    "language",
+    "mechanism",
+    "method",
+    "model",
+    "paper",
+    "towards",
+}
 
-def entity_anchor_terms(facet: EvidenceRequirement) -> tuple[str, ...]:
-    """提取问题中的显式拉丁实体名，用于把同论文的答案片段纳入候选。"""
 
-    tokens = re.findall(r"[A-Za-z][A-Za-z0-9_.+-]{2,}", facet.description)
-    return tuple(
-        dict.fromkeys(
-            token.casefold()
-            for token in tokens
-            if token[0].isupper() and token.casefold() not in _QUESTION_WORDS
-        )
+def _is_structured_entity_token(token: str) -> bool:
+    """识别缩写、驼峰名和带连接符的项目名，排除普通句首大写词。"""
+
+    letters = "".join(char for char in token if char.isalpha())
+    return bool(
+        (letters and letters.isupper())
+        or any(char.isupper() for char in token[1:])
+        or any(char.isdigit() for char in token)
+        or any(char in token for char in "-_.+")
     )
 
 
-def _anchored_papers(
-    facet: EvidenceRequirement,
-    evidence: Sequence[Evidence],
-) -> set[str]:
-    """先通过显式实体定位论文，再允许该论文中省略实体名的摘要或续接段落参与覆盖。"""
+def entity_anchor_terms(facet: EvidenceRequirement) -> tuple[str, ...]:
+    """提取可定位目标工作的显式实体名，并优先采用结构化项目名。"""
+
+    source = " ".join(value for value in (facet.description, facet.target_entity or "") if value)
+    tokens = re.findall(r"[A-Za-z][A-Za-z0-9_.+-]{2,}", source)
+    candidates = [
+        token
+        for token in tokens
+        if token[0].isupper()
+        and token.casefold() not in _QUESTION_WORDS
+        and token.casefold() not in _WEAK_ENTITY_ANCHORS
+    ]
+    structured = [token for token in candidates if _is_structured_entity_token(token)]
+    # 存在 ACEBench、MLR-Bench 之类强名称时，不再把 Normal、Special 等
+    # 普通英文标签当作实体；没有结构化名称时仍兼容 Voyager 这类标题式名称。
+    selected = structured or candidates
+    return tuple(dict.fromkeys(token.casefold() for token in selected))
+
+
+def _anchor_pattern(anchor: str) -> re.Pattern[str]:
+    """实体必须按字母数字边界命中，避免简称成为另一名称的子串。"""
+
+    return re.compile(rf"(?<![a-z0-9]){re.escape(anchor)}(?![a-z0-9])", re.IGNORECASE)
+
+
+def matching_entity_anchor_terms(facet: EvidenceRequirement, text: str) -> list[str]:
+    """返回正文中实际出现的稳定实体锚点。"""
+
+    return [anchor for anchor in entity_anchor_terms(facet) if _anchor_pattern(anchor).search(text)]
+
+
+def entity_anchor_match_sufficient(facet: EvidenceRequirement, text: str) -> bool:
+    """长项目名命中主实体即可；短缩写还需第二实体共同消歧。"""
 
     anchors = entity_anchor_terms(facet)
     if not anchors:
-        return set()
-    return {
-        item.paper_id
-        for item in evidence
-        if item.paper_id and any(anchor in item.content.casefold() for anchor in anchors)
-    }
+        return False
+    matched = set(matching_entity_anchor_terms(facet, text))
+    primary = anchors[0]
+    if primary not in matched:
+        return False
+    compact_primary = re.sub(r"[^a-z0-9]", "", primary)
+    required = 2 if len(compact_primary) <= 4 and len(anchors) > 1 else 1
+    return len(matched) >= required
 
 
 def _source_quality(evidence: Evidence) -> float:
@@ -181,9 +242,6 @@ def build_coverage_matrix(
     selected_verifier = verifier or PermissiveInternalVerifier()
     sorted_facets = sorted(facets, key=lambda item: item.facet_id)
     sorted_evidence = sorted(evidence, key=lambda item: item.evidence_id)
-    anchored_papers = {
-        facet.facet_id: _anchored_papers(facet, sorted_evidence) for facet in sorted_facets
-    }
     entries: list[FacetCoverage] = []
     for facet in sorted_facets:
         for item in sorted_evidence:
@@ -199,16 +257,6 @@ def build_coverage_matrix(
                 matched, basis, support = False, [], None
             else:
                 matched, basis, lexical = selected_matcher.match(facet, item)
-                # 摘要或续接片段可能不重复论文简称。实体已在同一篇论文的其他候选中
-                # 明确锚定时，保留该片段给后续检索排名和回答生成共同判断。
-                if (
-                    not matched
-                    and item.source_type is EvidenceSourceType.CHUNK
-                    and item.paper_id in anchored_papers[facet.facet_id]
-                ):
-                    matched = True
-                    basis = [f"paper_scope:{item.paper_id}"]
-                    lexical = 0.5
                 status = CoverageStatus.MATCHED if matched else CoverageStatus.NOT_MATCHED
                 quality = _source_quality(item)
                 support = round(0.7 * lexical + 0.3 * quality, 6) if matched else None
@@ -379,7 +427,7 @@ def detect_conflicts(
                     facet_id=facet.facet_id,
                     kind=kind,
                     evidence_ids=ids,
-                    blocking=blocking,
+                    blocking=blocking and facet.required,
                     review_required=review,
                     # Evidence ID 已由结构化字段完整保留，原因文本不重复拼接长 ID。
                     reason=f"{kind.value} conflict between two Evidence records",

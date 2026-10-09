@@ -22,7 +22,7 @@ from kg_crag.correction.config import (
     corrective_config_hash,
     load_corrective_workflow_config,
 )
-from kg_crag.correction.coverage import entity_anchor_terms
+from kg_crag.correction.coverage import entity_anchor_match_sufficient, entity_anchor_terms
 from kg_crag.correction.executor import (
     ActionExecutor,
     CompoundTool,
@@ -197,7 +197,8 @@ class LiveQueryRuntime:
             (
                 item.paper_id
                 for item in evidence
-                if item.paper_id and any(anchor in item.content.casefold() for anchor in anchors)
+                if item.paper_id
+                and any(entity_anchor_match_sufficient(facet, item.content) for facet in facets)
             ),
             None,
         )
@@ -521,7 +522,9 @@ async def build_live_query_runtime(
             "enabled": web_enabled,
             "provider": settings.web_search_provider if web_enabled else "disabled",
             "provider_version": (
-                f"{settings.web_search_provider}-v1" if web_enabled else "disabled-v1"
+                TavilySearchProvider.provider_version
+                if web_enabled and settings.web_search_provider == "tavily"
+                else (f"{settings.web_search_provider}-v1" if web_enabled else "disabled-v1")
             ),
         }
     )
@@ -550,7 +553,10 @@ async def build_live_query_runtime(
         answer_prompt=answer_prompt,
         critic=critic,
         search_provider=_build_search(
-            settings, answer_config.web.recorded_fixture_path, workspace_root
+            settings,
+            answer_config.web.recorded_fixture_path,
+            workspace_root,
+            allowed_domains=answer_config.web.allowed_domains,
         ),
         correction_config=correction_config,
         action_executor=executor,
@@ -597,7 +603,11 @@ def _build_llm(settings: Settings) -> LLMProvider:
 
 
 def _build_search(
-    settings: Settings, fixture_path: str, workspace_root: Path
+    settings: Settings,
+    fixture_path: str,
+    workspace_root: Path,
+    *,
+    allowed_domains: list[str],
 ) -> SearchProvider | None:
     if not settings.enable_web_fallback or settings.web_search_provider == "disabled":
         return None
@@ -605,6 +615,7 @@ def _build_search(
         return TavilySearchProvider(
             settings.web_search_api_key,
             timeout_seconds=settings.web_search_timeout_seconds,
+            include_domains=allowed_domains,
         )
     if settings.web_search_provider == "recorded":
         return RecordedSearchProvider(workspace_root / fixture_path)

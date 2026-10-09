@@ -62,9 +62,9 @@ def select_evidence(
             available,
             key=lambda evidence_id: (
                 -len(coverage_by_evidence.get(evidence_id, set()) & remaining),
-                retrieval_priority(evidence_id),
                 -strength_by_evidence.get(evidence_id, 0.0),
                 -quality_by_evidence.get(evidence_id, 0.0),
+                retrieval_priority(evidence_id),
             ),
         )
         best = ranked[0]
@@ -83,7 +83,11 @@ def select_evidence(
             for evidence_id, covered_facets in coverage_by_evidence.items()
             if evidence_id not in selected and covered_facets & required
         ),
-        key=retrieval_priority,
+        key=lambda evidence_id: (
+            -strength_by_evidence.get(evidence_id, 0.0),
+            -quality_by_evidence.get(evidence_id, 0.0),
+            retrieval_priority(evidence_id),
+        ),
     )
     selected_coverage = {
         facet_id: sum(

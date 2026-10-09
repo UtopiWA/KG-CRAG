@@ -56,7 +56,7 @@ kg-crag-ui
 
 迭代 08 提供 `/v1/queries`、`/v1/documents/{paper_id}`、`/v1/ingestion/runs` 和 `/v1/traces/{trace_id}`。公共模型拒绝未知字段，统一错误响应只包含稳定错误码、安全消息、`request_id` 与可重试状态；API/UI 不重写检索、充分性或纠错逻辑。
 
-当前已实现固定回放、任意合法问题的实时工作流和 Gradio GPT 式界面。实时路径复用 facet、Dense/Sparse Hybrid、纠错与 grounded answer；Graph 与 Web 均为显式可选工具，历史只在浏览器会话中展示，不会拼入下一轮问题。实时模式可显式后台预热 BGE 与重排器，`/ready` 会在预热期间报告 `warming`，不会让首个浏览器请求无反馈地承担模型冷启动。
+当前已实现固定回放、任意合法问题的实时工作流和 Gradio GPT 式界面。实时路径复用 facet、Dense/Sparse Hybrid、纠错与 grounded answer；Graph 与 Web 均为显式可选工具，历史只在浏览器会话中展示，不会拼入下一轮问题。实时模式可显式后台预热 BGE 与重排器，`/ready` 会在预热期间报告 `warming`，不会让首个浏览器请求无反馈地承担模型冷启动。回答与 Critic 均兼容单层 JSON 围栏；补证后的首次结构化输出非法时，可在既有两次生成硬上限内重写一次。
 
 默认进程仅加载 `demo-replay-v1` 的三个脱敏案例：证据充分、纠错补全和保守停止。所有回放都显式标记为非实时、非正式实验结果；实时工作流未装配或依赖失败时返回 503，不会静默回退。容器也必须显式选择 profile：
 
@@ -68,9 +68,9 @@ docker compose --profile replay up --build
 docker compose --profile full up --build
 ```
 
-实时模式需已有且身份一致的 Qdrant Dense 集合与 SQLite Sparse 索引，并设置 `KG_CRAG_ENABLE_LIVE_QUERY=true`。未指定 `KG_CRAG_LIVE_SPARSE_INDEX_VERSION` 时仅允许本地恰好存在一个 Sparse 版本。增强演示最多输出 1600 Token，保留本地重排器，并为复杂问题启用一次有界 Facet LLM；规则结果仍是模型失败时的原子回退。融合、重排、充分性和回答阶段分别最多保留 16/12/12/12 条候选，回答上下文上限为 16000 字符，同论文上下文默认补入 5 条。语义 Critic 与轻量内存 Graph 默认开启；Critic 会增加至多一次 LLM 调用。使用 `glm-5.3-flash` 时建议设置 `KG_CRAG_LLM_REASONING_EFFORT=low`，避免推理内容耗尽输出额度；其他兼容 Provider 可保留 `provider-default`。公共预算中的 `token_usage_source` 会区分 Provider 实际用量、保守估算和混合值，不能再把失败预留值理解为 API 实际计费。已覆盖 facet 上的拒答不会被接受，非超时且明确可重试的 LLM Provider 故障最多执行一次 Trace 可见的预算内重试。
+实时模式需已有且身份一致的 Qdrant Dense 集合与 SQLite Sparse 索引，并设置 `KG_CRAG_ENABLE_LIVE_QUERY=true`。未指定 `KG_CRAG_LIVE_SPARSE_INDEX_VERSION` 时仅允许本地恰好存在一个 Sparse 版本。增强演示最多输出 1600 Token，保留本地重排器，并为复杂问题启用一次有界 Facet LLM；规则结果仍是模型失败时的原子回退。融合、重排、充分性和回答阶段分别最多保留 16/12/12/12 条候选，回答上下文上限为 16000 字符，同论文上下文默认补入 5 条，但每个片段仍须独立满足 facet 条件，不能因相同论文身份继承覆盖。语义 Critic 与轻量内存 Graph 默认开启；Critic 会增加至多一次 LLM 调用。使用 `glm-5.3-flash` 时建议设置 `KG_CRAG_LLM_REASONING_EFFORT=low`，避免推理内容耗尽输出额度；其他兼容 Provider 可保留 `provider-default`。公共预算中的 `token_usage_source` 会区分 Provider 实际用量、保守估算和混合值，不能再把失败预留值理解为 API 实际计费。已覆盖 facet 上的拒答不会被接受，非超时且明确可重试的 LLM Provider 故障最多执行一次 Trace 可见的预算内重试。
 
-真实 Web 兜底使用 Tavily，需要在本地 `.env` 设置 `KG_CRAG_ENABLE_WEB_FALLBACK=true`、`KG_CRAG_WEB_SEARCH_PROVIDER=tavily` 和 `KG_CRAG_WEB_SEARCH_API_KEY`。缺少 Key 时实时依赖不会伪装成可用；配置完成后，每次请求仍只有在页面勾选“内部证据不足时允许 Web”且内部 facet 不充分时才会搜索，最多一次、最多 5 条结果。
+真实 Web 兜底使用 Tavily，需要在本地 `.env` 设置 `KG_CRAG_ENABLE_WEB_FALLBACK=true`、`KG_CRAG_WEB_SEARCH_PROVIDER=tavily` 和 `KG_CRAG_WEB_SEARCH_API_KEY`。缺少 Key 时实时依赖不会伪装成可用；配置完成后，每次请求仍只有在页面勾选“内部证据不足时允许 Web”，且内部 facet 不充分或 Critic 明确识别出现有来源不支持时才会搜索，最多一次、最多 5 条结果。中文问题包含可区分的拉丁项目名时，已启用的 Facet LLM 会补充文献侧英文证据词；同一 facet 有 arXiv、论文站或学术数据库命中时，GitHub 等项目页只保留为诊断候选，不参与回答绑定。
 
 首次实时演示前先查看模型计划，再显式把固定 revision 的 BGE 与重排器准备到 `KG_CRAG_MODEL_CACHE_ROOT`。下载入口显式允许联网；准备完成后的日常运行默认设置 `KG_CRAG_MODEL_LOCAL_FILES_ONLY=true`，不会为了检查更新再次访问模型仓库。该步骤不访问 LLM：
 
@@ -101,6 +101,9 @@ UI 启动入口会在当前进程的 `NO_PROXY`/`no_proxy` 中补入 `localhost`
 ```powershell
 # 显式确认后只执行 1 个非评测问题，最多 1600 输出 Token，不启用 Web/Graph/Critic/重排
 python scripts/smoke_live_query.py --confirm-online
+
+# 仅在内部证据不足时增加一次受控 Web；仍关闭 Graph/Critic/重排
+python scripts/smoke_live_query.py "待验证问题" --confirm-online --allow-web
 ```
 
 Qdrant/Neo4j 数据目录和模型缓存均可迁移到空间充足的磁盘；BGE 与重排器现在共同遵守 `KG_CRAG_MODEL_CACHE_ROOT`。镜像排除密钥、论文、模型权重、缓存和数据库卷。接口、回放边界、资源上限、持久化及故障排查见 `docs/application.md`。应用烟雾测试不读取正式 test split，也不会创建正式测试锁。
@@ -259,7 +262,7 @@ python scripts/evaluate_corrective_workflow.py --online --confirm-budget --limit
 
 ## 回答反思与受控 Web 兜底
 
-回答阶段使用严格 Claim/Citation/facet 绑定、确定性检查和最多一次语义 Critic。单层 Markdown JSON 围栏可以在不放宽 Schema/绑定的前提下解析；Provider 请求、JSON、Schema、未知引用和绑定失败会以有限类别进入 Trace，原始响应不会公开。Web 默认关闭，只有内部停止原因为 `internal_knowledge_missing`、请求显式允许且可信来源策略通过时，才会搜索一次；任何失败均返回可审计的保守知识边界。
+回答阶段使用严格 Claim/Citation/facet 绑定、确定性检查和最多一次语义 Critic。单层 Markdown JSON 围栏可以在不放宽 Schema/绑定的前提下解析；Provider 请求、JSON、Schema、未知引用和绑定失败会以有限类别进入 Trace，原始响应不会公开。Web 默认关闭；内部知识缺失、无正向收益、内部预算耗尽或 Critic 明确发现证据来源缺口时，只有请求显式允许且可信来源策略通过，才会搜索一次。任何失败均返回可审计的保守知识边界。
 
 ```bash
 # 冻结题集与录制 fixture 校验，零网络

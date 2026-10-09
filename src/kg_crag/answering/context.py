@@ -47,7 +47,6 @@ class AnswerResponseFailure(StrEnum):
     UNKNOWN_CITATION = "unknown_citation"
     UNKNOWN_FACET = "unknown_facet"
     UNSUPPORTED_FACET_BINDING = "unsupported_facet_binding"
-    NEW_FACT_BINDING = "new_fact_binding"
 
 
 class AnswerResponseError(ValueError):
@@ -65,9 +64,6 @@ class AnswerResponseError(ValueError):
             AnswerResponseFailure.UNKNOWN_FACET: "answer contains an unknown facet",
             AnswerResponseFailure.UNSUPPORTED_FACET_BINDING: (
                 "claim facet is not supported by its cited Evidence"
-            ),
-            AnswerResponseFailure.NEW_FACT_BINDING: (
-                "regenerated answer introduces a new fact binding"
             ),
         }
         super().__init__(messages[category])
@@ -109,19 +105,35 @@ def build_answer_context(
     internal_matrix: CoverageMatrix | None,
     external_coverage: list[ExternalFacetCoverage],
     config: AnswerGenerationConfig,
+    citation_ids: set[str] | None = None,
 ) -> tuple[str, list[BoundEvidence]]:
-    """在总字符上限内选择 Evidence，并附带可声明的 facet 集合。"""
+    """在总字符上限内选择 Evidence，并可按原编号只保留已引用条目。
+
+    Web 搜索会返回少量可信但不一定回答当前 facet 的候选。当至少存在一条
+    已建立覆盖绑定的外部证据时，不再把未绑定结果交给生成模型，避免次要页面
+    或仅有标题相关的结果挤占上下文并被误引。
+    """
 
     blocks: list[str] = []
     selected: list[BoundEvidence] = []
     used = 0
-    for index, item in enumerate(evidence[: config.max_selected_evidence], start=1):
+    matched_external_ids = {item.evidence_id for item in external_coverage if item.matched}
+    eligible = [
+        item
+        for item in evidence
+        if not item.external or not matched_external_ids or item.evidence_id in matched_external_ids
+    ]
+    for index, item in enumerate(eligible[: config.max_selected_evidence], start=1):
         citation_id = f"E{index}"
+        if citation_ids is not None and citation_id not in citation_ids:
+            continue
         facets = _facet_bindings(item.evidence_id, internal_matrix, external_coverage)
         location = str(item.location.url) if item.external else item.paper_id or item.source_id
+        title = " ".join(str(item.metadata.get("title", "")).split())[:300]
+        title_field = f" title={json.dumps(title, ensure_ascii=False)}" if title else ""
         header = (
             f"[{citation_id}] source={location} external={str(item.external).lower()} "
-            f"facets={','.join(facets) or 'none'}\n"
+            f"facets={','.join(facets) or 'none'}{title_field}\n"
         )
         remaining = config.max_context_chars - used - len(header)
         if remaining <= 0:
@@ -163,9 +175,8 @@ def parse_grounded_answer(
     facets: list[EvidenceRequirement],
     *,
     config: AnswerGenerationConfig,
-    allowed_binding_sets: set[tuple[tuple[str, ...], tuple[str, ...]]] | None = None,
 ) -> GroundedAnswerCandidate:
-    """拒绝上下文外引用、facet 错配和重生成新增事实绑定。"""
+    """拒绝上下文外引用及 Evidence 不支持的 facet 绑定。"""
 
     if len(raw) > config.max_response_chars:
         raise AnswerResponseError(AnswerResponseFailure.RESPONSE_TOO_LARGE)
@@ -205,9 +216,6 @@ def parse_grounded_answer(
         }
         if item.claim_type is not ClaimType.UNCERTAIN and not set(facet_ids) <= supported_facets:
             raise AnswerResponseError(AnswerResponseFailure.UNSUPPORTED_FACET_BINDING)
-        binding_key = (tuple(sorted(citation_ids)), tuple(sorted(facet_ids)))
-        if allowed_binding_sets is not None and binding_key not in allowed_binding_sets:
-            raise AnswerResponseError(AnswerResponseFailure.NEW_FACT_BINDING)
         claim_payload = {
             "text": " ".join(item.text.split()),
             "claim_type": item.claim_type.value,
@@ -227,12 +235,3 @@ def parse_grounded_answer(
         citations=citations,
         confidence=payload.confidence,
     )
-
-
-def supported_binding_sets(
-    candidate: GroundedAnswerCandidate,
-) -> set[tuple[tuple[str, ...], tuple[str, ...]]]:
-    return {
-        (tuple(sorted(item.citation_ids)), tuple(sorted(item.facet_ids)))
-        for item in candidate.claims
-    }

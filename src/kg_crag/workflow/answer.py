@@ -4,10 +4,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
-from kg_crag.answering import (
-    build_answer_identity,
-    supported_binding_sets,
-)
+from kg_crag.answering import build_answer_identity
 from kg_crag.answering.budget import AnswerBudgetManager
 from kg_crag.answering.config import grounded_answer_config_hash
 from kg_crag.correction.actions import action_catalog, build_action_request
@@ -72,6 +69,28 @@ def _can_retry_provider_generation(state: AnswerWorkflowState) -> bool:
     if state.errors[-1].code is ErrorCode.TIMEOUT:
         return False
     return state.budget.used.answer_calls < state.budget.limit.answer_calls
+
+
+def _can_retry_remediation_generation(state: AnswerWorkflowState) -> bool:
+    """Web/补检已完成后，允许用剩余生成预算修复一次结构化输出。"""
+
+    if not state.remediation_used or state.candidate is not None:
+        return False
+    failures = [item for item in state.trace if item.event == "answer_generation_failed"]
+    if not failures:
+        return False
+    category = failures[-1].details.get("failure_category")
+    retryable_categories = {
+        "invalid_json",
+        "invalid_schema",
+        "unknown_citation",
+        "unknown_facet",
+        "unsupported_facet_binding",
+    }
+    return bool(
+        category in retryable_categories
+        and state.budget.used.answer_calls < state.budget.limit.answer_calls
+    )
 
 
 def _trace(
@@ -333,23 +352,19 @@ async def _reretrieve(
     )
 
 
-def _regeneration_bindings(
-    state: AnswerWorkflowState,
-) -> set[tuple[tuple[str, ...], tuple[str, ...]]]:
-    if state.candidate is None or state.evaluation is None:
-        return set()
-    rejected = {
-        claim_id
-        for finding in state.evaluation.findings
-        if finding.code in {AnswerCheckCode.UNSUPPORTED, AnswerCheckCode.WRONG_ATTRIBUTION}
-        for claim_id in finding.claim_ids
-    }
-    safe = state.candidate.model_copy(
-        update={
-            "claims": [item for item in state.candidate.claims if item.claim_id not in rejected]
-        }
+def _can_rewrite_remediation_answer(state: AnswerWorkflowState) -> bool:
+    """补证后只允许用第二次生成修复拒答或遗漏，不再调用工具。"""
+
+    return bool(
+        state.remediation_used
+        and state.candidate is not None
+        and state.evaluation is not None
+        and any(
+            item.code in {AnswerCheckCode.ABSTENTION, AnswerCheckCode.INCOMPLETE}
+            for item in state.evaluation.findings
+        )
+        and state.budget.used.answer_calls < state.budget.limit.answer_calls
     )
-    return supported_binding_sets(safe)
 
 
 async def _complete_decision(
@@ -409,14 +424,13 @@ async def _complete_decision(
         sequence = _checkpoint(checkpoint_store, state, sequence)
         state = await generate_answer_node(state, deps, stage=AnswerWorkflowStage.REMEDIATE)
     else:
-        allowed = _regeneration_bindings(state)
         charged = _charge_reflection(state)
-        if charged is None or not allowed:
+        if charged is None:
             return _error(
                 state,
                 ErrorDetail(
                     code=ErrorCode.VALIDATION,
-                    message="regeneration has no safe bindings or remaining budget",
+                    message="regeneration exceeds remaining budget",
                     retryable=False,
                 ),
             ), sequence
@@ -430,8 +444,35 @@ async def _complete_decision(
         state = await generate_answer_node(
             state,
             deps,
-            constraints="只能保留首次检查确认支持的引用与 facet 绑定，不得新增事实。",
-            allowed_binding_sets=allowed,
+            constraints=(
+                "只能使用当前上下文已经绑定的 Evidence 和 facet；可以把复合句拆成原子句，"
+                "但不得引入新的来源、facet 或 Evidence 中不存在的事实。"
+            ),
+            stage=AnswerWorkflowStage.REMEDIATE,
+        )
+    if action in {
+        ReflectionAction.WEB_SEARCH,
+        ReflectionAction.RERETRIEVE,
+    } and _can_retry_remediation_generation(state):
+        failure = next(
+            item for item in reversed(state.trace) if item.event == "answer_generation_failed"
+        )
+        state = _trace(
+            state,
+            deps,
+            "remediate",
+            "answer_generation_retry_scheduled",
+            retry_number=1,
+            retry_reason=failure.details.get("failure_category"),
+        )
+        sequence = _checkpoint(checkpoint_store, state, sequence)
+        state = await generate_answer_node(
+            state,
+            deps,
+            constraints=(
+                "上次输出未通过结构校验；只返回单个合法 JSON 对象，严格复制现有 "
+                "Evidence 编号与 facet_id，不要输出 Markdown 或额外说明。"
+            ),
             stage=AnswerWorkflowStage.REMEDIATE,
         )
     sequence = _checkpoint(checkpoint_store, state, sequence)
@@ -442,9 +483,48 @@ async def _complete_decision(
     state = await check_answer_node(
         state,
         deps,
-        use_critic=action is ReflectionAction.WEB_SEARCH,
+        # 若首轮 Critic 已消费唯一语义检查预算，Web 后只执行确定性检查；
+        # 初始内部不足直接走 Web 时，仍把 Critic 留给最终外部回答。
+        use_critic=(action is ReflectionAction.WEB_SEARCH and state.budget.used.critic_calls == 0),
     )
     sequence = _checkpoint(checkpoint_store, state, sequence)
+    if _can_rewrite_remediation_answer(state):
+        state = _trace(
+            state,
+            deps,
+            "remediate",
+            "answer_generation_retry_scheduled",
+            retry_number=1,
+            retry_reason="abstention_or_incomplete",
+        )
+        state = _update(
+            state,
+            stage=AnswerWorkflowStage.GENERATE,
+            candidate=None,
+            evaluation=None,
+        )
+        sequence = _checkpoint(checkpoint_store, state, sequence)
+        state = await generate_answer_node(
+            state,
+            deps,
+            constraints=(
+                "上次回答遗漏了已有 Evidence 能支持的内容或错误拒答。必须直接提取"
+                "当前 Evidence 中能够回答问题的事实；只能使用现有 Evidence 与 facet，"
+                "不得增加外部知识。"
+            ),
+            stage=AnswerWorkflowStage.REMEDIATE,
+        )
+        sequence = _checkpoint(checkpoint_store, state, sequence)
+        if state.candidate is not None:
+            state = _update(state, stage=AnswerWorkflowStage.CHECK)
+            state = await check_answer_node(
+                state,
+                deps,
+                use_critic=(
+                    action is ReflectionAction.WEB_SEARCH and state.budget.used.critic_calls == 0
+                ),
+            )
+            sequence = _checkpoint(checkpoint_store, state, sequence)
     state = decide_answer_node(
         state,
         deps,

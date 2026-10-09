@@ -13,7 +13,6 @@ from kg_crag.answering.context import (
     BoundEvidence,
     build_answer_context,
     parse_grounded_answer,
-    supported_binding_sets,
 )
 from kg_crag.answering.critic import SemanticCritic
 from kg_crag.answering.identity import answer_state_fingerprint, build_answer_identity
@@ -35,5 +34,4 @@ __all__ = [
     "load_grounded_evaluation_config",
     "merge_critic_findings",
     "parse_grounded_answer",
-    "supported_binding_sets",
 ]

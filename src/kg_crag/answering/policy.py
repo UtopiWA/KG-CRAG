@@ -13,6 +13,13 @@ from kg_crag.models import (
     StopReason,
 )
 
+_SEMANTIC_EVIDENCE_GAPS = {
+    AnswerCheckCode.UNSUPPORTED,
+    AnswerCheckCode.WRONG_ATTRIBUTION,
+    AnswerCheckCode.SOURCE_MISMATCH,
+    AnswerCheckCode.FACET_MISMATCH,
+}
+
 
 def decide_reflection(
     *,
@@ -36,22 +43,50 @@ def decide_reflection(
     elif internal_stop in {
         StopReason.EXECUTION_FAILED,
         StopReason.INVALID_INPUT,
-        StopReason.BUDGET_EXHAUSTED,
     }:
         action, reason = ReflectionAction.CONSERVATIVE_STOP, internal_stop.value
+    elif (
+        internal_stop
+        in {
+            StopReason.INTERNAL_KNOWLEDGE_MISSING,
+            StopReason.NO_POSITIVE_GAIN,
+            StopReason.BUDGET_EXHAUSTED,
+        }
+        and web_allowed
+        and web_ready
+        and missing_facet_ids
+    ):
+        # 内部纠错无结果、无继续收益或已耗尽内部预算时，都属于 Web 兜底候选。
+        # 把该判断放在回答阶段的重复内部检索之前，避免先消耗唯一补救额度。
+        action, reason = ReflectionAction.WEB_SEARCH, "eligible_internal_evidence_gap"
+        estimate = AnswerBudgetUsage(
+            web_calls=1,
+            reflection_rounds=1,
+            web_results=5,
+            external_context_chars=8000,
+        )
     elif internal_stop is StopReason.INTERNAL_KNOWLEDGE_MISSING:
-        if web_allowed and web_ready and missing_facet_ids:
-            action, reason = ReflectionAction.WEB_SEARCH, "eligible_internal_knowledge_missing"
-            estimate = AnswerBudgetUsage(
-                web_calls=1,
-                reflection_rounds=1,
-                web_results=5,
-                external_context_chars=8000,
-            )
-        else:
-            action, reason = ReflectionAction.CONSERVATIVE_STOP, "web_unavailable"
+        action, reason = ReflectionAction.CONSERVATIVE_STOP, "web_unavailable"
+    elif internal_stop is StopReason.BUDGET_EXHAUSTED:
+        action, reason = ReflectionAction.CONSERVATIVE_STOP, internal_stop.value
     elif evaluation is not None and evaluation.acceptable:
         action, reason = ReflectionAction.ACCEPT, "all_checks_passed"
+    elif (
+        evaluation is not None
+        and missing_facet_ids
+        and any(item.code in _SEMANTIC_EVIDENCE_GAPS for item in evaluation.findings)
+        and web_allowed
+        and web_ready
+    ):
+        # Critic 已指出现有来源或归因不支持答案时，重复使用同一内部证据无法
+        # 修复问题；把唯一补救轮次用于受控 Web，并继续执行完整引用检查。
+        action, reason = ReflectionAction.WEB_SEARCH, "critic_identified_evidence_gap"
+        estimate = AnswerBudgetUsage(
+            web_calls=1,
+            reflection_rounds=1,
+            web_results=5,
+            external_context_chars=8000,
+        )
     elif (
         candidate is not None
         and evaluation is not None
@@ -63,6 +98,13 @@ def decide_reflection(
         estimate = AnswerBudgetUsage(reflection_rounds=1)
     elif missing_facet_ids and internal_can_retrieve:
         action, reason = ReflectionAction.RERETRIEVE, "required_facet_missing"
+        estimate = AnswerBudgetUsage(reflection_rounds=1)
+    elif (
+        candidate is not None
+        and evaluation is not None
+        and any(item.code is AnswerCheckCode.INCOMPLETE for item in evaluation.findings)
+    ):
+        action, reason = ReflectionAction.REGENERATE, "incomplete_answer_must_be_rewritten"
         estimate = AnswerBudgetUsage(reflection_rounds=1)
     elif (
         candidate is not None

@@ -83,6 +83,7 @@ def test_answer_config_defaults_and_hard_bounds() -> None:
     assert config.enabled is False
     assert config.web.enabled is False
     assert config.web.provider == "disabled"
+    assert config.prompts.policy_version == "answer-policy-v3"
     assert config.generation.max_selected_evidence == 12
     assert config.generation.max_context_chars == 16_000
     assert config.budget.answer_calls == 2

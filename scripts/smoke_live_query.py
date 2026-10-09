@@ -28,7 +28,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--confirm-online",
         action="store_true",
-        help="确认允许调用当前 .env 中的 LLM；不会启用 Web 或正式评测",
+        help="确认允许调用当前 .env 中的 LLM；不会执行正式评测",
+    )
+    parser.add_argument(
+        "--allow-web",
+        action="store_true",
+        help="内部证据不足时允许使用 .env 配置的单次受控 Web 搜索",
     )
     return parser.parse_args()
 
@@ -39,16 +44,16 @@ async def run(args: argparse.Namespace) -> int:
     request = QueryRequest(
         question=args.question,
         mode=ApplicationMode.LIVE,
-        allow_web=False,
+        allow_web=args.allow_web,
         include_trace=True,
     )
-    # 烟雾测试只验证链路: 关闭 Critic、重排、Graph 和 Web，将在线模型调用压到最低。
+    # 烟雾测试只验证链路: 关闭 Critic、重排和 Graph；Web 必须由命令行显式允许。
     settings = Settings(
         enable_live_query=True,
         live_enable_reranker=False,
         live_enable_answer_critic=False,
         live_enable_graph=False,
-        enable_web_fallback=False,
+        enable_web_fallback=args.allow_web,
     )
     runtime = await build_live_query_runtime(settings, workspace_root=PROJECT_ROOT)
     execution = await runtime.run(request)
@@ -81,6 +86,8 @@ async def run(args: argparse.Namespace) -> int:
         "answer": execution.answer.answer,
         "stop_reason": execution.answer.stop_reason.value,
         "citations": len(execution.answer.citations),
+        "external_evidence": len(execution.answer.external_evidence),
+        "web_calls": used.web_calls,
         "model_calls": used.answer_calls + used.critic_calls,
         "accounted_input_tokens": used.input_tokens,
         "accounted_output_tokens": used.output_tokens,

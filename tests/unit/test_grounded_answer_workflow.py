@@ -118,7 +118,7 @@ class RetryableQueueLLM(QueueLLM):
 class StubCritic:
     def __init__(self) -> None:
         self.prompt = load_structured_prompt(
-            Path("prompts/answer-critic-v1.txt"),
+            Path("prompts/answer-critic-v2.txt"),
             placeholders={"question", "claims", "evidence_context", "facets", "conflicts"},
         )
         self.calls = 0
@@ -389,6 +389,34 @@ async def test_abstention_claim_is_regenerated_instead_of_accepted() -> None:
 
 
 @pytest.mark.asyncio
+async def test_regeneration_accepts_supported_fact_with_unbound_uncertainty_boundary() -> None:
+    """重写可保留无引用的不确定性边界，事实部分仍须通过逐条绑定校验。"""
+
+    correction = _correction(StopReason.SUFFICIENT, evidence=[_evidence()])
+    rewritten = json.loads(_answer_json())
+    rewritten["claims"].append(
+        {
+            "text": "Other implementation details remain uncertain.",
+            "claim_type": "uncertain",
+            "citation_ids": [],
+            "facet_ids": [],
+        }
+    )
+    llm = QueueLLM(
+        [
+            _answer_json("提供的 Evidence 未包含回答所需的具体信息。"),
+            json.dumps(rewritten),
+        ]
+    )
+
+    result = await run_grounded_answer_workflow(correction, _deps(llm))
+
+    assert result.stop_reason is AnswerStopReason.ACCEPTED
+    assert len(result.claims) == 2
+    assert result.claims[1].citation_ids == []
+
+
+@pytest.mark.asyncio
 async def test_provider_actual_usage_replaces_character_estimate() -> None:
     correction = _correction(StopReason.SUFFICIENT, evidence=[_evidence()])
     result = await run_grounded_answer_workflow(
@@ -433,6 +461,126 @@ async def test_web_only_triggers_for_internal_knowledge_missing() -> None:
 
 
 @pytest.mark.asyncio
+async def test_web_precedes_retrieval_when_internal_search_has_no_positive_gain() -> None:
+    """内部纠错已经无正向收益时，显式允许的 Web 不应被重复内部检索吞掉。"""
+
+    correction = _correction(StopReason.NO_POSITIVE_GAIN, retrieval_round=1)
+    internal = MockRetriever([])
+    corrective = CorrectiveWorkflowConfig()
+    executor = ActionExecutor(
+        {CorrectionAction.HYBRID: RetrieverTool(internal)},
+        max_candidates=20,
+        bounds=corrective.actions,
+    )
+    web_result = SearchResult(
+        provider_result_id="r-no-gain",
+        title="Paper",
+        url="https://arxiv.org/abs/1234.5678",
+        accessed_at=datetime.now(UTC),
+        excerpt="The architecture uses a skill library.",
+        source_type=WebSourceType.ARXIV,
+        score=0.9,
+    )
+    search = MockSearchProvider([web_result])
+    config = GroundedAnswerConfig(
+        enabled=True,
+        critic={"enabled": False},
+        web=WebSearchConfig(enabled=True, provider="mock"),
+    )
+
+    answer = await run_grounded_answer_workflow(
+        correction,
+        _deps(
+            QueueLLM([_answer_json()]),
+            config=config,
+            search=search,
+            corrective=corrective,
+            executor=executor,
+        ),
+        allow_web=True,
+    )
+
+    assert answer.stop_reason is AnswerStopReason.ACCEPTED
+    assert answer.used_external is True
+    assert len(search.calls) == 1
+    assert internal.calls == []
+
+
+@pytest.mark.asyncio
+async def test_web_generation_gets_one_structured_output_retry() -> None:
+    """Web 已消费补救轮次后，格式错误仍可使用剩余生成预算重写一次。"""
+
+    correction = _correction(StopReason.INTERNAL_KNOWLEDGE_MISSING)
+    result = SearchResult(
+        provider_result_id="structured-retry",
+        title="Skill library architecture",
+        url="https://arxiv.org/abs/1234.5678",
+        accessed_at=datetime.now(UTC),
+        excerpt="The architecture uses a reusable skill library for unfamiliar tasks.",
+        source_type=WebSourceType.ARXIV,
+        score=0.9,
+    )
+    search = MockSearchProvider([result])
+    llm = QueueLLM(["not-json", _answer_json()])
+    config = GroundedAnswerConfig(
+        enabled=True,
+        critic={"enabled": False},
+        web=WebSearchConfig(enabled=True, provider="mock"),
+    )
+
+    answer = await run_grounded_answer_workflow(
+        correction,
+        _deps(llm, config=config, search=search),
+        allow_web=True,
+    )
+
+    assert answer.stop_reason is AnswerStopReason.ACCEPTED
+    assert len(llm.calls) == 2
+    retry = next(item for item in answer.trace if item.event == "answer_generation_retry_scheduled")
+    assert retry.details["retry_reason"] == "invalid_json"
+
+
+@pytest.mark.asyncio
+async def test_web_answer_refusal_gets_one_evidence_bounded_rewrite() -> None:
+    """Web 结果已绑定 facet 时，模型错误拒答可重写但不得再次搜索。"""
+
+    correction = _correction(StopReason.INTERNAL_KNOWLEDGE_MISSING)
+    result = SearchResult(
+        provider_result_id="refusal-rewrite",
+        title="Skill library architecture",
+        url="https://arxiv.org/abs/1234.5678",
+        accessed_at=datetime.now(UTC),
+        excerpt="The architecture uses a reusable skill library for unfamiliar tasks.",
+        source_type=WebSourceType.ARXIV,
+        score=0.9,
+    )
+    search = MockSearchProvider([result])
+    llm = QueueLLM(
+        [
+            _answer_json("提供的 Evidence 未包含回答所需的具体信息。"),
+            _answer_json("The architecture uses a reusable skill library."),
+        ]
+    )
+    config = GroundedAnswerConfig(
+        enabled=True,
+        critic={"enabled": False},
+        web=WebSearchConfig(enabled=True, provider="mock"),
+    )
+
+    answer = await run_grounded_answer_workflow(
+        correction,
+        _deps(llm, config=config, search=search),
+        allow_web=True,
+    )
+
+    assert answer.stop_reason is AnswerStopReason.ACCEPTED
+    assert len(llm.calls) == 2
+    assert len(search.calls) == 1
+    retry = [item for item in answer.trace if item.event == "answer_generation_retry_scheduled"]
+    assert retry[-1].details["retry_reason"] == "abstention_or_incomplete"
+
+
+@pytest.mark.asyncio
 async def test_web_disabled_and_failed_return_explicit_conservative_boundary() -> None:
     correction = _correction(StopReason.INTERNAL_KNOWLEDGE_MISSING)
     disabled_llm = QueueLLM([])
@@ -471,6 +619,54 @@ async def test_critic_can_trigger_exactly_one_bounded_regeneration() -> None:
     assert critic.calls == 1
     assert result.budget.answer.used.answer_calls == 2
     assert result.budget.answer.used.critic_calls == 1
+
+
+@pytest.mark.asyncio
+async def test_critic_evidence_gap_can_trigger_web_without_second_critic_call() -> None:
+    """Critic 指出的来源缺口应进入 Web，最终检查不得因重复 Critic 超预算。"""
+
+    correction = _correction(StopReason.SUFFICIENT, evidence=[_evidence()])
+    critic = StubCritic()
+    search = MockSearchProvider(
+        [
+            SearchResult(
+                provider_result_id="critic-web",
+                title="Skill library architecture",
+                url="https://arxiv.org/abs/1234.5678",
+                accessed_at=datetime.now(UTC),
+                excerpt=(
+                    "The agent architecture uses a reusable skill library for planning "
+                    "and execution across unfamiliar tasks."
+                ),
+                source_type=WebSourceType.ARXIV,
+                score=0.9,
+            )
+        ]
+    )
+    config = GroundedAnswerConfig(
+        enabled=True,
+        web=WebSearchConfig(enabled=True, provider="mock"),
+    )
+
+    result = await run_grounded_answer_workflow(
+        correction,
+        _deps(
+            QueueLLM([_two_claim_answer_json(), _answer_json("Skill library.")]),
+            config=config,
+            search=search,
+            critic=critic,
+        ),
+        allow_web=True,
+    )
+
+    assert result.stop_reason is AnswerStopReason.ACCEPTED
+    assert result.used_external is True
+    assert critic.calls == 1
+    assert len(search.calls) == 1
+    assert any(
+        item.event == "reflection_decided" and item.details.get("action") == "web_search"
+        for item in result.trace
+    )
     assert result.budget.answer.used.reflection_rounds == 1
 
 
